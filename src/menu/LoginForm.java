@@ -31,13 +31,14 @@ public class LoginForm extends JFrame {
 	private JTextField username;
 	private JPasswordField password;
 	private final JLabel lblX = new JLabel("X");
-	private Image background = new ImageIcon(LoginForm.class.getResource("/icon/login.png")).getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+	private Image background = new ImageIcon(LoginForm.class.getResource("/icon/login.png")).getImage();
 	private Image usr = new ImageIcon(LoginForm.class.getResource("/icon/username.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	private Image pass = new ImageIcon(LoginForm.class.getResource("/icon/password.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	private Image Key = new ImageIcon(LoginForm.class.getResource("/icon/Key.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	/**
 	 * Launch the application.
 	 */
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -57,11 +58,13 @@ public class LoginForm extends JFrame {
 	public LoginForm() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 800, 600);
+		//setBounds(100, 100, 800, 600);
+		setSize(800,600);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(30, 144, 255));
+		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		setContentPane(contentPane);
+		setLocationRelativeTo(null);
 		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -69,7 +72,6 @@ public class LoginForm extends JFrame {
 		panel.setBounds(195, 320, 406, 53);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
 		username = new JTextField();
 		username.setText("Username");
 		username.addFocusListener(new FocusAdapter() {
@@ -96,9 +98,10 @@ public class LoginForm extends JFrame {
 		username.setColumns(10);
 		
 		JLabel usrIcon = new JLabel("");
+		usrIcon.setLabelFor(username);
 		usrIcon.setBackground(new Color(255, 255, 255));
 		usrIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		usrIcon.setBounds(354, 10, 30, 30);
+		usrIcon.setBounds(359, 0, 47, 53);
 		usrIcon.setIcon(new ImageIcon(usr));
 		panel.add(usrIcon);
 		
@@ -136,9 +139,10 @@ public class LoginForm extends JFrame {
 		panel_1.add(password);
 		
 		JLabel pwdIcon = new JLabel("");
+		pwdIcon.setLabelFor(password);
 		pwdIcon.setBackground(new Color(255, 255, 255));
 		pwdIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		pwdIcon.setBounds(355, 10, 30, 30);
+		pwdIcon.setBounds(359, 0, 47, 53);
 		pwdIcon.setIcon(new ImageIcon(pass));
 		panel_1.add(pwdIcon);
 		
@@ -162,7 +166,7 @@ public class LoginForm extends JFrame {
 		lblX.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Are you sure want to close this application?","CLOSE THE PROGRAM",JOptionPane.YES_NO_OPTION)==0) {
+				if(JOptionPane.showConfirmDialog(null, "Do you want to close this application?","CLOSE THE PROGRAM",JOptionPane.YES_NO_OPTION)==0) {
 					LoginForm.this.dispose();
 				}
 			}
@@ -186,20 +190,20 @@ public class LoginForm extends JFrame {
 		lblX.setBounds(745, 0, 55, 53);
 		contentPane.add(lblX);
 		
-		JLabel logBackground = new JLabel(new ImageIcon(background));
+		JLabel logBackground = new JLabel(new ImageIcon("/icon/login.png"));
 		logBackground.setHorizontalAlignment(SwingConstants.CENTER);
 		logBackground.setHorizontalTextPosition(SwingConstants.CENTER);
-		logBackground.setBounds(347, 220, 90, 90);
+		logBackground.setBounds(334, 190, 120, 120);
 		contentPane.add(logBackground);
-		logBackground.setIcon(new ImageIcon((Image)background));
+		logBackground.setIcon(new ImageIcon(background));
 		
 		JLabel lblMessage = new JLabel("");
-		lblMessage.setFont(new Font("Arial", Font.BOLD, 14));
+		lblMessage.setFont(new Font("Arial", Font.BOLD, 20));
 		lblMessage.setBounds(205, 439, 386, 25);
 		contentPane.add(lblMessage);
 		lblMessage.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		setLocationRelativeTo(null);
+		
 		
 		btnLogin.addMouseListener(new MouseAdapter() {
 			@Override
