@@ -1,26 +1,34 @@
 package menu;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.GridLayout;
-
-import javax.swing.SwingConstants;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Menu extends JFrame implements ActionListener{
 	JButton info;
+	JPanel contentPane;
+	JPanel container;
+	
+	  
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -35,7 +43,11 @@ public class Menu extends JFrame implements ActionListener{
 	}
 	
 	public Menu() {
+		setUndecorated(true);
 		setResizable(false);
+		
+		contentPane = new JPanel();
+		setContentPane(contentPane);
 		getContentPane().setLayout(null);
 		getContentPane().setBackground(SystemColor.inactiveCaptionBorder);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,19 +60,18 @@ public class Menu extends JFrame implements ActionListener{
 		panel.setBounds(0,0,1200,150);
 		panel.setLayout(new BorderLayout());
 		
-		JPanel container = new JPanel();
+		container = new JPanel(new CardLayout());
 		container.setBackground(SystemColor.inactiveCaption);
-		container.setBounds(0,150,1200,1200-150);
+		container.setBounds(0,150,1200,800-150);
 		
 		JPanel content = new JPanel();
 		content.setLayout(new GridLayout(2,2,10,10));
 		content.setBackground(SystemColor.inactiveCaption);
 		content.setBounds(400,200,400,400);
 		
-	
-		getContentPane().add(content);
-		getContentPane().add(panel);
-		getContentPane().add(container);
+		container.add(content);
+		contentPane.add(panel);
+		contentPane.add(container);
 		
 		JLabel greeting = new JLabel("Chào, Nguyễn Văn Hoàng");
 		panel.add(greeting);
@@ -125,15 +136,18 @@ public class Menu extends JFrame implements ActionListener{
 		content.add(schedule);
 		content.add(pass);
 		
+		Container c = new Info();
 		
+		
+        container.add(c);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == info) {
-			Info window = new Info();
-			window.setVisible(true);
+			CardLayout cl = (CardLayout)(container.getLayout());
+			cl.next(container);
 			
 		}
 	}
