@@ -221,7 +221,9 @@ public class LoginForm extends JFrame {
 					lblMessage.setText("Username and Password must be filled!");
 				}
 				else {
-					lblMessage.setText("");
+					Menu menu = new Menu();
+					setVisible(false);
+					menu.setVisible(true);
 				}
 			}
 		});
