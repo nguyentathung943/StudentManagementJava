@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 
 public class Menu extends JFrame implements ActionListener{
 	JButton info;
+	JButton pass;
 	JPanel contentPane;
 	JPanel container;
 	
@@ -119,7 +120,7 @@ public class Menu extends JFrame implements ActionListener{
 		schedule.setFocusable(false);
 		schedule.setBorder(null);
 		
-		JButton pass = new JButton("Change password");
+		pass = new JButton("Change password");
 		pass.setFont(new Font("Sitka Text", Font.PLAIN, 15));
 		pass.setIcon(new ImageIcon(Menu.class.getResource("/icon/cogwheel.png")));
 		pass.setHorizontalTextPosition(JLabel.CENTER);
@@ -130,16 +131,23 @@ public class Menu extends JFrame implements ActionListener{
 		pass.setBackground(new Color(191,205,219));
 		pass.setFocusable(false);
 		pass.setBorder(null);
+		pass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.next(container);
+				cl1.show(container, "Pass");
+			}
+		});
 		
 		content.add(info);
 		content.add(register);
 		content.add(schedule);
-		content.add(pass);
+		content.add( pass);
 		
-		Container c = new Info();
-		
-		
-        container.add(c);
+		Container InfoForm = new Info();
+		Container changePassword = new ChangePasswordForm();
+		container.add("Pass",changePassword);
+        container.add("Info",InfoForm);
 	}
 
 	@Override
@@ -147,8 +155,8 @@ public class Menu extends JFrame implements ActionListener{
 		// TODO Auto-generated method stub
 		if (e.getSource() == info) {
 			CardLayout cl = (CardLayout)(container.getLayout());
-			cl.next(container);
-			
+			cl.show(container, "Info");
+		
 		}
 	}
 
