@@ -222,7 +222,7 @@ public class LoginForm extends JFrame {
 				}
 				else {
 					Menu menu = new Menu();
-					setVisible(false);
+					dispose();
 					menu.setVisible(true);
 				}
 			}

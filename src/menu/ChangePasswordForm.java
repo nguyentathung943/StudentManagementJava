@@ -3,11 +3,14 @@ package menu;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -35,10 +38,22 @@ public class ChangePasswordForm extends Container{
         oldPass.setLocation(300, 100); 
         c.add(oldPass); 
   
-        JTextField toldPass = new JTextField(); 
+        JPasswordField toldPass = new JPasswordField(); 
         toldPass.setFont(new Font("Arial", Font.PLAIN, 15)); 
-        toldPass.setSize(190, 20); 
-        toldPass.setLocation(500, 100); 
+        toldPass.setSize(190, 30); 
+        toldPass.setLocation(500, 100);
+        toldPass.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(toldPass.getText().equals("Password")) {
+					toldPass.setEchoChar('●');
+					toldPass.setText("");
+				}
+				else {
+					toldPass.selectAll();
+				}
+			}
+		});
         c.add(toldPass); 
   
         JLabel newPass = new JLabel("New password :"); 
@@ -47,10 +62,23 @@ public class ChangePasswordForm extends Container{
         newPass.setLocation(300, 150); 
         c.add(newPass); 
   
-        JTextField tnewPass = new JTextField(); 
+        JPasswordField tnewPass = new JPasswordField();
         tnewPass.setFont(new Font("Arial", Font.PLAIN, 15)); 
-        tnewPass.setSize(190, 20); 
-        tnewPass.setLocation(500, 150); 
+        tnewPass.setSize(190, 30); 
+        tnewPass.setLocation(500, 150);
+        tnewPass.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(tnewPass.getText().equals("Password")) {
+					tnewPass.setEchoChar('●');
+					tnewPass.setText("");
+				}
+				else {
+					tnewPass.selectAll();
+				}
+			}
+			
+		});
         c.add(tnewPass); 
         
         JLabel confirmPass = new JLabel("Confirm password :"); 
@@ -59,17 +87,30 @@ public class ChangePasswordForm extends Container{
         confirmPass.setLocation(300, 200); 
         c.add(confirmPass); 
   
-        JTextField tconfirm = new JTextField(); 
+        JPasswordField tconfirm = new JPasswordField(); 
         tconfirm.setFont(new Font("Arial", Font.PLAIN, 15)); 
-        tconfirm.setSize(190, 20); 
-        tconfirm.setLocation(500, 200); 
+        tconfirm.setSize(190, 30); 
+        tconfirm.setLocation(500, 200);
+        tconfirm.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(tconfirm.getText().equals("Password")) {
+					tconfirm.setEchoChar('●');
+					tconfirm.setText("");
+				}
+				else {
+					tconfirm.selectAll();
+				}
+			}
+			
+		});
         c.add(tconfirm); 
  
   
         JButton sub = new JButton("Save"); 
         sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
         sub.setSize(100, 20); 
-        sub.setLocation(400, 250);
+        sub.setLocation(500, 250);
         c.add(sub); 
 		
 	}
