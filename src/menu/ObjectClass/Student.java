@@ -1,4 +1,4 @@
-package menu;
+package menu.ObjectClass;
 import java.util.*;
 
 
@@ -19,7 +19,7 @@ class DOB{
 		return day+"/"+month+"/"+year;
 	}
 }
-class Student{
+public class Student{
 	String id;
 	String name;
 	String email;

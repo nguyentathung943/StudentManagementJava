@@ -1,5 +1,5 @@
 package menu;
-
+import menu.ObjectClass.*;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
@@ -24,6 +24,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.border.LineBorder;
 import java.awt.image.BufferedImage;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 public class LoginForm extends JFrame {
 
 	private JPanel contentPane;
@@ -37,9 +39,12 @@ public class LoginForm extends JFrame {
 	private Image Key = new ImageIcon(LoginForm.class.getResource("/icon/Key.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	/**
 	 * Launch the application.
+	 * @throws SQLException 
 	 */
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -216,11 +221,13 @@ public class LoginForm extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(username.getText().equals("") || password.getText().equals("")) {
+				System.out.print(username.getText() + " " + password.getText());
+				if(username.getText().equals("") || password.getText().equals("") ||username.getText().equals("Username") || password.getText().equals("Password")) {
 					lblMessage.setForeground(new Color(255,0,0));
 					lblMessage.setText("Username and Password must be filled!");
 				}
 				else {
+					lblMessage.setText("");
 					Menu menu = new Menu();
 					dispose();
 					menu.setVisible(true);

@@ -3,18 +3,25 @@ package menu;
 import java.sql.*;
 
 public class Server{
-	public static void main(String args[]) throws SQLException {
-		///Get connection ("link url","username","password")
-		Connection Connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentmanagement","admin","admin");
-		///Create statement
-		Statement statement = Connect.createStatement();
-		///Execute SQL query
-		ResultSet Result = statement.executeQuery(" select * from student where student.MainClass='18clc4' ");
-		///Process the result set
-		while(Result.next()) {
-			System.out.println(Result.getString("id"));
-		}
+	///Get connection ("link url","username","password")
+	Connection Connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentmanagement","admin","admin");
+	///Create statement
+	Statement statement = Connect.createStatement();
+	Server() throws SQLException{
+		
+	}
+	ResultSet ExecuteQuery(String query) throws SQLException {
+		ResultSet Result = statement.executeQuery(query);
+		return Result;
 	}
 	
 	
+	public static void main(String args[]) throws SQLException {
+		Server a = new Server();
+		ResultSet Result = a.ExecuteQuery("select * from student");
+		///Process the result set
+		while(Result.next()) {
+			System.out.println(Result.getString("id")+ " " + Result.getString("email"));
+		}
+	}
 }

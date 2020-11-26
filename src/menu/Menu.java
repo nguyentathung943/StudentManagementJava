@@ -1,6 +1,7 @@
 package menu;
 
 import java.awt.BorderLayout;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -196,11 +197,11 @@ public class Menu extends JFrame implements ActionListener{
 		content.add(info);
 		content.add(register);
 		content.add(schedule);
-		content.add( pass);
+		content.add(pass);
 		
 		Container InfoForm = new Info();
-		Container changePassword = new ChangePasswordForm();
-		container.add("Pass",changePassword);
+		//Container changePassword = new ChangePasswordForm();
+		//container.add("Pass",changePassword);
         container.add("Info",InfoForm);
 	}
 
@@ -211,7 +212,6 @@ public class Menu extends JFrame implements ActionListener{
 			CardLayout cl = (CardLayout)(container.getLayout());
 			cl.show(container, "Info");
 			lblBack.setVisible(true);
-		
 		}
 	}
 
