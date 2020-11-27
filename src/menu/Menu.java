@@ -29,7 +29,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
+import java.sql.*;
 
 public class Menu extends JFrame implements ActionListener{
 	JButton info;
@@ -43,7 +43,7 @@ public class Menu extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Menu frame = new Menu();
+					Menu frame = new Menu(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +52,7 @@ public class Menu extends JFrame implements ActionListener{
 		});
 	}
 	
-	public Menu() {
+	public Menu(ResultSet Client) throws SQLException {
 		setUndecorated(true);
 		setResizable(false);
 		
@@ -120,7 +120,7 @@ public class Menu extends JFrame implements ActionListener{
 		contentPane.add(panel);
 		contentPane.add(container);
 		
-		JLabel greeting = new JLabel("Chào, Nguyễn Văn Hoàng");
+		JLabel greeting = new JLabel("Chào, "+Client.getString("name"));
 		panel.add(greeting);
 		greeting.setFont(new Font("Source Sans Pro Semibold", Font.PLAIN, 20));
 		greeting.setForeground(SystemColor.textHighlightText);
@@ -199,7 +199,7 @@ public class Menu extends JFrame implements ActionListener{
 		content.add(schedule);
 		content.add(pass);
 		
-		Container InfoForm = new Info();
+		Container InfoForm = new Info(Client);
 		//Container changePassword = new ChangePasswordForm();
 		//container.add("Pass",changePassword);
         container.add("Info",InfoForm);

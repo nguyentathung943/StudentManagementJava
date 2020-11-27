@@ -59,8 +59,10 @@ public class LoginForm extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public LoginForm() {
+	public LoginForm() throws SQLException {
+		Server ServerConnection = new Server();
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(100, 100, 800, 600);
@@ -221,16 +223,29 @@ public class LoginForm extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.print(username.getText() + " " + password.getText());
 				if(username.getText().equals("") || password.getText().equals("") ||username.getText().equals("Username") || password.getText().equals("Password")) {
 					lblMessage.setForeground(new Color(255,0,0));
 					lblMessage.setText("Username and Password must be filled!");
 				}
 				else {
-					lblMessage.setText("");
-					Menu menu = new Menu();
-					dispose();
-					menu.setVisible(true);
+					ResultSet tab;
+					try {
+						tab = ServerConnection.ExecuteQuery("select * from student");
+						while(tab.next()) {
+							if(tab.getString("email").equals(username.getText()) || tab.getString("id").equals(password.getText())) {
+								lblMessage.setText("");
+								Menu menu = new Menu(tab);
+								dispose();
+								menu.setVisible(true);
+							}
+						}
+						lblMessage.setText("Wrong username or password!");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+
 				}
 			}
 		});
