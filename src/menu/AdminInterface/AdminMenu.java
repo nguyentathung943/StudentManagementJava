@@ -1,4 +1,4 @@
-package menu;
+package menu.AdminInterface;
 
 import java.awt.BorderLayout;
 
@@ -31,7 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.sql.*;
 
-public class Menu extends JFrame implements ActionListener{
+public class AdminMenu extends JFrame implements ActionListener{
 	JButton info;
 	JButton pass;
 	JPanel contentPane;
@@ -43,7 +43,7 @@ public class Menu extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Menu frame = new Menu(null);
+					AdminMenu frame = new AdminMenu(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +52,7 @@ public class Menu extends JFrame implements ActionListener{
 		});
 	}
 	
-	public Menu(ResultSet Client) throws SQLException {
+	public AdminMenu(ResultSet Client) throws SQLException {
 		setUndecorated(true);
 		setResizable(false);
 		
@@ -64,7 +64,7 @@ public class Menu extends JFrame implements ActionListener{
 		pack();
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
-		lblBack.setIcon(new ImageIcon(Menu.class.getResource("/icon/back.png")));
+		lblBack.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/back.png")));
 		lblBack.setOpaque(false);
 		lblBack.setContentAreaFilled(false);
 		lblBack.setBorderPainted(false);
@@ -82,7 +82,7 @@ public class Menu extends JFrame implements ActionListener{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Do you want to close this application?","CLOSE THE PROGRAM",JOptionPane.YES_NO_OPTION)==0) {
-					Menu.this.dispose();
+					AdminMenu.this.dispose();
 				}
 			}
 			@Override
@@ -120,7 +120,7 @@ public class Menu extends JFrame implements ActionListener{
 		contentPane.add(panel);
 		contentPane.add(container);
 		
-		JLabel greeting = new JLabel("Chào, "+Client.getString("name"));
+		JLabel greeting = new JLabel("Chào, "+ Client.getString("name"));
 		panel.add(greeting);
 		greeting.setFont(new Font("Source Sans Pro Semibold", Font.PLAIN, 20));
 		greeting.setForeground(SystemColor.textHighlightText);
@@ -131,7 +131,7 @@ public class Menu extends JFrame implements ActionListener{
 		
 		info = new JButton("Edit Information");
 		info.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		info.setIcon(new ImageIcon(Menu.class.getResource("/icon/folder.png")));
+		info.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/folder.png")));
 		info.setHorizontalTextPosition(JLabel.CENTER);
 		info.setVerticalTextPosition(JLabel.BOTTOM);
 		info.setVerticalAlignment(JLabel.CENTER);
@@ -144,7 +144,7 @@ public class Menu extends JFrame implements ActionListener{
 		
 		JButton register = new JButton("Register courses");
 		register.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		register.setIcon(new ImageIcon(Menu.class.getResource("/icon/tick.png")));
+		register.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/tick.png")));
 		register.setHorizontalTextPosition(JLabel.CENTER);
 		register.setVerticalTextPosition(JLabel.BOTTOM);
 		register.setVerticalAlignment(JLabel.CENTER);
@@ -156,7 +156,7 @@ public class Menu extends JFrame implements ActionListener{
 		
 		JButton schedule = new JButton("Show schedule");
 		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		schedule.setIcon(new ImageIcon(Menu.class.getResource("/icon/calendar.png")));
+		schedule.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/calendar.png")));
 		schedule.setHorizontalTextPosition(JLabel.CENTER);
 		schedule.setVerticalTextPosition(JLabel.BOTTOM);
 		schedule.setVerticalAlignment(JLabel.CENTER);
@@ -168,7 +168,7 @@ public class Menu extends JFrame implements ActionListener{
 		
 		pass = new JButton("Change password");
 		pass.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		pass.setIcon(new ImageIcon(Menu.class.getResource("/icon/cogwheel.png")));
+		pass.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/cogwheel.png")));
 		pass.setHorizontalTextPosition(JLabel.CENTER);
 		pass.setVerticalTextPosition(JLabel.BOTTOM);
 		pass.setVerticalAlignment(JLabel.CENTER);
@@ -199,7 +199,7 @@ public class Menu extends JFrame implements ActionListener{
 		content.add(schedule);
 		content.add(pass);
 		
-		Container InfoForm = new Info(Client);
+		Container InfoForm = new AdminInfo(Client);
 		//Container changePassword = new ChangePasswordForm();
 		//container.add("Pass",changePassword);
         container.add("Info",InfoForm);

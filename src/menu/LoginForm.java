@@ -1,5 +1,8 @@
 package menu;
-import menu.ObjectClass.*;
+import menu.AdminInterface.AdminMenu;
+import menu.StudentInterface.StudentMenu;
+import menu.TeacherInterface.TeacherMenu;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
@@ -164,11 +167,11 @@ public class LoginForm extends JFrame {
 		JLabel lblNewLabel = new JLabel("LOGIN");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 14));
-		lblNewLabel.setBounds(150, 0, 80, 53);
+		lblNewLabel.setBounds(136, 0, 82, 53);
 		btnLogin.add(lblNewLabel);
 		
 		JLabel key = new JLabel(new ImageIcon(Key));
-		key.setBounds(231, 10, 30, 30);
+		key.setBounds(218, 10, 30, 30);
 		btnLogin.add(key);
 		lblX.addMouseListener(new MouseAdapter() {
 			@Override
@@ -230,16 +233,37 @@ public class LoginForm extends JFrame {
 				else {
 					ResultSet tab;
 					try {
-						tab = ServerConnection.ExecuteQuery("select * from student");
-						while(tab.next()) {
-							if(tab.getString("email").equals(username.getText()) || tab.getString("id").equals(password.getText())) {
-								lblMessage.setText("");
-								Menu menu = new Menu(tab);
-								dispose();
-								menu.setVisible(true);
+						tab = ServerConnection.ExecuteQuery("select * from credential where username='"+username.getText()+"' and password='"+password.getText()+"'");
+						if(tab.next()){
+							System.out.println(tab.getString("role"));
+							lblMessage.setText("");
+							if(tab.getString("role").equals("Student")) {
+								ResultSet Client = ServerConnection.ExecuteQuery("select * from student where id='"+tab.getString("username")+"'");
+								if(Client.next()) {
+									StudentMenu menu = new StudentMenu(Client);
+									dispose();
+									menu.setVisible(true);
+								}
+						
+							}else if(tab.getString("role").equals("Administrator")) {
+								ResultSet Client = ServerConnection.ExecuteQuery("select * from administrator where id='"+tab.getString("username")+"'");
+								if(Client.next()) {
+									AdminMenu menu = new AdminMenu(Client);
+									dispose();
+									menu.setVisible(true);
+								}
+							}else if(tab.getString("role").equals("Teacher")) {
+								ResultSet Client = ServerConnection.ExecuteQuery("select * from teacher where id='"+username.getText()+"'");
+								if(Client.next()) {
+									TeacherMenu menu = new TeacherMenu(Client);
+									dispose();
+									menu.setVisible(true);
+								}
 							}
 						}
-						lblMessage.setText("Wrong username or password!");
+						else {
+							lblMessage.setText("Wrong username or password!");
+						}						
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
