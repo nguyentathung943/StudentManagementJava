@@ -30,10 +30,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import menu.Server;
+
 import java.sql.*;
 
 public class TeacherMenu extends JFrame implements ActionListener{
 	JButton info;
+	JButton ShowCourses;
 	JButton pass;
 	JPanel contentPane;
 	JPanel container;
@@ -44,7 +47,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TeacherMenu frame = new TeacherMenu(null);
+					TeacherMenu frame = new TeacherMenu(null,null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +56,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		});
 	}
 	
-	public TeacherMenu(ResultSet Client) throws SQLException {
+	public TeacherMenu(ResultSet Client, Server ServerConnection) throws SQLException {
 		setUndecorated(true);
 		setResizable(false);
 		
@@ -121,7 +124,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		contentPane.add(panel);
 		contentPane.add(container);
 		
-		JLabel greeting = new JLabel("Ch√†o, "+ Client.getString("name"));
+		JLabel greeting = new JLabel("Ch‡o, "+ Client.getString("name"));
 		panel.add(greeting);
 		greeting.setFont(new Font("Source Sans Pro Semibold", Font.PLAIN, 20));
 		greeting.setForeground(SystemColor.textHighlightText);
@@ -143,17 +146,18 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		info.setBorder(null);
 		info.addActionListener(this);
 		
-		JButton register = new JButton("Register courses");
-		register.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		register.setIcon(new ImageIcon(TeacherMenu.class.getResource("/icon/tick.png")));
-		register.setHorizontalTextPosition(JLabel.CENTER);
-		register.setVerticalTextPosition(JLabel.BOTTOM);
-		register.setVerticalAlignment(JLabel.CENTER);
-		register.setHorizontalAlignment(JLabel.CENTER);
-		register.setBounds(600,100,150,100);
-		register.setBackground(new Color(191,205,219));
-		register.setFocusable(false);
-		register.setBorder(null);
+		ShowCourses = new JButton("Courses Management");
+		ShowCourses.setFont(new Font("Sitka Text", Font.PLAIN, 15));
+		ShowCourses.setIcon(new ImageIcon(TeacherMenu.class.getResource("/icon/tick.png")));
+		ShowCourses.setHorizontalTextPosition(JLabel.CENTER);
+		ShowCourses.setVerticalTextPosition(JLabel.BOTTOM);
+		ShowCourses.setVerticalAlignment(JLabel.CENTER);
+		ShowCourses.setHorizontalAlignment(JLabel.CENTER);
+		ShowCourses.setBounds(600,100,150,100);
+		ShowCourses.setBackground(new Color(191,205,219));
+		ShowCourses.setFocusable(false);
+		ShowCourses.setBorder(null);
+		ShowCourses.addActionListener(this);
 		
 		JButton schedule = new JButton("Show schedule");
 		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
@@ -196,14 +200,14 @@ public class TeacherMenu extends JFrame implements ActionListener{
 			
 		});
 		content.add(info);
-		content.add(register);
+		content.add(ShowCourses);
 		content.add(schedule);
 		content.add(pass);
 		
-		Container InfoForm = new TeacherInfo(Client);
-		//Container changePassword = new ChangePasswordForm();
-		//container.add("Pass",changePassword);
+		Container InfoForm = new TeacherInfo(Client,ServerConnection);
+		Container CoursesForm = new ShowCourses(Client,ServerConnection);
         container.add("Info",InfoForm);
+        container.add("Courses",CoursesForm);
 	}
 
 	@Override
@@ -212,6 +216,11 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		if (e.getSource() == info) {
 			CardLayout cl = (CardLayout)(container.getLayout());
 			cl.show(container, "Info");
+			lblBack.setVisible(true);
+		}
+		else if(e.getSource() == ShowCourses) {
+			CardLayout cl = (CardLayout)(container.getLayout());
+			cl.show(container, "Courses");
 			lblBack.setVisible(true);
 		}
 	}

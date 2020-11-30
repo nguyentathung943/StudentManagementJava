@@ -82,7 +82,7 @@ class StudentInfo extends Container {
         female.setSelected(false); 
         female.setSize(80, 20); 
         female.setLocation(475, 200); 
-        c.add(female); 
+        c.add(female);
   
         ButtonGroup gengp = new ButtonGroup(); 
         gengp.add(male); 
@@ -100,21 +100,21 @@ class StudentInfo extends Container {
         date.setFont(new Font("Arial", Font.PLAIN, 15));
         date.setSelectedItem(DOB[2]);
         date.setSize(50, 20); 
-        date.setLocation(400, 212);
+        date.setLocation(400, 250);
         c.add(date);
   
         JComboBox month = new JComboBox(months);
         month.setFont(new Font("Arial", Font.PLAIN, 15));
         month.setSelectedItem(Integer.parseInt(DOB[1])-1);
         month.setSize(60, 20); 
-        month.setLocation(449, 212); 
+        month.setLocation(447, 250); 
         c.add(month); 
   
         JComboBox year = new JComboBox(years); 
         year.setFont(new Font("Arial", Font.PLAIN, 15)); 
         year.setSelectedItem(DOB[0]);
         year.setSize(60, 20); 
-        year.setLocation(507, 212);
+        year.setLocation(502, 250);
         c.add(year); 
   
         JLabel email = new JLabel("Email"); 

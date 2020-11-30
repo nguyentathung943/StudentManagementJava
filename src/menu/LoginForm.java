@@ -29,6 +29,8 @@ import javax.swing.border.LineBorder;
 import java.awt.image.BufferedImage;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 public class LoginForm extends JFrame {
 
 	private JPanel contentPane;
@@ -235,7 +237,7 @@ public class LoginForm extends JFrame {
 					try {
 						tab = ServerConnection.ExecuteQuery("select * from credential where username='"+username.getText()+"' and password='"+password.getText()+"'");
 						if(tab.next()){
-							System.out.println(tab.getString("role"));
+	
 							lblMessage.setText("");
 							if(tab.getString("role").equals("Student")) {
 								ResultSet Client = ServerConnection.ExecuteQuery("select * from student where id='"+tab.getString("username")+"'");
@@ -255,7 +257,7 @@ public class LoginForm extends JFrame {
 							}else if(tab.getString("role").equals("Teacher")) {
 								ResultSet Client = ServerConnection.ExecuteQuery("select * from teacher where id='"+username.getText()+"'");
 								if(Client.next()) {
-									TeacherMenu menu = new TeacherMenu(Client);
+									TeacherMenu menu = new TeacherMenu(Client,ServerConnection);
 									dispose();
 									menu.setVisible(true);
 								}
