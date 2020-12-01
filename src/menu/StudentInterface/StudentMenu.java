@@ -5,29 +5,21 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import java.sql.*;
@@ -62,7 +54,6 @@ public class StudentMenu extends JFrame implements ActionListener{
 		getContentPane().setLayout(null);
 		getContentPane().setBackground(SystemColor.inactiveCaptionBorder);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
 		lblBack.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/back.png")));
@@ -121,7 +112,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 		contentPane.add(panel);
 		contentPane.add(container);
 		
-		JLabel greeting = new JLabel("Ch√†o, "+ Client.getString("name"));
+		JLabel greeting = new JLabel("Ch‡o, "+ Client.getString("name"));
 		panel.add(greeting);
 		greeting.setFont(new Font("Source Sans Pro Semibold", Font.PLAIN, 20));
 		greeting.setForeground(SystemColor.textHighlightText);
@@ -154,6 +145,13 @@ public class StudentMenu extends JFrame implements ActionListener{
 		register.setBackground(new Color(191,205,219));
 		register.setFocusable(false);
 		register.setBorder(null);
+		register.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.show(container, "Register");
+				lblBack.setVisible(true);
+			}
+		});
 		
 		JButton schedule = new JButton("Show schedule");
 		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
@@ -201,9 +199,11 @@ public class StudentMenu extends JFrame implements ActionListener{
 		content.add(pass);
 		
 		Container InfoForm = new StudentInfo(Client);
+		Container RegisterUI = new StudentRegisterCourse();
 		//Container changePassword = new ChangePasswordForm();
 		//container.add("Pass",changePassword);
         container.add("Info",InfoForm);
+        container.add("Register",RegisterUI);
 	}
 
 	@Override
