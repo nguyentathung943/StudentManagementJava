@@ -41,6 +41,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 	JButton schedule;
 	JPanel contentPane;
 	JPanel container;
+	Container mainUI;
 	private final JLabel lblX = new JLabel("X");
 	private final JButton lblBack = new JButton("");
 	  
@@ -59,15 +60,19 @@ public class TeacherMenu extends JFrame implements ActionListener{
 	
 	public TeacherMenu(ResultSet Client, Server ServerConnection) throws SQLException {
 		setUndecorated(true);
-		setResizable(false);		
-		contentPane = new JPanel(new CardLayout());
+		setResizable(false);
+		contentPane = new JPanel();
+		contentPane.setLayout(new CardLayout());
 		setContentPane(contentPane);
-		getContentPane().setLayout(null);
 		getContentPane().setBackground(SystemColor.inactiveCaptionBorder);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
+		mainUI = new Container();
+		mainUI.setLayout(null);
+		contentPane.add("MainUI", mainUI);
+		
 		lblBack.setIcon(new ImageIcon(TeacherMenu.class.getResource("/icon/back.png")));
 		lblBack.setOpaque(false);
 		lblBack.setContentAreaFilled(false);
@@ -102,8 +107,8 @@ public class TeacherMenu extends JFrame implements ActionListener{
 				lblX.setForeground(Color.white);
 			}
 		});
-		contentPane.add(lblX);
-		contentPane.add(lblBack);
+		mainUI.add(lblX);
+		mainUI.add(lblBack);
 		
 		
 		JPanel panel = new JPanel();
@@ -121,8 +126,8 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		content.setBounds(400,200,400,400);
 		
 		container.add("MainMenu", content);
-		contentPane.add(panel);
-		contentPane.add(container);
+		mainUI.add(panel);
+		mainUI.add(container);
 		
 		JLabel greeting = new JLabel("Chào, "+ Client.getString("name"));
 		panel.add(greeting);
@@ -210,7 +215,6 @@ public class TeacherMenu extends JFrame implements ActionListener{
         container.add("Courses",CoursesForm);
         container.add("Schedule",Schedule);
         
-        contentPane.add("ClassForm",ClassManage); 
 	}
 
 	@Override
