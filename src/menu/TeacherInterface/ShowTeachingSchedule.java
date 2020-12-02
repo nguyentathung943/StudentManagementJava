@@ -238,8 +238,9 @@ class ShowTeachingSchedule extends Container {
         			Container classManage;
 					try {
 						classManage = new ClassManagement(ServerConnection);
-						///ContentPane.show("ClassForm");
-						//cl.show(c, "ClassForm");
+						ContentPane.add("ClassForm", classManage);
+						CardLayout cl = (CardLayout)(ContentPane.getLayout());
+						cl.show(ContentPane, "ClassForm");
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
