@@ -71,6 +71,39 @@ public class Server{
 		      // execute the preparedstatement
 		      preparedStmt.execute();
 	}
+	public void UpdateStudentCourse(String StudentID, String CourseID,Float PracP, Float TheoP, Float overall, String sta  ) throws SQLException {
+		String query = " update course_attend set practice_point=?,theory_point=?,overall=?,pass_status=? where courseID=? and StudentID=? " ;
+		      PreparedStatement preparedStmt = Connect.prepareStatement(query);
+		      if(PracP==null) {
+		    	  preparedStmt.setString(1,null);
+		      }
+		      else {
+		    	  preparedStmt.setFloat(1,PracP);
+		      }
+		      if(TheoP==null) {
+		    	  preparedStmt.setString(2,null);
+		      }
+		      else {
+		    	  preparedStmt.setFloat(2,TheoP);
+		      }
+		      if(overall == null) {
+		    	  preparedStmt.setString (3, null);
+		      }
+		      else {
+		    	  preparedStmt.setFloat (3, overall);
+		      }
+		      preparedStmt.setString (4,sta);
+		      preparedStmt.setString (5, CourseID);
+		      preparedStmt.setString (6, StudentID);
+		      preparedStmt.execute();
+	}
+	public void DeleteStudentCourse(String StudentID, String CourseID) throws SQLException{
+		String query = "delete from course_attend where courseID=? and StudentID=?";
+	      PreparedStatement preparedStmt = Connect.prepareStatement(query);
+	      preparedStmt.setString (1, CourseID);
+	      preparedStmt.setString (2, StudentID);
+	      preparedStmt.execute();
+	}
 	public int ExcecuteQueryUpdate(String query) throws SQLException{ // modify data
 		int val = statement.executeUpdate(query);
 		return val;

@@ -25,6 +25,8 @@ import javax.swing.table.DefaultTableModel;
 import menu.Server;
 
 import java.sql.*;
+import java.text.DecimalFormat;
+
 import javax.swing.JTable;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
@@ -60,6 +62,19 @@ class ClassManagement extends Container {
 			return stu.getString("name");
 		}
 		return "";
+	}
+	public float get2decimal(float a) {
+		DecimalFormat df = new DecimalFormat("0.00");
+		return Float.parseFloat(df.format(a));
+	}
+	public float getOverAll(Float a,Float b) {
+		return get2decimal((float) ((0.5*a) + (0.5)*b));
+	}
+	public String getKind(float point) {
+		if(point>=5.0) {
+			return "Pass";
+		}
+		return "Fail";
 	}
 	public ClassManagement(String ClassID,String ClientID,String ClassName,Server ServerConnection,JPanel back) throws SQLException {		
 		Container c = this;
@@ -98,37 +113,47 @@ class ClassManagement extends Container {
         add(lblTime);
         
         JLabel TextID = new JLabel("");
-        TextID.setFont(new Font("Arial", Font.PLAIN, 15));
-        TextID.setBounds(118, 133, 178, 47);
+        TextID.setFont(new Font("Arial", Font.PLAIN, 18));
+        TextID.setBounds(118, 133, 228, 47);
         add(TextID);
         
         JLabel TextName = new JLabel("");
-        TextName.setFont(new Font("Arial", Font.PLAIN, 15));
-        TextName.setBounds(118, 186, 178, 47);
+        TextName.setFont(new Font("Arial", Font.PLAIN, 18));
+        TextName.setBounds(118, 186, 228, 47);
         add(TextName);
         ScrollPane = new JScrollPane();
-        ScrollPane.setSize(880, 668);
-        ScrollPane.setLocation(320, 132);
+        ScrollPane.setSize(845, 668);
+        ScrollPane.setLocation(355, 132);
         add(ScrollPane);
         table = new JTable();
         table.setGridColor(new Color(255, 255, 255));
         
         JLabel TextOverall = new JLabel("");
-        TextOverall.setBounds(118, 357, 178, 46);
+        TextOverall.setFont(new Font("Arial", Font.PLAIN, 18));
+        TextOverall.setBounds(118, 357, 98, 46);
         add(TextOverall);
         
         JLabel TextPass = new JLabel("");
-        TextPass.setBounds(118, 413, 178, 46);
+        TextPass.setFont(new Font("Arial", Font.PLAIN, 20));
+        TextPass.setBounds(118, 413, 228, 46);
         add(TextPass);
         
+        JLabel lblNotifi = new JLabel("");
+        lblNotifi.setForeground(Color.RED);
+        lblNotifi.setFont(new Font("Arial", Font.BOLD, 15));
+        lblNotifi.setBounds(10, 450, 235, 30);
+        add(lblNotifi);
+        
         TextPractice = new JTextField();
-        TextPractice.setBounds(118, 243, 178, 47);
+        TextPractice.setFont(new Font("Arial", Font.PLAIN, 18));
+        TextPractice.setBounds(118, 243, 98, 47);
         add(TextPractice);
         TextPractice.setColumns(10);
         
         TextTheory = new JTextField();
+        TextTheory.setFont(new Font("Arial", Font.PLAIN, 18));
         TextTheory.setColumns(10);
-        TextTheory.setBounds(119, 300, 178, 47);
+        TextTheory.setBounds(118, 300, 98, 47);
         add(TextTheory);
 
         table.setBackground(Color.white);
@@ -188,7 +213,15 @@ class ClassManagement extends Container {
         		TextPractice.setText(table.getValueAt(index, 2).toString());
         		TextTheory.setText(table.getValueAt(index, 3).toString());
         		TextOverall.setText(table.getValueAt(index, 4).toString());
-        		TextPass.setText(table.getValueAt(index, 5).toString());
+        		String status = table.getValueAt(index, 5).toString();
+        		if(status.equals("Fail")) {
+        			TextPass.setForeground(Color.red);
+        		}
+        		else if(status.equals("Pass")) {
+        			TextPass.setForeground(Color.green);
+        		}
+       
+        		TextPass.setText(status);       		
         	}
         });
         JLabel lblRefresh = new JLabel("");
@@ -232,12 +265,18 @@ class ClassManagement extends Container {
         
         JLabel lblNewLabel = new JLabel("Search student by ID");
         lblNewLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        lblNewLabel.setBounds(320, 87, 198, 44);
+        lblNewLabel.setBounds(355, 89, 198, 44);
         add(lblNewLabel);
+        
+        JLabel lblNotifiSearch = new JLabel("");
+        lblNotifiSearch.setFont(new Font("Arial", Font.BOLD, 15));
+        lblNotifiSearch.setForeground(Color.red);
+        lblNotifiSearch.setBounds(556, 54, 235, 30);
+        add(lblNotifiSearch);
         
         textIDSearch = new JTextField();
         textIDSearch.setFont(new Font("Arial", Font.PLAIN, 20));
-        textIDSearch.setBounds(521, 86, 235, 47);
+        textIDSearch.setBounds(556, 84, 235, 47);
         add(textIDSearch);
         textIDSearch.setColumns(10);
         JLabel SearchIcon = new JLabel("");
@@ -246,21 +285,37 @@ class ClassManagement extends Container {
         	public void mouseClicked(MouseEvent e) {
 				try {
 					String id = textIDSearch.getText();
-					ResultSet sub = ServerConnection.ExecuteQuery("select * from course where courseID='"+id+"' and headTeacher='"+ClientID+"'");
+					ResultSet sub = ServerConnection.ExecuteQuery("select * from course_attend where StudentID='"+id+"' and courseID='"+ClassID+"'");
 					if(id.equals("")) {
-						ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-						model.setRowCount(0);
-						while(data.next()) {							
-					        model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
-					    }
+						lblNotifiSearch.setText("Please fill in this field with ID");
 					}					
 					else if(!sub.next()) {
+						lblNotifiSearch.setText("");
 						model.setRowCount(0);
 						model.addRow(new Object[] {"Not found!","","","",""});
 					}
 					else {
+						lblNotifiSearch.setText("");
 						model.setRowCount(0);
-					    model.addRow(new Object[] {sub.getString("courseID"),sub.getString("name"),sub.getString("startDate"),sub.getString("endDate"),sub.getString("time")});
+						String stuid = sub.getString("StudentID");
+			        	String stuName = getName(stuid);
+			        	String pracP = sub.getString("practice_point");
+			        	String TheoP = sub.getString("theory_point");
+			        	String ovl = sub.getString("overall");
+			        	String status = sub.getString("pass_status");
+			        	if(pracP==null) {
+			        		pracP= "";
+			        	}
+			        	if(TheoP==null) {
+			        		TheoP= "";
+			        	}
+			        	if(ovl==null) {
+			        		 ovl= "";
+			        	}
+			        	if(status==null) {
+			        		status= "";
+			        	}
+			        	model.addRow(new Object[] {stuid,stuName,pracP,TheoP,ovl,status});
 					}
 				
 				} catch (SQLException e1) {
@@ -271,65 +326,182 @@ class ClassManagement extends Container {
         });
         SearchIcon.setHorizontalAlignment(SwingConstants.CENTER);
         SearchIcon.setIcon(new ImageIcon(ClassManagement.class.getResource("/icon/search.png")));
-        SearchIcon.setBounds(750, 87, 56, 47);
+        SearchIcon.setBounds(793, 84, 56, 47);
         add(SearchIcon);        
-        JLabel lblNotifi = new JLabel("");
-        lblNotifi.setFont(new Font("Arial", Font.BOLD, 15));
-        lblNotifi.setForeground(Color.red);
-        lblNotifi.setBounds(10, 471, 301, 30);
-        add(lblNotifi);
-        JButton btnAdd = new JButton("Add");
-        btnAdd.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		int index = table.getSelectedRow();
-        		if(index==-1) {
-        			lblNotifi.setText("No class was chosen!");
-        		}
-        		else {
-        			String ClassID = TextID.getText();
-        		}
-        	}
-        });
-        btnAdd.setFont(new Font("Arial", Font.BOLD, 15));
-        btnAdd.setBounds(10, 528, 165, 47);
-        add(btnAdd);
+
         
         JLabel lblClassName = new JLabel("");
         lblClassName.setFont(new Font("Arial", Font.BOLD, 30));
-        lblClassName.setBounds(657, 10, 533, 30);
+        lblClassName.setBounds(657, 10, 533, 46);
         lblClassName.setText("Class: "+ ClassID+" - "+ClassName);
         add(lblClassName);
      
-        JLabel lblPass = new JLabel("Pass");
+        JLabel lblPass = new JLabel("Status");
         lblPass.setFont(new Font("Arial", Font.BOLD, 15));
         lblPass.setBounds(10, 413, 99, 47);
         add(lblPass);
         
         JButton btnUpdate = new JButton("Update");
+        btnUpdate.addMouseListener(new MouseAdapter() {
+
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		int index = table.getSelectedRow();
+        		if(index==-1) {
+        			lblNotifi.setText("No student was chosen!");
+        		}
+        		else {
+        			String StuID = TextID.getText();
+    	        	String PracPr = TextPractice.getText();
+    	        	String TheoPr = TextTheory.getText();
+    	        	String OVL = TextOverall.getText();
+    	        	String STATUS = TextPass.getText();
+    	        	if(!PracPr.equals("")&& !TheoPr.equals("")){
+    	        		Float a = get2decimal(Float.parseFloat(PracPr));
+    	        		Float b = get2decimal(Float.parseFloat(TheoPr));
+    	        		Float ov = getOverAll(a,b);
+    	        		String kind = getKind(ov);
+    	        		try {
+    	        			model.setRowCount(0);
+    						ServerConnection.UpdateStudentCourse(StuID, ClassID, a,b, ov,kind);
+    						ResultSet data1 = ServerConnection.ExecuteQuery("select * from course_attend where courseID='"+ClassID+"'");
+    						 while(data1.next()) {
+    					        	String stuid = data1.getString("StudentID");
+    					        	String stuName = getName(stuid);
+    					        	String pracP = data1.getString("practice_point");
+    					        	String TheoP = data1.getString("theory_point");
+    					        	String ovl = data1.getString("overall");
+    					        	String status = data1.getString("pass_status");
+    					        	if(pracP==null) {
+    					        		pracP= "";
+    					        	}
+    					        	if(TheoP==null) {
+    					        		TheoP= "";
+    					        	}
+    					        	if(ovl==null) {
+    					        		 ovl= "";
+    					        	}
+    					        	if(status==null) {
+    					        		status= "";
+    					        	}
+    					        	model.addRow(new Object[] {stuid,stuName,pracP,TheoP,ovl,status});
+    						 }	
+    					} catch (SQLException e1) {
+    						// TODO Auto-generated catch block
+    						e1.printStackTrace();
+    					}
+    	        	}
+    	        	else {
+    	        		Float Practice = null;
+    	        		Float Theory = null;	   	        		
+    	        		if(!PracPr.equals("")) {
+    	        			Practice=get2decimal(Float.parseFloat(PracPr));
+    	        		}	       	       
+    	        		if(!TheoPr.equals("")) {
+    	        			Theory= get2decimal(Float.parseFloat(TheoPr));
+    	        		}
+    	        		try {
+    	        			model.setRowCount(0);
+    						ServerConnection.UpdateStudentCourse(StuID, ClassID, Practice,Theory,null,null);
+    						ResultSet data1 = ServerConnection.ExecuteQuery("select * from course_attend where courseID='"+ClassID+"'");
+    						 while(data1.next()) {
+    					        	String stuid = data1.getString("StudentID");
+    					        	String stuName = getName(stuid);
+    					        	String pracP = data1.getString("practice_point");
+    					        	String TheoP = data1.getString("theory_point");
+    					        	String ovl = data1.getString("overall");
+    					        	String status = data1.getString("pass_status");
+    					        	if(pracP==null) {
+    					        		pracP= "";
+    					        	}
+    					        	if(TheoP==null) {
+    					        		TheoP= "";
+    					        	}
+    					        	if(ovl==null) {
+    					        		 ovl= "";
+    					        	}
+    					        	if(status==null) {
+    					        		status= "";
+    					        	}
+    					        	model.addRow(new Object[] {stuid,stuName,pracP,TheoP,ovl,status});
+    						 }		   
+    					} catch (SQLException e1) {
+    						// TODO Auto-generated catch block
+    						e1.printStackTrace();
+    					}
+    	        	}	        		        		        		    
+            	}
+        		}
+	        	
+        });
         btnUpdate.setFont(new Font("Arial", Font.BOLD, 15));
-        btnUpdate.setBounds(10, 598, 165, 47);
+        btnUpdate.setBounds(10, 491, 165, 47);
         add(btnUpdate);
         
         JButton btnDelete = new JButton("Delete");
+        btnDelete.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		int index = table.getSelectedRow();
+           		if(index==-1) {
+        			lblNotifi.setText("No student was chosen!");
+        		}
+           		else {
+           			String StuID = TextID.getText();
+    	        	try {
+    					ServerConnection.DeleteStudentCourse(StuID, ClassID);
+    					model.setRowCount(0);
+    					ResultSet data1 = ServerConnection.ExecuteQuery("select * from course_attend where courseID='"+ClassID+"'");
+    					 while(data1.next()) {
+    				        	String stuid = data1.getString("StudentID");
+    				        	String stuName = getName(stuid);
+    				        	String pracP = data1.getString("practice_point");
+    				        	String TheoP = data1.getString("theory_point");
+    				        	String ovl = data1.getString("overall");
+    				        	String status = data1.getString("pass_status");
+    				        	if(pracP==null) {
+    				        		pracP= "";
+    				        	}
+    				        	if(TheoP==null) {
+    				        		TheoP= "";
+    				        	}
+    				        	if(ovl==null) {
+    				        		 ovl= "";
+    				        	}
+    				        	if(status==null) {
+    				        		status= "";
+    				        	}
+    				        	model.addRow(new Object[] {stuid,stuName,pracP,TheoP,ovl,status});
+    				}
+    					 } catch (SQLException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				}
+           		}	        	
+        	}
+        });
         btnDelete.setFont(new Font("Arial", Font.BOLD, 15));
-        btnDelete.setBounds(10, 668, 165, 47);
+        btnDelete.setBounds(10, 556, 165, 47);
         add(btnDelete);
         
         JButton btnClear = new JButton("Clear");
         btnClear.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
+        		lblNotifi.setText("");
+        		lblNotifiSearch.setText("");
+        		table.clearSelection();
         		TextID.setText("");
         		TextName.setText("");
         		TextPractice.setText("");
-        		TextPractice.setText("");
-        		TextPractice.setText("");
+        		TextTheory.setText("");
+        		TextOverall.setText("");
         		TextPass.setText("");
+        		textIDSearch.setText("");      		
         	}
         });
         btnClear.setFont(new Font("Arial", Font.BOLD, 15));
-        btnClear.setBounds(10, 738, 165, 47);
+        btnClear.setBounds(10, 623, 165, 47);
         add(btnClear);
         
         
@@ -344,6 +516,8 @@ class ClassManagement extends Container {
         lblBack.setIcon(new ImageIcon(ClassManagement.class.getResource("/icon/back.png")));
         lblBack.setBounds(10, 10, 74, 46);
         add(lblBack);
+        
+
           
 		addKeyListener(new KeyAdapter() {
 			@Override

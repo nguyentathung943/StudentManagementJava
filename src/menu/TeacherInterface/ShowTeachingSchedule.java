@@ -100,6 +100,12 @@ class ShowTeachingSchedule extends Container {
         textEDate.setBounds(119, 299, 178, 47);
         add(textEDate);
         
+        JLabel lblNotifiSearch = new JLabel("");
+        lblNotifiSearch.setForeground(Color.RED);
+        lblNotifiSearch.setFont(new Font("Arial", Font.BOLD, 15));
+        lblNotifiSearch.setBounds(517, 53, 226, 32);
+        add(lblNotifiSearch);
+        
         JLabel textTime = new JLabel("");
         textTime.setFont(new Font("Arial", Font.PLAIN, 15));
         textTime.setBounds(118, 356, 178, 47);
@@ -140,6 +146,15 @@ class ShowTeachingSchedule extends Container {
 			@Override
 			public void mouseClicked(MouseEvent e) {
         		table.clearSelection();
+        		textID.setText("");
+        		textName.setText("");
+        		textSDate.setText("");
+        		textEDate.setText("");
+        		textTime.setText("");
+        		table.clearSelection();
+        		textIDSearch.setText("");     
+        		lblNotifiSearch.setText("");
+        		
 			}
 		});
         table.addMouseListener(new MouseAdapter() {
@@ -192,17 +207,15 @@ class ShowTeachingSchedule extends Container {
 					String id = textIDSearch.getText();
 					ResultSet sub = ServerConnection.ExecuteQuery("select * from course where courseID='"+id+"' and headTeacher='"+ClientID+"'");
 					if(id.equals("")) {
-						ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-						model.setRowCount(0);
-						while(data.next()) {							
-					        model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
-					    }
+						lblNotifiSearch.setText("Please fill out this field with course ID");
 					}					
 					else if(!sub.next()) {
+						lblNotifiSearch.setText("");
 						model.setRowCount(0);
 						model.addRow(new Object[] {"Not found!","","","",""});
 					}
 					else {
+						lblNotifiSearch.setText("");
 						model.setRowCount(0);
 					    model.addRow(new Object[] {sub.getString("courseID"),sub.getString("name"),sub.getString("startDate"),sub.getString("endDate"),sub.getString("time")});
 					}
@@ -213,6 +226,7 @@ class ShowTeachingSchedule extends Container {
 				}
         	}
         });
+
         SearchIcon.setHorizontalAlignment(SwingConstants.CENTER);
         SearchIcon.setIcon(new ImageIcon(ShowTeachingSchedule.class.getResource("/icon/search.png")));
         SearchIcon.setBounds(712, 87, 56, 47);
@@ -234,6 +248,7 @@ class ShowTeachingSchedule extends Container {
         			lblNotifi.setText("No class was chosen!");
         		}
         		else { 
+        			lblNotifi.setText("");
         			String ClassID = textID.getText();
         			String ClassName = textName.getText();
         			Container classManage;
@@ -252,18 +267,9 @@ class ShowTeachingSchedule extends Container {
         ClassManagePage.setFont(new Font("Arial", Font.BOLD, 15));
         ClassManagePage.setBounds(10, 416, 198, 54);
         add(ClassManagePage);
+        
+
                 
-		addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-        		textID.setText("");
-        		textName.setText("");
-        		textSDate.setText("");
-        		textEDate.setText("");
-        		textTime.setText("");
-        		table.clearSelection();
-			}
-		});
+
 	}
-	
 }
