@@ -9,7 +9,7 @@ public class Server{
 	Connection Connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentmanagement","root","admin");
 	///Create statement
 	Statement statement = Connect.createStatement();
-	Server() throws SQLException{
+	public Server() throws SQLException{
 		
 	}
 	public ResultSet ExecuteQuery(String query) throws SQLException { // fetch data
