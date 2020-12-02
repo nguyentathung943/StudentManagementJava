@@ -51,7 +51,7 @@ class StudentRegisterCourse extends Container {
 		s.getVerticalScrollBar().setUI(new MyScrollBarUI());
 		CourseRegisterTable table = new CourseRegisterTable();
 		s.setViewportView(table);
-		s.setBounds(50, 100, 400, 350);
+		s.setBounds(50, 100, 600, 350);
 		c.add(s);
 		while(data.next()) {
 			table.addItem(data.getString("courseID"), data.getString("name"));
@@ -83,8 +83,9 @@ class CourseRegisterTable extends JTable{
 		setModel(model);
 		setRowHeight(35);
 		getColumn("").setCellRenderer(new ButtonRenderer());
-		getColumnModel().getColumn(0).setPreferredWidth(20);
+		getColumnModel().getColumn(0).setPreferredWidth(10);
 		getColumnModel().getColumn(2).setMaxWidth(35);
+		getColumnModel().getColumn(2).setMinWidth(35);
 		
 		
 	}
@@ -94,6 +95,7 @@ class CourseRegisterTable extends JTable{
 		model.addRow(new Object[] {data1,data2,btn});
 	}
 }
+
 class ButtonRenderer extends JButton implements TableCellRenderer {
 
 public ButtonRenderer() {
