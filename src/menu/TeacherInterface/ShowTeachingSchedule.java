@@ -235,29 +235,24 @@ class ShowTeachingSchedule extends Container {
         		}
         		else { 
         			String ClassID = textID.getText();
+        			String ClassName = textName.getText();
         			Container classManage;
 					try {
-						classManage = new ClassManagement(ServerConnection);
+						classManage = new ClassManagement(ClassID,id,ClassName,ServerConnection,ContentPane);
 						ContentPane.add("ClassForm", classManage);
-						CardLayout cl = (CardLayout)(ContentPane.getLayout());
+						CardLayout cl = (CardLayout)(ContentPane.getLayout());					
 						cl.show(ContentPane, "ClassForm");
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}
-					
-  	             			
+					}					             			
         		}
         	}
         });
         ClassManagePage.setFont(new Font("Arial", Font.BOLD, 15));
         ClassManagePage.setBounds(10, 416, 198, 54);
         add(ClassManagePage);
-        
-        
-        
-        
-
+                
 		addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {

@@ -66,7 +66,6 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		setContentPane(contentPane);
 		getContentPane().setBackground(SystemColor.inactiveCaptionBorder);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
 		mainUI = new Container();
@@ -210,13 +209,11 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		Container InfoForm = new TeacherInfo(Client,ServerConnection);
 		Container CoursesForm = new ShowCourses(ClientID,ServerConnection);
 		Container Schedule = new ShowTeachingSchedule(ClientID,contentPane,ServerConnection);
-		Container ClassManage = new ClassManagement(ServerConnection);
         container.add("Info",InfoForm);
         container.add("Courses",CoursesForm);
         container.add("Schedule",Schedule);
         
 	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

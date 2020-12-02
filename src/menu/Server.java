@@ -6,9 +6,9 @@ import java.text.SimpleDateFormat;
 
 public class Server{
 	///Get connection ("link url","username","password")
-	Connection Connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentmanagement","root","admin");
+	public Connection Connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentmanagement","root","admin");
 	///Create statement
-	Statement statement = Connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 0);
+	public Statement statement = Connect.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 0);
 	public Server() throws SQLException{
 		
 	}

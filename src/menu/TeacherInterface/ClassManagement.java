@@ -1,6 +1,7 @@
 package menu.TeacherInterface;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -13,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -48,10 +50,22 @@ class ClassManagement extends Container {
 	private JTextField TextPractice;
 	private JTextField TextTheory;
 	
-	private String ClassID;
-	private String ClientID;
-	public ClassManagement(Server ServerConnection) throws SQLException {		
-		Container c = this;			
+	public String ClassID;
+	public String ClientID;
+	public String ClassName;
+	Server temp = new Server();
+	public String getName(String id) throws SQLException {
+		ResultSet stu = temp.statement.executeQuery("select * from student where id='"+id+"'");
+		while(stu.next()) {
+			return stu.getString("name");
+		}
+		return "";
+	}
+	public ClassManagement(String ClassID,String ClientID,String ClassName,Server ServerConnection,JPanel back) throws SQLException {		
+		Container c = this;
+		this.ClassID = ClassID;
+		this.ClientID = ClientID;
+		this.ClassName = ClassName;
 		setSize(1200,800);
 		JLabel title = new JLabel("Class Management"); 
         title.setFont(new Font("Arial", Font.BOLD, 30)); 
@@ -134,16 +148,27 @@ class ClassManagement extends Container {
         
         Object[] column = {"Student ID","Student name","Practice point","Theory point","Overall score","Pass"};
         model.setColumnIdentifiers(column);
-//        System.out.println(ClassID);
-        ResultSet data1 = ServerConnection.ExecuteQuery("select * from course_attend where courseID='"+ClassID+"'");
-//        if(data1.next()) {
-//        	System.out.println(data1.getString("courseID"));
-//        }
+        ResultSet data1 = ServerConnection.ExecuteQuery("select * from course_attend where courseID='"+this.ClassID+"'");
         while(data1.next()) {
-//        	ResultSet stu = ServerConnection.ExecuteQuery("select name from student where id='"+data1.getString("courseID")+"'");
-//        	if(stu.next()) {
-        		model.addRow(new Object[] {data1.getString("courseID"),"",data1.getString("practice_point"),data1.getString("theory_point"),data1.getString("overall"),data1.getString("pass_status")});
-        	//}    	
+        	String stuid = data1.getString("StudentID");
+        	String stuName = getName(stuid);
+        	String pracP = data1.getString("practice_point");
+        	String TheoP = data1.getString("theory_point");
+        	String ovl = data1.getString("overall");
+        	String status = data1.getString("pass_status");
+        	if(pracP==null) {
+        		pracP= "";
+        	}
+        	if(TheoP==null) {
+        		TheoP= "";
+        	}
+        	if(ovl==null) {
+        		 ovl= "";
+        	}
+        	if(status==null) {
+        		status= "";
+        	}
+        	model.addRow(new Object[] {stuid,stuName,pracP,TheoP,ovl,status});
         }
         ScrollPane.setViewportView(table);
         table.setModel(model);
@@ -171,12 +196,30 @@ class ClassManagement extends Container {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		model.setRowCount(0);
-				ResultSet data;
+				ResultSet data1;
 				try {
-					data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-					  while(data.next()) {
-				        	model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
-				      }
+					data1 = ServerConnection.ExecuteQuery("select * from course_attend where courseID='"+ClassID+"'");
+					 while(data1.next()) {
+				        	String stuid = data1.getString("StudentID");
+				        	String stuName = getName(stuid);
+				        	String pracP = data1.getString("practice_point");
+				        	String TheoP = data1.getString("theory_point");
+				        	String ovl = data1.getString("overall");
+				        	String status = data1.getString("pass_status");
+				        	if(pracP==null) {
+				        		pracP= "";
+				        	}
+				        	if(TheoP==null) {
+				        		TheoP= "";
+				        	}
+				        	if(ovl==null) {
+				        		 ovl= "";
+				        	}
+				        	if(status==null) {
+				        		status= "";
+				        	}
+				        	model.addRow(new Object[] {stuid,stuName,pracP,TheoP,ovl,status});
+					 }		        	
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -194,7 +237,7 @@ class ClassManagement extends Container {
         
         textIDSearch = new JTextField();
         textIDSearch.setFont(new Font("Arial", Font.PLAIN, 20));
-        textIDSearch.setBounds(523, 88, 235, 47);
+        textIDSearch.setBounds(521, 86, 235, 47);
         add(textIDSearch);
         textIDSearch.setColumns(10);
         JLabel SearchIcon = new JLabel("");
@@ -255,11 +298,9 @@ class ClassManagement extends Container {
         JLabel lblClassName = new JLabel("");
         lblClassName.setFont(new Font("Arial", Font.BOLD, 30));
         lblClassName.setBounds(657, 10, 533, 30);
+        lblClassName.setText("Class: "+ ClassID+" - "+ClassName);
         add(lblClassName);
-//        ResultSet cou = ServerConnection.ExecuteQuery("select name from course where courseID='"+ClassID+"'");
-//        
-//        lblClassName.setText("Class: "+ ClassID+" - "+cou.getString("name"));
-        
+     
         JLabel lblPass = new JLabel("Pass");
         lblPass.setFont(new Font("Arial", Font.BOLD, 15));
         lblPass.setBounds(10, 413, 99, 47);
@@ -276,11 +317,30 @@ class ClassManagement extends Container {
         add(btnDelete);
         
         JButton btnClear = new JButton("Clear");
+        btnClear.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		TextID.setText("");
+        		TextName.setText("");
+        		TextPractice.setText("");
+        		TextPractice.setText("");
+        		TextPractice.setText("");
+        		TextPass.setText("");
+        	}
+        });
         btnClear.setFont(new Font("Arial", Font.BOLD, 15));
         btnClear.setBounds(10, 738, 165, 47);
         add(btnClear);
         
+        
         JLabel lblBack = new JLabel("");
+        lblBack.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+				CardLayout cl1 = (CardLayout)(back.getLayout());
+				cl1.show(back, "MainUI");
+        	}
+        });
         lblBack.setIcon(new ImageIcon(ClassManagement.class.getResource("/icon/back.png")));
         lblBack.setBounds(10, 10, 74, 46);
         add(lblBack);
