@@ -110,23 +110,23 @@ class TeacherInfo extends Container {
         emailText = new JTextField(Client.getString("email"));
         emailText.setFont(new Font("Arial", Font.PLAIN, 15));
         emailText.setBounds(120, 220, 190, 30);
-        add(emailText);
+        c.add(emailText);
         
         JLabel IDLabel = new JLabel("ID");
         IDLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         IDLabel.setBounds(10, 69, 100, 30);
-        add(IDLabel);
+        c.add(IDLabel);
         
         JLabel idText = new JLabel((String) Client.getString("id"));
         idText.setFont(new Font("Arial", Font.PLAIN, 15));
         idText.setBounds(120, 71, 190, 30);
-        add(idText);
+        c.add(idText);
         
         textYear = new JTextField();
         textYear.setFont(new Font("Arial", Font.PLAIN, 15));
         textYear.setBounds(224, 185, 60, 20);
         textYear.setText(DOB[0]);
-        add(textYear);
+        c.add(textYear);
         textYear.setColumns(10);
 	}
 }

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class Server{
 	///Get connection ("link url","username","password")
-	Connection Connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentmanagement","admin","admin");
+	Connection Connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/studentmanagement","root","admin");
 	///Create statement
 	Statement statement = Connect.createStatement();
 	Server() throws SQLException{
@@ -16,14 +16,17 @@ public class Server{
 		ResultSet Result = statement.executeQuery(query);
 		return Result;
 	}
-	public void InsertCourse(String id, String name, String head)throws SQLException {
-		String query = " insert into course (courseID, name, headTeacher)"
-		        + " values (?, ?, ?)";
+	public void InsertCourse(String id, String name, String head,Date SDate, Date EDate,String time)throws SQLException {
+		String query = " insert into course (courseID, name, headTeacher,startDate,endDate,time)"
+		        + " values (?, ?, ?,?,?,?)";
 		      // create the mysql insert preparedstatement
 		      PreparedStatement preparedStmt = Connect.prepareStatement(query);
 		      preparedStmt.setString (1, id);
 		      preparedStmt.setString (2, name);
-		      preparedStmt.setString (3, head);
+		      preparedStmt.setString (3, head); 
+		      preparedStmt.setDate (4, SDate);
+		      preparedStmt.setDate (5, EDate);
+		      preparedStmt.setString (6, time);
 		      // execute the preparedstatement
 		      preparedStmt.execute();
 	}
@@ -40,13 +43,15 @@ public class Server{
 	      // execute the preparedstatement
 	      preparedStmt.execute();
 	}
-	public void UpdateCourse(String o_id,String id, String name) throws SQLException {
-		String query = "update course set courseID=?,name=? where courseID=?";
+	public void UpdateCourse(String o_id,String id, String name, Date NStart, Date NEnd, String Ntime) throws SQLException {
+		String query = "update course set courseID=?,name=?,startDate=?, endDate=?,time=? where courseID=?";
 	      PreparedStatement preparedStmt = Connect.prepareStatement(query);
 	      preparedStmt.setString (1, id);
-	      // execute the preparedstatement
 	      preparedStmt.setString (2, name);
-	      preparedStmt.setString (3, o_id);
+	      preparedStmt.setDate (3, NStart);
+	      preparedStmt.setDate (4, NEnd);
+	      preparedStmt.setString (5, Ntime);
+	      preparedStmt.setString (6, o_id);
 	      // execute the preparedstatement
 	      preparedStmt.execute();
 	}
@@ -54,7 +59,7 @@ public class Server{
 		String query = " insert into course (id, name, MainClass, email, gender, dob, phoneNumber)"
 		        + " values (?,?,?,?,?,?,?)";
 		      // create the mysql insert preparedstatement
-			  Date date1=(Date) new SimpleDateFormat("yyyy/mm/dd").parse(dob);  
+			  Date date1=(Date) new SimpleDateFormat("yyyy-mm-dd").parse(dob);  
 		      PreparedStatement preparedStmt = Connect.prepareStatement(query);
 		      preparedStmt.setString (1, id);
 		      preparedStmt.setString (2, name);

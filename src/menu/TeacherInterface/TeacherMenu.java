@@ -38,6 +38,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 	JButton info;
 	JButton ShowCourses;
 	JButton pass;
+	JButton schedule;
 	JPanel contentPane;
 	JPanel container;
 	private final JLabel lblX = new JLabel("X");
@@ -58,9 +59,8 @@ public class TeacherMenu extends JFrame implements ActionListener{
 	
 	public TeacherMenu(ResultSet Client, Server ServerConnection) throws SQLException {
 		setUndecorated(true);
-		setResizable(false);
-		
-		contentPane = new JPanel();
+		setResizable(false);		
+		contentPane = new JPanel(new CardLayout());
 		setContentPane(contentPane);
 		getContentPane().setLayout(null);
 		getContentPane().setBackground(SystemColor.inactiveCaptionBorder);
@@ -159,7 +159,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		ShowCourses.setBorder(null);
 		ShowCourses.addActionListener(this);
 		
-		JButton schedule = new JButton("Show schedule");
+		schedule = new JButton("Show Teaching Schedule");
 		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
 		schedule.setIcon(new ImageIcon(TeacherMenu.class.getResource("/icon/calendar.png")));
 		schedule.setHorizontalTextPosition(JLabel.CENTER);
@@ -170,6 +170,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		schedule.setBackground(new Color(191,205,219));
 		schedule.setFocusable(false);
 		schedule.setBorder(null);
+		schedule.addActionListener(this);
 		
 		pass = new JButton("Change password");
 		pass.setFont(new Font("Sitka Text", Font.PLAIN, 15));
@@ -188,26 +189,28 @@ public class TeacherMenu extends JFrame implements ActionListener{
 				cl1.show(container, "Pass");
 				lblBack.setVisible(true);
 			}
-		});
-		
+		});		
 		lblBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "MainMenu");
 				lblBack.setVisible(false);
-				
 			}
-			
 		});
 		content.add(info);
 		content.add(ShowCourses);
 		content.add(schedule);
 		content.add(pass);
-		
+		String ClientID = Client.getString("id");
 		Container InfoForm = new TeacherInfo(Client,ServerConnection);
-		Container CoursesForm = new ShowCourses(Client,ServerConnection);
+		Container CoursesForm = new ShowCourses(ClientID,ServerConnection);
+		Container Schedule = new ShowTeachingSchedule(ClientID,contentPane,ServerConnection);
+		Container ClassManage = new ClassManagement(ServerConnection);
         container.add("Info",InfoForm);
         container.add("Courses",CoursesForm);
+        container.add("Schedule",Schedule);
+        
+        contentPane.add("ClassForm",ClassManage); 
 	}
 
 	@Override
@@ -222,7 +225,10 @@ public class TeacherMenu extends JFrame implements ActionListener{
 			CardLayout cl = (CardLayout)(container.getLayout());
 			cl.show(container, "Courses");
 			lblBack.setVisible(true);
+		}else if(e.getSource()==schedule) {
+			CardLayout cl = (CardLayout)(container.getLayout());
+			cl.show(container, "Schedule");
+			lblBack.setVisible(true);
 		}
 	}
-
 }

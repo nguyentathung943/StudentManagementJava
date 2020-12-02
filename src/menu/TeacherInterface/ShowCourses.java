@@ -23,6 +23,8 @@ import javax.swing.table.DefaultTableModel;
 import menu.Server;
 
 import java.sql.*;
+import java.text.ParseException;
+
 import javax.swing.JTable;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
@@ -33,15 +35,19 @@ import javax.swing.ImageIcon;
 
 
 class ShowCourses extends Container {
+	private static final long serialVersionUID = 1L;
 	DefaultTableModel model;
 	private JTable table;
 	JScrollPane ScrollPane;
 	private JTextField textCourseID;
 	private JTextField textCourseName;
 	private String ClientID;
-	public ShowCourses(ResultSet Client, Server ServerConnection) throws SQLException {
+	private JTextField textStartDate;
+	private JTextField textEndDate;
+	private JTextField textTime;
+	public ShowCourses(String id, Server ServerConnection) throws SQLException {
 
-		ClientID = Client.getString("id");
+		ClientID = id;
 		Container c = this;
 		setSize(1200,650);
 		JLabel title = new JLabel("Courses Management"); 
@@ -50,8 +56,8 @@ class ShowCourses extends Container {
         title.setLocation(10, 10);
         c.add(title);
         ScrollPane = new JScrollPane();
-        ScrollPane.setSize(773, 606);
-        ScrollPane.setLocation(427, 44);
+        ScrollPane.setSize(817, 606);
+        ScrollPane.setLocation(383, 44);
         add(ScrollPane);
         table = new JTable();
         table.setGridColor(new Color(255, 255, 255));
@@ -64,18 +70,24 @@ class ShowCourses extends Container {
         table.setSelectionBackground(new Color(0,128,255));
         table.setRowHeight(45);
         table.setFont(new Font("Arial",Font.BOLD,16));
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         model = new DefaultTableModel() {
-        		@Override
+        		/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+				@Override
         	    public boolean isCellEditable(int row, int column) {
             //all cells false
             return false;
         }};
         
-        Object[] column = {"Course ID","Course name"};
+        Object[] column = {"Course ID","Course name","Start date","End date","Time"};
         model.setColumnIdentifiers(column);
         ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
         while(data.next()) {
-        	model.addRow(new Object[] {data.getString("courseID"),data.getString("name")});
+        	model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
         }
         ScrollPane.setViewportView(table);
         table.setModel(model);
@@ -84,7 +96,7 @@ class ShowCourses extends Container {
         JLabel lblNotification = new JLabel("");
         lblNotification.setFont(new Font("Arial", Font.BOLD, 15));
         lblNotification.setForeground(new Color(255,0,0));
-        lblNotification.setBounds(166, 186, 336, 29);
+        lblNotification.setBounds(41, 352, 336, 29);
         add(lblNotification);
         
         textCourseID = new JTextField();
@@ -108,14 +120,51 @@ class ShowCourses extends Container {
         textCourseName.setFont(new Font("Arial", Font.PLAIN, 15));
         textCourseName.setColumns(10);
         textCourseName.setBounds(169, 148, 207, 40);
-        
         add(textCourseName);
+        
+        JLabel lblStartDate = new JLabel("Start Date");
+        lblStartDate.setFont(new Font("Arial", Font.PLAIN, 22));
+        lblStartDate.setBounds(10, 201, 141, 40);
+        add(lblStartDate);
+        
+        JLabel lblEndDate = new JLabel("End Date");
+        lblEndDate.setFont(new Font("Arial", Font.PLAIN, 22));
+        lblEndDate.setBounds(10, 251, 141, 40);
+        add(lblEndDate);
+        
+        JLabel lblTime = new JLabel("Time");
+        lblTime.setFont(new Font("Arial", Font.PLAIN, 22));
+        lblTime.setBounds(10, 306, 141, 40);
+        add(lblTime);
+        
+        textStartDate = new JTextField();
+        textStartDate.setFont(new Font("Arial", Font.PLAIN, 15));
+        textStartDate.setColumns(10);
+        textStartDate.setBounds(169, 198, 207, 40);
+        add(textStartDate);
+        
+        textEndDate = new JTextField();
+        textEndDate.setFont(new Font("Arial", Font.PLAIN, 15));
+        textEndDate.setColumns(10);
+        textEndDate.setBounds(169, 251, 207, 40);
+        add(textEndDate);
+        
+        textTime = new JTextField();
+        textTime.setFont(new Font("Arial", Font.PLAIN, 15));
+        textTime.setColumns(10);
+        textTime.setBounds(169, 306, 207, 40);
+        add(textTime);
+        
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				lblNotification.setText("");
         		table.clearSelection();
         		textCourseID.setText("");
         		textCourseName.setText("");
+        		textEndDate.setText("");
+        		textStartDate.setText("");
+        		textTime.setText("");
 			}
 		});
         table.addMouseListener(new MouseAdapter() {
@@ -124,6 +173,9 @@ class ShowCourses extends Container {
         		int index = table.getSelectedRow();
         		textCourseID.setText(model.getValueAt(index, 0).toString());
         		textCourseName.setText(model.getValueAt(index, 1).toString());
+        		textStartDate.setText(model.getValueAt(index, 2).toString());
+        		textEndDate.setText(model.getValueAt(index, 3).toString());
+        		textTime.setText(model.getValueAt(index, 4).toString());
         	}
         });
         JButton AddBtn = new JButton("Add course");
@@ -146,8 +198,11 @@ class ShowCourses extends Container {
         	public void actionPerformed(ActionEvent e) {
         		String CourseName = textCourseName.getText();
         		String CourseID = textCourseID.getText().toUpperCase();
-        		if (CourseName.equals("") || CourseID.equals("")) {
-        			lblNotification.setText("Both field must be filled");
+        		String StartDate = textStartDate.getText();
+        		String EndDate = textEndDate.getText();
+        		String Time = textTime.getText();
+        		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
+        			lblNotification.setText("All fields must be filled");
         		}
         		else {
         			lblNotification.setText("");
@@ -158,14 +213,24 @@ class ShowCourses extends Container {
 						}
 						else {
 							lblNotification.setText("");
-							ServerConnection.InsertCourse(CourseID, CourseName, ClientID);
-							model.setRowCount(0);
-							ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-						    while(data.next()) {
-						    	model.addRow(new Object[] {data.getString("courseID"),data.getString("name")});
-						    }
-						    textCourseName.setText("");
-                    		textCourseID.setText("");
+							try {
+								Date SDate = Date.valueOf(StartDate);
+								Date EDate = Date.valueOf(EndDate);
+								ServerConnection.InsertCourse(CourseID, CourseName,ClientID,SDate,EDate,Time);
+								model.setRowCount(0);
+								ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
+								while(data.next()) {
+							        model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
+							    }
+					        		textCourseID.setText("");
+					        		textCourseName.setText("");
+					        		textEndDate.setText("");
+					        		textStartDate.setText("");
+					        		textTime.setText("");
+							}
+							catch(Exception e1) {
+								lblNotification.setText("Invalid data format");								
+							}
 						}
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -174,7 +239,7 @@ class ShowCourses extends Container {
         	}
         });
         AddBtn.setFont(new Font("Arial", Font.BOLD, 15));
-        AddBtn.setBounds(226, 225, 150, 49);
+        AddBtn.setBounds(193, 381, 150, 49);
         add(AddBtn);
         
         JButton UpdateBtn = new JButton("Update course");
@@ -200,35 +265,41 @@ class ShowCourses extends Container {
         			lblNotification.setText("Please choose one course to be updated");
         		}
         		else {
-            		String CourseName = textCourseName.getText();
+        			String CourseName = textCourseName.getText();
             		String CourseID = textCourseID.getText().toUpperCase();
-            		if (CourseName.equals("") || CourseID.equals("")) {
-            			lblNotification.setText("Please choose one course to be updated");
+            		String StartDate = textStartDate.getText();
+            		String EndDate = textEndDate.getText();
+            		String Time = textTime.getText();
+            		
+            		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
+            			lblNotification.setText("All fields must be filled");
             		}
             		else {
-                		//String name = model.getValueAt(index, 0).toString();
-                		String id = model.getValueAt(index, 0).toString();
-                		String newID = textCourseID.getText();
-                		String newName = textCourseName.getText();
-                		try {
-        					ServerConnection.UpdateCourse(id, newID, newName);
-        					model.setRowCount(0);
-        					ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-        				    while(data.next()) {
-        				    	model.addRow(new Object[] {data.getString("courseID"),data.getString("name")});
-        				    }
-                    		textCourseName.setText("");
-                    		textCourseID.setText("");
-        				} catch (SQLException e1) {
-        					// TODO Auto-generated catch block
-        					e1.printStackTrace();
-        				}
+            			lblNotification.setText("");
+            			try {
+							Date SDate = Date.valueOf(StartDate);
+							Date EDate = Date.valueOf(EndDate );
+							ServerConnection.UpdateCourse(id, CourseID, CourseName,SDate,EDate,Time);
+							model.setRowCount(0);
+							ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
+							while(data.next()) {
+						        model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
+						    }
+								textCourseID.setText("");
+								textCourseName.setText("");
+								textEndDate.setText("");
+								textStartDate.setText("");
+								textTime.setText("");
+						}
+						catch(Exception e1) {
+							lblNotification.setText("Invalid data format");								
+						}
             		}
         		}
         	}
         });
         UpdateBtn.setFont(new Font("Arial", Font.BOLD, 15));
-        UpdateBtn.setBounds(36, 225, 150, 49);
+        UpdateBtn.setBounds(10, 381, 150, 49);
         add(UpdateBtn);
         
         JButton DeleteBtn = new JButton("Delete course");
@@ -244,7 +315,6 @@ class ShowCourses extends Container {
         	}
         	@Override
         	public void mouseEntered(MouseEvent e) {
-
         		DeleteBtn.setBackground(new Color(204,255,229));
         	}
         });
@@ -255,10 +325,13 @@ class ShowCourses extends Container {
         			lblNotification.setText("Please choose one course to be deleted");
         		}
         		else {
-            		String CourseName = textCourseName.getText();
+        			String CourseName = textCourseName.getText();
             		String CourseID = textCourseID.getText().toUpperCase();
-            		if (CourseName.equals("") || CourseID.equals("")) {
-            			lblNotification.setText("Please choose one course to be deleted");
+            		String StartDate = textStartDate.getText();
+            		String EndDate = textEndDate.getText();
+            		String Time = textTime.getText();
+            		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
+            			lblNotification.setText("All fields must be filled");
             		}
             		else {
                 		try {
@@ -266,11 +339,14 @@ class ShowCourses extends Container {
         					model.setRowCount(0);
         					lblNotification.setText("");
         					ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-        				    while(data.next()) {
-        				    	model.addRow(new Object[] {data.getString("courseID"),data.getString("name")});
-        				    }
-        				    textCourseName.setText("");
-                    		textCourseID.setText("");
+        					  while(data.next()) {
+        				        	model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
+        				        }
+        		        		textCourseID.setText("");
+        		        		textCourseName.setText("");
+        		        		textEndDate.setText("");
+        		        		textStartDate.setText("");
+        		        		textTime.setText("");
         				} catch (SQLException e1) {
         					lblNotification.setText("Course you are trying to delete not exist!");
         				}
@@ -279,7 +355,7 @@ class ShowCourses extends Container {
         	}
         });
         DeleteBtn.setFont(new Font("Arial", Font.BOLD, 15));
-        DeleteBtn.setBounds(36, 297, 150, 49);
+        DeleteBtn.setBounds(10, 454, 150, 49);
         add(DeleteBtn);
         
         JButton ClearBtn = new JButton("Clear");
@@ -303,16 +379,19 @@ class ShowCourses extends Container {
         		table.clearSelection();
         		textCourseID.setText("");
         		textCourseName.setText("");
+        		textEndDate.setText("");
+        		textStartDate.setText("");
+        		textTime.setText("");
         		lblNotification.setText("");
         	}
         });
         ClearBtn.setFont(new Font("Arial", Font.BOLD, 15));
-        ClearBtn.setBounds(226, 297, 150, 49);
+        ClearBtn.setBounds(193, 454, 150, 49);
         add(ClearBtn);
         
         JLabel lblNewLabel = new JLabel("*Choose the row that contain course's information that you want to modify in the table ");
         lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 13));
-        lblNewLabel.setBounds(427, 16, 492, 30);
+        lblNewLabel.setBounds(383, 16, 492, 30);
         add(lblNewLabel);
         
         JLabel lblRefresh = new JLabel("");
@@ -320,13 +399,19 @@ class ShowCourses extends Container {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		model.setRowCount(0);
+        		table.clearSelection();
+        		textCourseID.setText("");
+        		textCourseName.setText("");
+        		textEndDate.setText("");
+        		textStartDate.setText("");
+        		textTime.setText("");
         		lblNotification.setText("");
 				ResultSet data;
 				try {
 					data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-				    while(data.next()) {
-				    	model.addRow(new Object[] {data.getString("courseID"),data.getString("name")});
-				    }
+					  while(data.next()) {
+				        	model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
+				        }
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -337,9 +422,7 @@ class ShowCourses extends Container {
         lblRefresh.setBounds(1168, 10, 32, 32);
         add(lblRefresh);
         
-
         
-
         
 	}
 }

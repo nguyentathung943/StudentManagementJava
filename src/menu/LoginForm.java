@@ -106,6 +106,7 @@ public class LoginForm extends JFrame {
 		username.setBorder(null);
 		username.setFont(new Font("Arial", Font.PLAIN, 20));
 		username.setBounds(10, 0, 316, 53);
+		username.setText("GV000001");
 		panel.add(username);
 		username.setColumns(10);
 		
@@ -148,6 +149,7 @@ public class LoginForm extends JFrame {
 		password.setEchoChar((char)0);
 		password.setFont(new Font("Arial", Font.PLAIN, 20));
 		password.setBounds(10, 0, 316, 53);
+		password.setText("giaovien01");
 		panel_1.add(password);
 		
 		JLabel pwdIcon = new JLabel("");
