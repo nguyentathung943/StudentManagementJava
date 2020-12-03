@@ -30,7 +30,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import menu.LoginForm;
 import menu.Server;
+import menu.StudentInterface.StudentMenu;
 
 import java.sql.*;
 
@@ -43,7 +45,10 @@ public class TeacherMenu extends JFrame implements ActionListener{
 	JPanel container;
 	Container mainUI;
 	private final JLabel lblX = new JLabel("X");
-	private final JButton lblBack = new JButton("");
+	private final JButton lblBack = new JButton("HOME");
+	private final JButton logoutBtn = new JButton("LOG OUT");
+	private Image homeIcon = new ImageIcon(LoginForm.class.getResource("/icon/home.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+	private Image logoutIcon = new ImageIcon(LoginForm.class.getResource("/icon/logout.png")).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 	  
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -72,13 +77,57 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		mainUI.setLayout(null);
 		contentPane.add("MainUI", mainUI);
 		
-		lblBack.setIcon(new ImageIcon(TeacherMenu.class.getResource("/icon/back.png")));
-		lblBack.setOpaque(false);
-		lblBack.setContentAreaFilled(false);
-		lblBack.setBorderPainted(false);
+		lblBack.setHorizontalAlignment(SwingConstants.LEFT);	
+		lblBack.setBackground(new Color(51, 102, 153));
+		lblBack.setForeground(new Color(255, 255, 255));
+		lblBack.setFont(new Font("Arial", Font.BOLD, 13));
+		lblBack.setIcon(new ImageIcon(homeIcon));
 		lblBack.setFocusable(false);
-		lblBack.setBounds(5, 0, 55, 55);
-		lblBack.setVisible(false);
+		lblBack.setBounds(0, 0, 100, 45);
+		lblBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblBack.setBackground(new Color(0, 51, 102));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblBack.setBackground(new Color(51, 102, 153));
+			}
+		});
+		
+		logoutBtn.setHorizontalAlignment(SwingConstants.LEFT);	
+		logoutBtn.setBackground(new Color(51, 102, 153));
+		logoutBtn.setForeground(new Color(255, 255, 255));
+		logoutBtn.setFont(new Font("Arial", Font.BOLD, 13));
+		logoutBtn.setIcon(new ImageIcon(logoutIcon));
+		logoutBtn.setFocusable(false);
+		logoutBtn.setBounds(100, 0, 120, 45);
+		logoutBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "Do you want to log out?","LOG OUT",JOptionPane.YES_NO_OPTION)==0) {
+					TeacherMenu.this.dispose();
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								LoginForm frame = new LoginForm();
+								frame.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				logoutBtn.setBackground(new Color(0, 51, 102));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				logoutBtn.setBackground(new Color(51, 102, 153));
+			}
+		});
 		
 		
 		lblX.setForeground(new Color(240, 248, 255));
@@ -108,6 +157,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		});
 		mainUI.add(lblX);
 		mainUI.add(lblBack);
+		mainUI.add(logoutBtn);
 		
 		
 		JPanel panel = new JPanel();
@@ -191,14 +241,12 @@ public class TeacherMenu extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "Pass");
-				lblBack.setVisible(true);
 			}
 		});		
 		lblBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "MainMenu");
-				lblBack.setVisible(false);
 			}
 		});
 		content.add(info);

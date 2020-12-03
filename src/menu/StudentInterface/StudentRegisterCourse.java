@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -90,6 +91,7 @@ class CourseRegisterTable extends JTable{
     	}};
     	getTableHeader().setFont(new Font("Arial",Font.BOLD,20));
         getTableHeader().setBackground(new Color(0,153,153));
+        getTableHeader().setForeground(Color.white);
         TableCellRenderer baseRenderer = getTableHeader().getDefaultRenderer();
         getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));
         
@@ -204,6 +206,7 @@ class RegisteredTable extends JTable{
     	}};
     	getTableHeader().setFont(new Font("Arial",Font.BOLD,20));
         getTableHeader().setBackground(new Color(0,153,153));
+        getTableHeader().setForeground(Color.white);
         TableCellRenderer baseRenderer = getTableHeader().getDefaultRenderer();
         getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));
         
@@ -331,6 +334,7 @@ class TableHeaderRenderer implements TableCellRenderer {
 
     public TableHeaderRenderer(TableCellRenderer baseRenderer) {
         this.baseRenderer = baseRenderer;
+        
     }
 
     @Override
