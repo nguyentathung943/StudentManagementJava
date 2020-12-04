@@ -23,6 +23,9 @@ import javax.swing.JTable;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -47,6 +50,13 @@ class StudentShowSchedule extends Container {
 	
 
 	StudentShowSchedule(String ClientID, Server ServerConnection) throws SQLException {
+		JLabel lblSchedule = new JLabel("Your Schedule");
+        lblSchedule.setForeground(new Color(210, 105, 30));
+        lblSchedule.setHorizontalAlignment(SwingConstants.CENTER);
+        lblSchedule.setFont(new Font("Arial", Font.BOLD, 30));
+        lblSchedule.setBounds(400, 10, 400, 35);
+        add(lblSchedule);
+		
 		String query = "select * from course_attend, course, teacher where StudentID ='" + ClientID + "' and course.courseID = course_attend.courseID and headTeacher = teacher.id";
 		ResultSet data = ServerConnection.ExecuteQuery(query);
 		Container c = this;
@@ -112,7 +122,39 @@ class AttendedCourseTable extends JTable{
 		
 		getColumnModel().getColumn(5).setMaxWidth(120);
 		getColumnModel().getColumn(5).setMinWidth(120);
-		
+		addFocusListener(new FocusAdapter() {
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+				int index = table.getSelectedRow();
+				
+				if (index >= 0 && index < table.getRowCount()) {
+					
+					 Server ServerConnection;
+		             String courseID = (String) table.getValueAt(index, 0);
+						try {
+							ServerConnection = new Server();
+							String query = "select * from course_attend where StudentID ='" + ClientID + "' and courseID ='"+courseID+"'";
+			        		ResultSet data = ServerConnection.ExecuteQuery(query);
+			        		if (data.next()) {
+			        			scoreTable.setValue((String)table.getValueAt(index, 1), data.getString("practice_point"), data.getString("theory_point"), data.getString("overall"), data.getString("pass_status"));
+			        		}
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+				
+						}
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		addMouseListener(new MouseListener() {
 
 			@Override

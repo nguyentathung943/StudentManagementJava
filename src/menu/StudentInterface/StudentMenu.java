@@ -249,7 +249,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 		
 		String ClientID = Client.getString("id");
 		Container InfoForm = new StudentInfo(Client);
-		Container RegisterUI = new StudentRegisterCourse();
+		Container RegisterUI = new StudentRegisterCourse(ClientID);
 		Container Schedule = new StudentShowSchedule(ClientID, ServerConnection);
 		//Container changePassword = new ChangePasswordForm();
 		//container.add("Pass",changePassword);
