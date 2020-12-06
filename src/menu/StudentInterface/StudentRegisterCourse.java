@@ -95,9 +95,7 @@ class StudentRegisterCourse extends Container {
 		}
 		
 		table.getTable(rtable);
-		rtable.getTable(table);
-        
-		
+		rtable.getTable(table);        
 	}
 }
 
