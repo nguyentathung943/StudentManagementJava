@@ -43,12 +43,12 @@ public class LoginForm extends JFrame {
 	private JPasswordField password;
 	private final JLabel lblX = new JLabel("X");
 	private Image background = new ImageIcon(LoginForm.class.getResource("/icon/login.png")).getImage();
-	private Image usr = new ImageIcon(LoginForm.class.getResource("/icon/username.png")).getImage()
-			.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-	private Image pass = new ImageIcon(LoginForm.class.getResource("/icon/eye.png")).getImage().getScaledInstance(30,
-			30, Image.SCALE_SMOOTH);
-	private Image Key = new ImageIcon(LoginForm.class.getResource("/icon/Key.png")).getImage().getScaledInstance(30, 30,
-			Image.SCALE_SMOOTH);
+//	private Image usr = new ImageIcon(LoginForm.class.getResource("/icon/username.png")).getImage()
+//			.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+//	private Image pass = new ImageIcon(LoginForm.class.getResource("/icon/eye.png")).getImage().getScaledInstance(30,
+//			30, Image.SCALE_SMOOTH);
+//	private Image Key = new ImageIcon(LoginForm.class.getResource("/icon/Key.png")).getImage().getScaledInstance(30, 30,
+//			Image.SCALE_SMOOTH);
 
 	/**
 	 * Launch the application.
@@ -124,7 +124,7 @@ public class LoginForm extends JFrame {
 		usrIcon.setBackground(new Color(255, 255, 255));
 		usrIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		usrIcon.setBounds(359, 0, 47, 53);
-		usrIcon.setIcon(new ImageIcon(usr));
+		usrIcon.setIcon(new ImageIcon(LoginForm.class.getResource("/icon/username.png")));
 		panel.add(usrIcon);
 
 		JPanel panel_1 = new JPanel();
@@ -183,7 +183,7 @@ public class LoginForm extends JFrame {
 		pwdIcon.setBackground(new Color(255, 255, 255));
 		pwdIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		pwdIcon.setBounds(359, 0, 47, 53);
-		pwdIcon.setIcon(new ImageIcon(pass));
+		pwdIcon.setIcon(new ImageIcon(LoginForm.class.getResource("/icon/password.png")));
 		panel_1.add(pwdIcon);
 
 		JPanel btnLogin = new JPanel();
@@ -200,7 +200,8 @@ public class LoginForm extends JFrame {
 		lblNewLabel.setBounds(136, 0, 82, 53);
 		btnLogin.add(lblNewLabel);
 
-		JLabel key = new JLabel(new ImageIcon(Key));
+//		JLabel key = new JLabel(new ImageIcon(Key));
+		JLabel key = new JLabel();
 		key.setBounds(218, 10, 30, 30);
 		btnLogin.add(key);
 		lblX.addMouseListener(new MouseAdapter() {

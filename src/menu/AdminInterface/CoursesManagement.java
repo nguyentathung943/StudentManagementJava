@@ -62,7 +62,7 @@ class CoursesManagement extends Container {
 	private JLabel lblStart;
 	private boolean isStudent = true;
 	public void ClearData() {
-		table.clearSelection();
+		
 		lblNotification.setText("");
 		textID.setText("");
 		textName.setText("");

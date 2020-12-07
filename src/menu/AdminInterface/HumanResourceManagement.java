@@ -462,7 +462,7 @@ class HumanResourceManagement extends Container {
         	public void actionPerformed(ActionEvent e) {
         		int index = table.getSelectedRow();
         		if(index==-1) {
-        			lblNotification.setText("Please choose one course to be updated");
+        			lblNotification.setText("Please choose one line to be updated");
         		}
         		else {
         			if(isStudent) {
@@ -507,7 +507,7 @@ class HumanResourceManagement extends Container {
                 			{
                 				ResultSet temp1 = ServerConnection.ExecuteQuery("select * from teacher where id='"+ TeacherID + "'");
         						if(temp1.next()) {
-        							lblNotification.setText("Student ID is already existed");
+        							lblNotification.setText("Teacher ID is already existed");
         							return;
         						}
                 			}

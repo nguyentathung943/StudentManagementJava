@@ -278,7 +278,7 @@ public class Server {
 			String role = data.getString("role");
 			String query1 = "insert into credential (username, password, role)" + " values (?,?,?)";
 			String query2 = "insert into teacher (id, name, phoneNumber, email, dob)" + " values (?,?,?,?,?)";
-			String query3 = "update course set headTeacher=? where headTeacher=?";
+			String query3 = "update course set headTeacher=? where headTeacher= ?";
 			String query4 = "delete from teacher where id='?'";
 			String query5 = "delete from credential where username='?'";
 			PreparedStatement preparedStmt;
