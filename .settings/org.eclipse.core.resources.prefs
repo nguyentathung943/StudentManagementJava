@@ -1,4 +1,6 @@
 eclipse.preferences.version=1
+encoding//src/menu/AdminInterface/CoursesManagement.java=UTF-8
+encoding//src/menu/AdminInterface/HumanResourceManagement.java=UTF-8
 encoding//src/menu/ChangePasswordForm.java=UTF-8
 encoding//src/menu/LoginForm.java=UTF-8
 encoding//src/menu/TeacherInterface/ClassManagement.java=UTF-8

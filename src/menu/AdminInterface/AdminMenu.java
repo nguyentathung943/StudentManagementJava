@@ -30,9 +30,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.sql.*;
-
+import menu.Server;
 public class AdminMenu extends JFrame implements ActionListener{
 	JButton info;
+	JButton humanManage;
+	JButton courseManage;
 	JButton pass;
 	JPanel contentPane;
 	JPanel container;
@@ -43,7 +45,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AdminMenu frame = new AdminMenu(null);
+					AdminMenu frame = new AdminMenu(null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -52,7 +54,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 		});
 	}
 	
-	public AdminMenu(ResultSet Client) throws SQLException {
+	public AdminMenu(ResultSet Client, Server ServerConnection) throws SQLException {
 		setUndecorated(true);
 		setResizable(false);
 		
@@ -61,7 +63,6 @@ public class AdminMenu extends JFrame implements ActionListener{
 		getContentPane().setLayout(null);
 		getContentPane().setBackground(SystemColor.inactiveCaptionBorder);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pack();
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
 		lblBack.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/back.png")));
@@ -120,7 +121,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 		contentPane.add(panel);
 		contentPane.add(container);
 		
-		JLabel greeting = new JLabel("Ch√†o, "+ Client.getString("name"));
+		JLabel greeting = new JLabel("Ch‡o, "+ Client.getString("name"));
 		panel.add(greeting);
 		greeting.setFont(new Font("Source Sans Pro Semibold", Font.PLAIN, 20));
 		greeting.setForeground(SystemColor.textHighlightText);
@@ -141,30 +142,56 @@ public class AdminMenu extends JFrame implements ActionListener{
 		info.setFocusable(false);
 		info.setBorder(null);
 		info.addActionListener(this);
+		info.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.show(container, "Info");
+				lblBack.setVisible(true);
+			}
+		});
 		
-		JButton register = new JButton("Register courses");
-		register.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		register.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/tick.png")));
-		register.setHorizontalTextPosition(JLabel.CENTER);
-		register.setVerticalTextPosition(JLabel.BOTTOM);
-		register.setVerticalAlignment(JLabel.CENTER);
-		register.setHorizontalAlignment(JLabel.CENTER);
-		register.setBounds(600,100,150,100);
-		register.setBackground(new Color(191,205,219));
-		register.setFocusable(false);
-		register.setBorder(null);
+		courseManage = new JButton("Courses Management");
+		courseManage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		courseManage.setFont(new Font("Sitka Text", Font.PLAIN, 15));
+		courseManage.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/tick.png")));
+		courseManage.setHorizontalTextPosition(JLabel.CENTER);
+		courseManage.setVerticalTextPosition(JLabel.BOTTOM);
+		courseManage.setVerticalAlignment(JLabel.CENTER);
+		courseManage.setHorizontalAlignment(JLabel.CENTER);
+		courseManage.setBounds(600,100,150,100);
+		courseManage.setBackground(new Color(191,205,219));
+		courseManage.setFocusable(false);
+		courseManage.setBorder(null);
+		courseManage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.show(container, "Course");
+				lblBack.setVisible(true);
+			}
+		});
 		
-		JButton schedule = new JButton("Show schedule");
-		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		schedule.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/calendar.png")));
-		schedule.setHorizontalTextPosition(JLabel.CENTER);
-		schedule.setVerticalTextPosition(JLabel.BOTTOM);
-		schedule.setVerticalAlignment(JLabel.CENTER);
-		schedule.setHorizontalAlignment(JLabel.CENTER);
-		schedule.setBounds(450,200,150,100);
-		schedule.setBackground(new Color(191,205,219));
-		schedule.setFocusable(false);
-		schedule.setBorder(null);
+		humanManage = new JButton("Human Resources Management");
+		humanManage.setFont(new Font("Sitka Text", Font.PLAIN, 15));
+		humanManage.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/calendar.png")));
+		humanManage.setHorizontalTextPosition(JLabel.CENTER);
+		humanManage.setVerticalTextPosition(JLabel.BOTTOM);
+		humanManage.setVerticalAlignment(JLabel.CENTER);
+		humanManage.setHorizontalAlignment(JLabel.CENTER);
+		humanManage.setBounds(450,200,150,100);
+		humanManage.setBackground(new Color(191,205,219));
+		humanManage.setFocusable(false);
+		humanManage.setBorder(null);
+		humanManage.addActionListener(this);
+		humanManage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.show(container, "HumanManage");
+				lblBack.setVisible(true);
+			}
+		});
 		
 		pass = new JButton("Change password");
 		pass.setFont(new Font("Sitka Text", Font.PLAIN, 15));
@@ -195,24 +222,37 @@ public class AdminMenu extends JFrame implements ActionListener{
 			
 		});
 		content.add(info);
-		content.add(register);
-		content.add(schedule);
+		content.add(courseManage);
+		content.add(humanManage);
 		content.add(pass);
 		
-		Container InfoForm = new AdminInfo(Client);
+		Container InfoForm = new AdminInfo(Client, ServerConnection);
+		Container HumanForm = new HumanResourceManagement(ServerConnection);
+		Container CourseForm = new CoursesManagement(ServerConnection);
 		//Container changePassword = new ChangePasswordForm();
 		//container.add("Pass",changePassword);
         container.add("Info",InfoForm);
+        container.add("HumanManage", HumanForm);
+        container.add("Course", CourseForm);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == info) {
-			CardLayout cl = (CardLayout)(container.getLayout());
-			cl.show(container, "Info");
-			lblBack.setVisible(true);
-		}
+//		if (e.getSource() == info) {
+//			CardLayout cl = (CardLayout)(container.getLayout());
+//			cl.show(container, "Info");
+//			lblBack.setVisible(true);
+//		}
+//		else if (e.getSource() == humanManage) {
+//			CardLayout cl = (CardLayout)(container.getLayout());
+//			cl.show(container, "HumanManage");
+//			lblBack.setVisible(true);
+//		}else if(e.getSource() == courseManage) {
+//			CardLayout cl = (CardLayout)(container.getLayout());
+//			cl.show(container, "Course");
+//			lblBack.setVisible(true);
+//		}
 	}
 
 }

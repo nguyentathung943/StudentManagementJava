@@ -15,8 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import java.sql.*;
 
+import java.sql.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import menu.Server;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 class AdminInfo extends Container {
 	private String dates[] 
@@ -28,9 +33,9 @@ class AdminInfo extends Container {
 	            "26", "27", "28", "29", "30", 
 	            "31" }; 
 	    private String months[] 
-	        = { "Jan", "feb", "Mar", "Apr", 
+	        = { "Jan", "Feb", "Mar", "Apr", 
 	            "May", "Jun", "July", "Aug", 
-	            "Sup", "Oct", "Nov", "Dec" }; 
+	            "Sep", "Oct", "Nov", "Dec" };
 	    private String years[] 
 	        = { "1995", "1996", "1997", "1998", 
 	            "1999", "2000", "2001", "2002",
@@ -40,14 +45,43 @@ class AdminInfo extends Container {
 	            "2015", "2016", "2017", "2018", 
 	            "2019" };
 	    private JTextField emailText;
-	public AdminInfo(ResultSet Client) throws SQLException {
+	public String convertMonth(String month) {
+		switch(month) {
+		case "Jan":
+			return "01";
+		case "Feb":
+			return "02";
+		case "Mar":
+			return "03";
+		case "Apr":
+			return "04";
+		case "May":
+			return "05";
+		case "Jun":
+			return "06";
+		case "July":
+			return "07";
+		case "Aug":
+			return "08";
+		case "Sep":
+			return "09";
+		case "Oct":
+			return "10";
+		case "Nov":
+			return "11";
+		case "Dec":
+			return "12";
+		}
+		return "01";
+	}
+	public AdminInfo(ResultSet Client, Server ServerConnection) throws SQLException {
 		Container c = this;
+		setSize(1200,557);
 		JLabel title = new JLabel("Administrator Information"); 
         title.setFont(new Font("Arial", Font.PLAIN, 30)); 
         title.setSize(376, 30); 
         title.setLocation(300, 10); 
         c.add(title); 
-  
         JLabel name = new JLabel("Name"); 
         name.setFont(new Font("Arial", Font.PLAIN, 20));
         name.setSize(100, 30);
@@ -110,11 +144,7 @@ class AdminInfo extends Container {
         email.setLocation(300, 254); 
         c.add(email);
   
-        JButton sub = new JButton("Save"); 
-        sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
-        sub.setSize(155, 30); 
-        sub.setLocation(300, 316);
-        c.add(sub);
+        
         
         emailText = new JTextField(Client.getString("email"));
         emailText.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -130,5 +160,31 @@ class AdminInfo extends Container {
         idText.setFont(new Font("Arial", Font.PLAIN, 15));
         idText.setBounds(400, 50, 190, 30);
         add(idText);
+        
+        JButton sub = new JButton("Save"); 
+        sub.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		sub.setBackground(new Color(0,129,129));
+        	}
+        });
+        sub.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		try {
+        			System.out.print(email.getText());
+					boolean isError = !ServerConnection.UpdateInforAdministrator(Client.getString("id"), emailText.getText() , tname.getText(), year.getSelectedItem() + "-" + convertMonth((String)month.getSelectedItem()) + "-" + date.getSelectedItem(), tmno.getText());
+					if(isError) {
+						JLabel errorText = new JLabel("Error");
+						add(errorText);
+					}
+        		} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+        	}
+        });
+        sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
+        sub.setSize(155, 30); 
+        sub.setLocation(300, 316);
+        c.add(sub);
 	}
 }

@@ -28,17 +28,17 @@ class StudentInfo extends Container {
 	            "26", "27", "28", "29", "30", 
 	            "31" }; 
 	    private String months[] 
-	        = { "Jan", "feb", "Mar", "Apr", 
+	        = { "Jan", "Feb", "Mar", "Apr", 
 	            "May", "Jun", "July", "Aug", 
-	            "Sup", "Oct", "Nov", "Dec" }; 
+	            "Sep", "Oct", "Nov", "Dec" };
 	    private String years[] 
 	        = { "1995", "1996", "1997", "1998", 
-	            "1999", "2000", "2001", "2002", 
+	            "1999", "2000", "2001", "2002",
 	            "2003", "2004", "2005", "2006", 
 	            "2007", "2008", "2009", "2010", 
 	            "2011", "2012", "2013", "2014", 
 	            "2015", "2016", "2017", "2018", 
-	            "2019" }; 
+	            "2019" };
 	    private JTextField emailText;
 	    private JTextField textPhoneNum;
 	public StudentInfo(ResultSet Client) throws SQLException {

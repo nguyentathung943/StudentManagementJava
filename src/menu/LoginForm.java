@@ -252,7 +252,7 @@ public class LoginForm extends JFrame {
 							}else if(tab.getString("role").equals("Administrator")) {
 								ResultSet Client = ServerConnection.ExecuteQuery("select * from administrator where id='"+tab.getString("username")+"'");
 								if(Client.next()) {
-									AdminMenu menu = new AdminMenu(Client);
+									AdminMenu menu = new AdminMenu(Client, ServerConnection);
 									dispose();
 									menu.setVisible(true);
 								}

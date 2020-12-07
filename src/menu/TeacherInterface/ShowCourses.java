@@ -214,9 +214,9 @@ class ShowCourses extends Container {
 						else {
 							lblNotification.setText("");
 							try {
-								Date SDate = Date.valueOf(StartDate);
-								Date EDate = Date.valueOf(EndDate);
-								ServerConnection.InsertCourse(CourseID, CourseName,ClientID,SDate,EDate,Time);
+//								Date SDate = Date.valueOf(StartDate);
+//								Date EDate = Date.valueOf(EndDate);
+								ServerConnection.InsertCourse(CourseID, CourseName,ClientID,StartDate,EndDate,Time);
 								model.setRowCount(0);
 								ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
 								while(data.next()) {

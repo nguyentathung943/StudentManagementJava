@@ -31,9 +31,9 @@ class TeacherInfo extends Container {
 	            "26", "27", "28", "29", "30", 
 	            "31" }; 
 	    private String months[] 
-	        = { "Jan", "feb", "Mar", "Apr", 
+	        = { "Jan", "Feb", "Mar", "Apr", 
 	            "May", "Jun", "July", "Aug", 
-	            "Sup", "Oct", "Nov", "Dec" };
+	            "Sep", "Oct", "Nov", "Dec" };
 	    
 	    private JTextField emailText;
 	    private JTextField textYear;
