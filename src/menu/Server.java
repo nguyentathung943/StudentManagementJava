@@ -30,6 +30,19 @@ public class Server{
 		      // execute the preparedstatement
 		      preparedStmt.execute();
 	}
+	public void AddStudenttoCourse(String id, String courseID) throws SQLException {
+		String query = " insert into course_attend (courseID,StudentID,practice_point,theory_point,overall,pass_status)"
+		        + " values (?, ?, ?,?,?,?)";
+		      // create the mysql insert preparedstatement
+		      PreparedStatement preparedStmt = Connect.prepareStatement(query);
+		      preparedStmt.setString (1, courseID);
+		      preparedStmt.setString (2, id);
+		      preparedStmt.setString (3, null); 
+		      preparedStmt.setDate (4,  null);
+		      preparedStmt.setDate (5,  null);
+		      preparedStmt.setString (6, null);
+		      preparedStmt.execute();
+	}
 	public void DeleteCourse(String id,String headTeacher) throws SQLException {
 		String query1 = "delete from course_attend where courseID= ?";
 		String query2 = "delete from course where courseID=? and headteacher = ?";

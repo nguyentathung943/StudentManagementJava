@@ -199,7 +199,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		JButton schedule = new JButton("Show schedule");
+		JButton schedule = new JButton("Show schedule and course result");
 		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
 		schedule.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/calendar.png")));
 		schedule.setHorizontalTextPosition(JLabel.CENTER);
@@ -255,9 +255,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 		//container.add("Pass",changePassword);
         container.add("Info",InfoForm);
         container.add("Register",RegisterUI);
-        container.add("Schedule",Schedule);
-        
-        
+        container.add("Schedule",Schedule);              
 	}
 
 	@Override

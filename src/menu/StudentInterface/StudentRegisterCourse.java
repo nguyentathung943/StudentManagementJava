@@ -49,6 +49,7 @@ class StudentRegisterCourse extends Container {
 	
 
 	StudentRegisterCourse(String ClientID) throws SQLException {
+		setSize(1200,650);
 		JLabel lblAvailableCourses = new JLabel("Available Courses");
         lblAvailableCourses.setForeground(new Color(210, 105, 30));
         lblAvailableCourses.setHorizontalAlignment(SwingConstants.CENTER);
@@ -375,7 +376,7 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
 	}
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		
-			JButton btn = (JButton) value;
+			JButton btn = ( JButton) value;
 			ImageIcon icon = (ImageIcon) btn.getIcon();
 			setIcon(icon);
 			setSize(20,20);

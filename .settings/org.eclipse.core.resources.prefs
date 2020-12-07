@@ -5,5 +5,6 @@ encoding//src/menu/LoginForm.java=UTF-8
 encoding//src/menu/ResetPasswordForm.java=UTF-8
 encoding//src/menu/TeacherInterface/ClassManagement.java=UTF-8
 encoding//src/menu/TeacherInterface/ShowCourses.java=UTF-8
+encoding//src/menu/TeacherInterface/ShowPending.java=UTF-8
 encoding//src/menu/TeacherInterface/ShowTeachingSchedule.java=UTF-8
 encoding//src/menu/TeacherInterface/TeacherInfo.java=UTF-8
