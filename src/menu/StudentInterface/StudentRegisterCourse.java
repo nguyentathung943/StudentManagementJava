@@ -23,8 +23,11 @@ import javax.swing.JTable;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -45,9 +48,28 @@ import menu.Server;
 class StudentRegisterCourse extends Container {
 	
 
-	StudentRegisterCourse() throws SQLException {
+	StudentRegisterCourse(String ClientID) throws SQLException {
+		setSize(1200,650);
+		JLabel lblAvailableCourses = new JLabel("Available Courses");
+        lblAvailableCourses.setForeground(new Color(210, 105, 30));
+        lblAvailableCourses.setHorizontalAlignment(SwingConstants.CENTER);
+        lblAvailableCourses.setFont(new Font("Arial", Font.BOLD, 30));
+        lblAvailableCourses.setBounds(400, 10, 400, 35);
+        add(lblAvailableCourses);
+        
+        JLabel lblRegisteredCourses = new JLabel("Registered Courses");
+        lblRegisteredCourses.setHorizontalAlignment(SwingConstants.CENTER);
+        lblRegisteredCourses.setForeground(new Color(210, 105, 30));
+        lblRegisteredCourses.setFont(new Font("Arial", Font.BOLD, 30));
+        lblRegisteredCourses.setBounds(400, 410, 400, 35);
+        add(lblRegisteredCourses);
+        
 		Server ServerConnection = new Server();
-		ResultSet data = ServerConnection.ExecuteQuery("select * from course, teacher where id = headTeacher");
+		ResultSet data = ServerConnection.ExecuteQuery("select * from course, teacher "
+				+ "where teacher.id = headTeacher and course.courseID not in "
+				+ "(Select course_attend.courseID from course_attend where course_attend.StudentID = '"+ClientID+"')"
+						+ " and course.courseID not in "
+						+ "(Select registered_course.courseID from registered_course where registered_course.studentID = '"+ClientID+"')");
 		Container c = this;
 		
 		JScrollPane s = new JScrollPane();
@@ -64,14 +86,17 @@ class StudentRegisterCourse extends Container {
 		JScrollPane s2 = new JScrollPane();
 		s2.getVerticalScrollBar().setUI(new MyScrollBarUI());
 		
-		RegisteredTable rtable = new RegisteredTable();
+		RegisteredTable rtable = new RegisteredTable(ClientID);
 		s2.setViewportView(rtable);
 		s2.setBounds(100, 450, 1000, 150);
 		c.add(s2);
-		table.getTable(rtable);
-		rtable.getTable(table);
-        
+		data = ServerConnection.ExecuteQuery("select * from course, teacher, registered_course where id = headTeacher and course.courseID = registered_course.courseID and studentID ='"+ClientID+"'");
+		while(data.next()) {
+			rtable.addItem(data.getString("courseID"), data.getString("course.name"), data.getString("teacher.name"), data.getString("startDate"),data.getString("endDate"),data.getString("time"));
+		}
 		
+		table.getTable(rtable);
+		rtable.getTable(table);        
 	}
 }
 
@@ -82,6 +107,7 @@ class CourseRegisterTable extends JTable{
 	Object[] column = {"ID", "Subject", "TeacherName","Start","End","Time",""};
 	private Image check = new ImageIcon(LoginForm.class.getResource("/icon/check.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
 	CourseRegisterTable() {
+        
 		JTable table = this;
 		model = new DefaultTableModel() {
     		@Override
@@ -184,6 +210,12 @@ class CourseRegisterTable extends JTable{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				t.addItem(courseID, courseName, teacherName, start, end, time);
+				try {
+					t.updateDatabase();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -193,10 +225,12 @@ class CourseRegisterTable extends JTable{
 
 class RegisteredTable extends JTable{
 	CourseRegisterTable t;
+	String studentID;
 	DefaultTableModel model;
 	Object[] column = {"ID", "Subject", "TeacherName","Start","End","Time",""};
 	private Image check = new ImageIcon(LoginForm.class.getResource("/icon/trash-can.png")).getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
-	RegisteredTable() {
+	RegisteredTable(String ClientID) {
+		studentID = ClientID;
 		JTable table = this;
 		model = new DefaultTableModel() {
     		@Override
@@ -246,6 +280,12 @@ class RegisteredTable extends JTable{
 	                    /*perform a click event*/
 	                    ((JButton)value).doClick();
 	                    model.removeRow(row);
+	                    try {
+							updateDatabase();
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 	                }
 	            }
 			}
@@ -289,6 +329,23 @@ class RegisteredTable extends JTable{
 		
 		
 	}
+	void updateDatabase() throws SQLException {
+		Server ServerConnection = new Server();
+		String query = "Delete from registered_course where studentID =?";
+		PreparedStatement preparedStmt = ServerConnection.Connect.prepareStatement(query);
+	    preparedStmt.setString (1, studentID);
+	    preparedStmt.execute();
+		for(int row=0;row<this.getRowCount();row++) {
+			String courseID = (String) this.getValueAt(row, 0);
+			query = " insert into registered_course (studentID, courseID)"
+			        + " values (?,?)" ;
+		    preparedStmt = ServerConnection.Connect.prepareStatement(query);
+		    preparedStmt.setString (1, studentID);
+		    preparedStmt.setString (2, courseID);
+		    preparedStmt.execute();
+		}
+		
+	}
 	void getTable(CourseRegisterTable table) {
 		t = table;
 	}
@@ -319,7 +376,7 @@ class ButtonRenderer extends JButton implements TableCellRenderer {
 	}
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		
-			JButton btn = (JButton) value;
+			JButton btn = ( JButton) value;
 			ImageIcon icon = (ImageIcon) btn.getIcon();
 			setIcon(icon);
 			setSize(20,20);

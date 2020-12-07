@@ -431,6 +431,12 @@ class ClassManagement extends Container {
     					}
     	        	}	        		        		        		    
             	}
+        		TextID.setText("");       		
+        		TextName.setText("");
+        		TextPractice.setText("");
+        		TextTheory.setText("");
+        		TextOverall.setText("");
+        		TextPass.setText("");
         		}
 	        	
         });
@@ -472,7 +478,13 @@ class ClassManagement extends Container {
     				        		status= "";
     				        	}
     				        	model.addRow(new Object[] {stuid,stuName,pracP,TheoP,ovl,status});
-    				}
+    					 }
+    		        		TextID.setText("");       		
+    		        		TextName.setText("");
+    		        		TextPractice.setText("");
+    		        		TextTheory.setText("");
+    		        		TextOverall.setText("");
+    		        		TextPass.setText("");
     					 } catch (SQLException e1) {
     					// TODO Auto-generated catch block
     					e1.printStackTrace();

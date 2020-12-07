@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import menu.LoginForm;
+import menu.Server;
 
 import java.sql.*;
 
@@ -42,7 +43,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					StudentMenu frame = new StudentMenu(null);
+					StudentMenu frame = new StudentMenu(null, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,7 +52,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 		});
 	}
 	
-	public StudentMenu(ResultSet Client) throws SQLException {
+	public StudentMenu(ResultSet Client, Server ServerConnection) throws SQLException {
 		setUndecorated(true);
 		setResizable(false);
 		
@@ -163,13 +164,6 @@ public class StudentMenu extends JFrame implements ActionListener{
 		contentPane.add(panel);
 		contentPane.add(container);
 		
-		JLabel greeting = new JLabel("Chào, "+ Client.getString("name"));
-		greeting.setBackground(new Color(0, 0, 205));
-		panel.add(greeting);
-		greeting.setFont(new Font("Source Sans Pro Semibold", Font.PLAIN, 20));
-		greeting.setForeground(SystemColor.textHighlightText);
-		greeting.setVerticalAlignment(JLabel.BOTTOM);
-		greeting.setHorizontalAlignment(JLabel.LEFT);
 		
 		
 		
@@ -205,7 +199,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		JButton schedule = new JButton("Show schedule");
+		JButton schedule = new JButton("Show schedule and course result");
 		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
 		schedule.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/calendar.png")));
 		schedule.setHorizontalTextPosition(JLabel.CENTER);
@@ -216,7 +210,12 @@ public class StudentMenu extends JFrame implements ActionListener{
 		schedule.setBackground(new Color(191,205,219));
 		schedule.setFocusable(false);
 		schedule.setBorder(null);
-		
+		schedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.show(container, "Schedule");
+			}
+		});
 		pass = new JButton("Change password");
 		pass.setFont(new Font("Sitka Text", Font.PLAIN, 15));
 		pass.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/cogwheel.png")));
@@ -248,12 +247,15 @@ public class StudentMenu extends JFrame implements ActionListener{
 		content.add(schedule);
 		content.add(pass);
 		
+		String ClientID = Client.getString("id");
 		Container InfoForm = new StudentInfo(Client);
-		Container RegisterUI = new StudentRegisterCourse();
+		Container RegisterUI = new StudentRegisterCourse(ClientID);
+		Container Schedule = new StudentShowSchedule(ClientID, ServerConnection);
 		//Container changePassword = new ChangePasswordForm();
 		//container.add("Pass",changePassword);
         container.add("Info",InfoForm);
         container.add("Register",RegisterUI);
+        container.add("Schedule",Schedule);              
 	}
 
 	@Override
@@ -265,5 +267,4 @@ public class StudentMenu extends JFrame implements ActionListener{
 			lblBack.setVisible(true);
 		}
 	}
-
 }

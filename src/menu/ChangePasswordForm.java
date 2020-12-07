@@ -24,6 +24,7 @@ public class ChangePasswordForm extends Container{
 
 	public ChangePasswordForm() {
 		Container c = this;
+		setSize(800,600);
 		JLabel title = new JLabel("Change password"); 
         title.setFont(new Font("Arial", Font.PLAIN, 30)); 
         title.setSize(300, 30); 
@@ -40,7 +41,7 @@ public class ChangePasswordForm extends Container{
   
         JPasswordField toldPass = new JPasswordField(); 
         toldPass.setFont(new Font("Arial", Font.PLAIN, 15)); 
-        toldPass.setSize(190, 30); 
+        toldPass.setSize(190, 30);
         toldPass.setLocation(500, 100);
         toldPass.addFocusListener(new FocusAdapter() {
 			@Override

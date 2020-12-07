@@ -234,7 +234,7 @@ class ShowTeachingSchedule extends Container {
         JLabel lblNotifi = new JLabel("");
         lblNotifi.setFont(new Font("Arial", Font.BOLD, 15));
         lblNotifi.setForeground(Color.red);
-        lblNotifi.setBounds(10, 471, 301, 30);
+        lblNotifi.setBounds(10, 401, 301, 30);
         add(lblNotifi);
         
 
@@ -265,8 +265,37 @@ class ShowTeachingSchedule extends Container {
         	}
         });
         ClassManagePage.setFont(new Font("Arial", Font.BOLD, 15));
-        ClassManagePage.setBounds(10, 416, 198, 54);
+        ClassManagePage.setBounds(10, 441, 198, 54);
         add(ClassManagePage);
+        
+        JButton btnClassPending = new JButton("Show Class Pending");
+        btnClassPending.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		int index = table.getSelectedRow();
+        		if(index==-1) {
+        			lblNotifi.setText("No class was chosen!");
+        		}
+        		else { 
+        			lblNotifi.setText("");
+        			String ClassID = textID.getText();
+        			String ClassName = textName.getText();
+        			Container ShowPending;
+					try {
+						ShowPending = new ShowPending(id,ClassID,ClassName,ServerConnection,ContentPane);
+						ContentPane.add("ClassPending", ShowPending);
+						CardLayout cl = (CardLayout)(ContentPane.getLayout());				
+						cl.show(ContentPane, "ClassPending");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}					             			
+        		}
+        	}
+        });
+        btnClassPending.setFont(new Font("Arial", Font.BOLD, 15));
+        btnClassPending.setBounds(10, 505, 198, 54);
+        add(btnClassPending);
         
 
                 
