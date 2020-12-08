@@ -127,12 +127,38 @@ public class Server {
 		preparedStmt.execute();
 	}
 
-	// admin
-	public boolean UpdateInforAdministrator(String id, String email, String name, String dob, String phoneNumber)
+	public void UpdateInforTeacher(String id, String name, String phoneNumber, String email, String dob)
 			throws SQLException {
-		System.out.print(dob);
+		String query = "update teacher set name=?,phoneNumber=?,email=?,dob=? where id=?";
+
+		PreparedStatement preparedStmt = Connect.prepareStatement(query);
+		preparedStmt.setString(1, name);
+		preparedStmt.setString(2, phoneNumber);
+		preparedStmt.setString(3, email);
+		preparedStmt.setString(4, dob);
+		preparedStmt.setString(5, id);
+		preparedStmt.execute();
+	}
+
+	public void UpdateInforStudent(String id, String name, String MainClass, String email, String gender, String dob, String phoneNumber)
+			throws SQLException {
+		String query = "update student set name=?,MainClass=?,email=?,gender=?,dob=?,phoneNumber=? where id=?";
+
+		PreparedStatement preparedStmt = Connect.prepareStatement(query);
+		preparedStmt.setString(1, name);
+		preparedStmt.setString(2, MainClass);
+		preparedStmt.setString(3, email);
+		preparedStmt.setString(4, gender);
+		preparedStmt.setString(5, dob);
+		preparedStmt.setString(6, phoneNumber);
+		preparedStmt.setString(7, id);
+		preparedStmt.execute();
+	}
+	
+	// admin
+	public void UpdateInforAdministrator(String id, String email, String name, String dob, String phoneNumber)
+			throws SQLException {
 		String query = "update administrator set email=?,name=?, dob=?, phoneNumber=? where id=?";
-		// Date date=(Date) new SimpleDateFormat("yyyy-mm-dd").parse(dob);
 
 		PreparedStatement preparedStmt = Connect.prepareStatement(query);
 		preparedStmt.setString(1, email);
@@ -141,7 +167,6 @@ public class Server {
 		preparedStmt.setString(4, phoneNumber);
 		preparedStmt.setString(5, id);
 		preparedStmt.execute();
-		return true;
 	}
 
 	public void InsertStudent(String id, String name, String Class, String email, String gender, String dob,

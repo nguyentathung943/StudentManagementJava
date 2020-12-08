@@ -19,25 +19,23 @@ import javax.swing.JTextField;
 import menu.Server;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.toedter.calendar.JDateChooser;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 class TeacherInfo extends Container {
-	private String dates[] 
-	        = { "01", "02", "03", "04", "05", 
-	            "06", "07", "08", "09", "10", 
-	            "11", "12", "13", "14", "15", 
-	            "16", "17", "18", "19", "20", 
-	            "21", "22", "23", "24", "25", 
-	            "26", "27", "28", "29", "30", 
-	            "31" }; 
-	    private String months[] 
-	        = { "Jan", "Feb", "Mar", "Apr", 
-	            "May", "Jun", "July", "Aug", 
-	            "Sep", "Oct", "Nov", "Dec" };
-	    
-	    private JTextField emailText;
-	    private JTextField textYear;
+	
+	private JTextField emailText;
+	private JDateChooser dateChooser;
+	private JLabel idText;
 	public TeacherInfo(ResultSet Client, Server ServerConnection) throws SQLException {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Container c = this;
 		setSize(1200,650);
 		JLabel title = new JLabel("Teacher Information"); 
@@ -71,29 +69,12 @@ class TeacherInfo extends Container {
         tmno.setLocation(120, 140); 
         c.add(tmno);
   
-        ButtonGroup gengp = new ButtonGroup();
-        
-        String day = Client.getString("dob");
-        String[] DOB= day.split("-");
+
         JLabel dob = new JLabel("DOB"); 
         dob.setFont(new Font("Arial", Font.PLAIN, 20)); 
         dob.setSize(100, 30); 
         dob.setLocation(10, 178); 
-        c.add(dob); 
-  
-        JComboBox date = new JComboBox(dates); 
-        date.setFont(new Font("Arial", Font.PLAIN, 15));
-        date.setSelectedItem(DOB[2]);
-        date.setSize(50, 20); 
-        date.setLocation(120, 185);
-        c.add(date);
-  
-        JComboBox month = new JComboBox(months);
-        month.setFont(new Font("Arial", Font.PLAIN, 15));
-        month.setSelectedItem(Integer.parseInt(DOB[1])-1);
-        month.setSize(60, 20);
-        month.setLocation(166, 185); 
-        c.add(month);
+        c.add(dob);
   
         JLabel email = new JLabel("Email"); 
         email.setFont(new Font("Arial", Font.PLAIN, 20)); 
@@ -102,6 +83,16 @@ class TeacherInfo extends Container {
         c.add(email);
   
         JButton sub = new JButton("Save"); 
+        sub.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String dob = df.format(dateChooser.getDate());
+        		try {
+        			ServerConnection.UpdateInforTeacher(idText.getText(), tname.getText(), tmno.getText(), emailText.getText(), dob);
+        		} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+        	}
+        });
         sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
         sub.setSize(155, 30); 
         sub.setLocation(10, 290);
@@ -117,16 +108,22 @@ class TeacherInfo extends Container {
         IDLabel.setBounds(10, 69, 100, 30);
         c.add(IDLabel);
         
-        JLabel idText = new JLabel((String) Client.getString("id"));
+        idText = new JLabel((String) Client.getString("id"));
         idText.setFont(new Font("Arial", Font.PLAIN, 15));
         idText.setBounds(120, 71, 190, 30);
         c.add(idText);
         
-        textYear = new JTextField();
-        textYear.setFont(new Font("Arial", Font.PLAIN, 15));
-        textYear.setBounds(224, 185, 60, 20);
-        textYear.setText(DOB[0]);
-        c.add(textYear);
-        textYear.setColumns(10);
+        dateChooser = new JDateChooser();
+        dateChooser.setBounds(120, 180, 190, 30);
+        add(dateChooser);
+        dateChooser.setDateFormatString("yyyy-MM-dd");
+        String dd = Client.getString("dob");
+		Date date;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd").parse(dd);
+			dateChooser.setDate(date);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 	}
 }
