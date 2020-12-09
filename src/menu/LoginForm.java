@@ -42,13 +42,10 @@ public class LoginForm extends JFrame {
 	boolean passwordVisible;
 	private JPasswordField password;
 	private final JLabel lblX = new JLabel("X");
-	private Image background = new ImageIcon(LoginForm.class.getResource("/icon/login.png")).getImage();
-//	private Image usr = new ImageIcon(LoginForm.class.getResource("/icon/username.png")).getImage()
-//			.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-//	private Image pass = new ImageIcon(LoginForm.class.getResource("/icon/eye.png")).getImage().getScaledInstance(30,
-//			30, Image.SCALE_SMOOTH);
-//	private Image Key = new ImageIcon(LoginForm.class.getResource("/icon/Key.png")).getImage().getScaledInstance(30, 30,
-//			Image.SCALE_SMOOTH);
+	private Image background = new ImageIcon(LoginForm.class.getResource("/icon/login.png")).getImage().getScaledInstance(120, 120,Image.SCALE_SMOOTH);
+	private Image usr = new ImageIcon(LoginForm.class.getResource("/icon/username.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+	private Image pass = new ImageIcon(LoginForm.class.getResource("/icon/eyes.png")).getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
+	private Image Key = new ImageIcon(LoginForm.class.getResource("/icon/Key.png")).getImage().getScaledInstance(30, 30,Image.SCALE_SMOOTH);
 
 	/**
 	 * Launch the application.
@@ -124,7 +121,7 @@ public class LoginForm extends JFrame {
 		usrIcon.setBackground(new Color(255, 255, 255));
 		usrIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		usrIcon.setBounds(359, 0, 47, 53);
-		usrIcon.setIcon(new ImageIcon(LoginForm.class.getResource("/icon/username.png")));
+		usrIcon.setIcon(new ImageIcon(usr));
 		panel.add(usrIcon);
 
 		JPanel panel_1 = new JPanel();
@@ -183,7 +180,7 @@ public class LoginForm extends JFrame {
 		pwdIcon.setBackground(new Color(255, 255, 255));
 		pwdIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		pwdIcon.setBounds(359, 0, 47, 53);
-		pwdIcon.setIcon(new ImageIcon(LoginForm.class.getResource("/icon/password.png")));
+		pwdIcon.setIcon(new ImageIcon(pass));
 		panel_1.add(pwdIcon);
 
 		JPanel btnLogin = new JPanel();
@@ -200,8 +197,7 @@ public class LoginForm extends JFrame {
 		lblNewLabel.setBounds(136, 0, 82, 53);
 		btnLogin.add(lblNewLabel);
 
-//		JLabel key = new JLabel(new ImageIcon(Key));
-		JLabel key = new JLabel();
+		JLabel key = new JLabel(new ImageIcon(Key));
 		key.setBounds(218, 10, 30, 30);
 		btnLogin.add(key);
 		lblX.addMouseListener(new MouseAdapter() {
@@ -291,7 +287,7 @@ public class LoginForm extends JFrame {
 		JLabel lblResetPassword = new JLabel("Reset Password");
 		lblResetPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblResetPassword.setFont(new Font("Arial", Font.BOLD, 14));
-		lblResetPassword.setBounds(45, 0, 113, 53);
+		lblResetPassword.setBounds(28, 0, 138, 53);
 		btnResetPassword.add(lblResetPassword);
 
 		JPanel btnLogFirsttime = new JPanel();
