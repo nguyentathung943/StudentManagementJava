@@ -81,14 +81,14 @@ public class Server {
 		preparedStmt.execute();
 	}
 
-	public void UpdateCourse(String o_id, String id, String name, Date NStart, Date NEnd, String Ntime)
+	public void UpdateCourse(String o_id, String id, String name, String NStart, String NEnd, String Ntime)
 			throws SQLException {
 		String query = "update course set courseID=?,name=?,startDate=?, endDate=?,time=? where courseID=?";
 		PreparedStatement preparedStmt = Connect.prepareStatement(query);
 		preparedStmt.setString(1, id);
 		preparedStmt.setString(2, name);
-		preparedStmt.setDate(3, NStart);
-		preparedStmt.setDate(4, NEnd);
+		preparedStmt.setString(3, NStart);
+		preparedStmt.setString(4, NEnd);
 		preparedStmt.setString(5, Ntime);
 		preparedStmt.setString(6, o_id);
 		// execute the preparedstatement

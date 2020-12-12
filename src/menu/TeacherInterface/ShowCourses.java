@@ -23,7 +23,10 @@ import javax.swing.table.DefaultTableModel;
 import menu.Server;
 
 import java.sql.*;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JTable;
 import java.awt.Rectangle;
@@ -32,6 +35,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
+import com.toedter.calendar.JDateChooser;
 
 
 class ShowCourses extends Container {
@@ -42,11 +46,10 @@ class ShowCourses extends Container {
 	private JTextField textCourseID;
 	private JTextField textCourseName;
 	private String ClientID;
-	private JTextField textStartDate;
-	private JTextField textEndDate;
 	private JTextField textTime;
+	private JDateChooser startDate, endDate;
 	public ShowCourses(String id, Server ServerConnection) throws SQLException {
-
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		ClientID = id;
 		Container c = this;
 		setSize(1200,650);
@@ -101,7 +104,7 @@ class ShowCourses extends Container {
         
         textCourseID = new JTextField();
         textCourseID.setFont(new Font("Arial", Font.PLAIN, 15));
-        textCourseID.setBounds(169, 91, 207, 40);
+        textCourseID.setBounds(166, 92, 207, 40);
         add(textCourseID);
         textCourseID.setColumns(10);
         
@@ -119,7 +122,7 @@ class ShowCourses extends Container {
         textCourseName = new JTextField();
         textCourseName.setFont(new Font("Arial", Font.PLAIN, 15));
         textCourseName.setColumns(10);
-        textCourseName.setBounds(169, 148, 207, 40);
+        textCourseName.setBounds(166, 148, 207, 40);
         add(textCourseName);
         
         JLabel lblStartDate = new JLabel("Start Date");
@@ -137,22 +140,10 @@ class ShowCourses extends Container {
         lblTime.setBounds(10, 306, 141, 40);
         add(lblTime);
         
-        textStartDate = new JTextField();
-        textStartDate.setFont(new Font("Arial", Font.PLAIN, 15));
-        textStartDate.setColumns(10);
-        textStartDate.setBounds(169, 198, 207, 40);
-        add(textStartDate);
-        
-        textEndDate = new JTextField();
-        textEndDate.setFont(new Font("Arial", Font.PLAIN, 15));
-        textEndDate.setColumns(10);
-        textEndDate.setBounds(169, 251, 207, 40);
-        add(textEndDate);
-        
         textTime = new JTextField();
         textTime.setFont(new Font("Arial", Font.PLAIN, 15));
         textTime.setColumns(10);
-        textTime.setBounds(169, 306, 207, 40);
+        textTime.setBounds(166, 303, 207, 40);
         add(textTime);
         
 		addMouseListener(new MouseAdapter() {
@@ -162,8 +153,8 @@ class ShowCourses extends Container {
         		table.clearSelection();
         		textCourseID.setText("");
         		textCourseName.setText("");
-        		textEndDate.setText("");
-        		textStartDate.setText("");
+        		endDate.setCalendar(null);
+        		startDate.setCalendar(null);
         		textTime.setText("");
 			}
 		});
@@ -173,8 +164,18 @@ class ShowCourses extends Container {
         		int index = table.getSelectedRow();
         		textCourseID.setText(model.getValueAt(index, 0).toString());
         		textCourseName.setText(model.getValueAt(index, 1).toString());
-        		textStartDate.setText(model.getValueAt(index, 2).toString());
-        		textEndDate.setText(model.getValueAt(index, 3).toString());
+        		String dd;
+    			Date date;
+    			try {
+            		dd = model.getValueAt(index, 2).toString();
+    				date = new SimpleDateFormat("yyyy-MM-dd").parse(dd);
+    				startDate.setDate(date);
+    				dd = model.getValueAt(index, 3).toString();
+    				date = new SimpleDateFormat("yyyy-MM-dd").parse(dd);
+    				endDate.setDate(date);
+    			} catch (ParseException e1) {
+    				e1.printStackTrace();
+    			}
         		textTime.setText(model.getValueAt(index, 4).toString());
         	}
         });
@@ -198,8 +199,8 @@ class ShowCourses extends Container {
         	public void actionPerformed(ActionEvent e) {
         		String CourseName = textCourseName.getText();
         		String CourseID = textCourseID.getText().toUpperCase();
-        		String StartDate = textStartDate.getText();
-        		String EndDate = textEndDate.getText();
+        		String StartDate = df.format(startDate.getDate());
+        		String EndDate = df.format(endDate.getDate());
         		String Time = textTime.getText();
         		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
         			lblNotification.setText("All fields must be filled");
@@ -214,8 +215,6 @@ class ShowCourses extends Container {
 						else {
 							lblNotification.setText("");
 							try {
-//								Date SDate = Date.valueOf(StartDate);
-//								Date EDate = Date.valueOf(EndDate);
 								ServerConnection.InsertCourse(CourseID, CourseName,ClientID,StartDate,EndDate,Time);
 								model.setRowCount(0);
 								ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
@@ -224,8 +223,8 @@ class ShowCourses extends Container {
 							    }
 					        		textCourseID.setText("");
 					        		textCourseName.setText("");
-					        		textEndDate.setText("");
-					        		textStartDate.setText("");
+					        		endDate.setCalendar(null);
+					        		startDate.setCalendar(null);
 					        		textTime.setText("");
 							}
 							catch(Exception e1) {
@@ -267,19 +266,17 @@ class ShowCourses extends Container {
         		else {
         			String CourseName = textCourseName.getText();
             		String CourseID = textCourseID.getText().toUpperCase();
-            		String StartDate = textStartDate.getText();
-            		String EndDate = textEndDate.getText();
+            		String StartDate = df.format(startDate.getDate());
+            		String EndDate = df.format(endDate.getDate());
             		String Time = textTime.getText();
-            		
+            		String o_id = model.getValueAt(index, 0).toString();
             		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
             			lblNotification.setText("All fields must be filled");
             		}
             		else {
             			lblNotification.setText("");
             			try {
-							Date SDate = Date.valueOf(StartDate);
-							Date EDate = Date.valueOf(EndDate );
-							ServerConnection.UpdateCourse(id, CourseID, CourseName,SDate,EDate,Time);
+							ServerConnection.UpdateCourse(o_id, CourseID, CourseName,StartDate,EndDate,Time);
 							model.setRowCount(0);
 							ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
 							while(data.next()) {
@@ -287,8 +284,8 @@ class ShowCourses extends Container {
 						    }
 								textCourseID.setText("");
 								textCourseName.setText("");
-								textEndDate.setText("");
-								textStartDate.setText("");
+								endDate.setCalendar(null);
+								startDate.setCalendar(null);
 								textTime.setText("");
 						}
 						catch(Exception e1) {
@@ -327,8 +324,8 @@ class ShowCourses extends Container {
         		else {
         			String CourseName = textCourseName.getText();
             		String CourseID = textCourseID.getText().toUpperCase();
-            		String StartDate = textStartDate.getText();
-            		String EndDate = textEndDate.getText();
+            		String StartDate = df.format(startDate.getDate());
+            		String EndDate = df.format(endDate.getDate());
             		String Time = textTime.getText();
             		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
             			lblNotification.setText("All fields must be filled");
@@ -344,8 +341,8 @@ class ShowCourses extends Container {
         				        }
         		        		textCourseID.setText("");
         		        		textCourseName.setText("");
-        		        		textEndDate.setText("");
-        		        		textStartDate.setText("");
+        		        		endDate.setCalendar(null);
+        		        		startDate.setCalendar(null);
         		        		textTime.setText("");
         				} catch (SQLException e1) {
         					lblNotification.setText("Course you are trying to delete not exist!");
@@ -379,8 +376,8 @@ class ShowCourses extends Container {
         		table.clearSelection();
         		textCourseID.setText("");
         		textCourseName.setText("");
-        		textEndDate.setText("");
-        		textStartDate.setText("");
+        		endDate.setCalendar(null);
+        		startDate.setCalendar(null);
         		textTime.setText("");
         		lblNotification.setText("");
         	}
@@ -402,8 +399,8 @@ class ShowCourses extends Container {
         		table.clearSelection();
         		textCourseID.setText("");
         		textCourseName.setText("");
-        		textEndDate.setText("");
-        		textStartDate.setText("");
+        		endDate.setCalendar(null);
+        		startDate.setCalendar(null);
         		textTime.setText("");
         		lblNotification.setText("");
 				ResultSet data;
@@ -422,6 +419,15 @@ class ShowCourses extends Container {
         lblRefresh.setBounds(1168, 10, 32, 32);
         add(lblRefresh);
         
+        startDate = new JDateChooser();
+        startDate.setBounds(166, 201, 207, 40);
+        add(startDate);
+        startDate.setDateFormatString("yyyy-MM-dd");
+        
+        endDate = new JDateChooser();
+        endDate.setBounds(166, 251, 207, 40);
+        add(endDate);
+        endDate.setDateFormatString("yyyy-MM-dd");
         
         
 	}
