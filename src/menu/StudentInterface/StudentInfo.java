@@ -34,9 +34,10 @@ class StudentInfo extends Container {
     private JTextField emailText;
     private JTextField textPhoneNum;
     private JDateChooser dateChooser;
-	public StudentInfo(ResultSet Client,  Server ServerConnection) throws SQLException {
+	public StudentInfo(String ClientID,  Server ServerConnection) throws SQLException {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Container c = this;
+		setSize(1200,650);
 		JLabel title = new JLabel("Student Information"); 
         title.setFont(new Font("Arial", Font.PLAIN, 30)); 
         title.setSize(300, 30); 
@@ -48,6 +49,9 @@ class StudentInfo extends Container {
         name.setSize(100, 30);
         name.setLocation(300, 98); 
         c.add(name); 
+        
+        ResultSet Client = ServerConnection.ExecuteQuery("select * from student where id='"+ClientID+"'");
+        Client.next();
   
         JTextField tname = new JTextField();
         tname.setText(Client.getString("name"));
@@ -143,24 +147,34 @@ class StudentInfo extends Container {
 		}
 		
         JButton sub = new JButton("Save"); 
+
+        sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
+        sub.setSize(155, 30); 
+        sub.setLocation(300, 417);
+        c.add(sub); 
+        
+        JLabel lblNotify = new JLabel("");
+        lblNotify.setFont(new Font("Arial", Font.BOLD, 14));
+        lblNotify.setBounds(300, 394, 226, 19);
+        add(lblNotify);
+        
         sub.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		String dob = df.format(dateChooser.getDate());
-        		String genderType = "";
-        		if(male.isSelected())
-        			genderType = "Male";
-        		else if(female.isSelected())
-        			genderType = "Female";
         		try {
+            		String dob = df.format(dateChooser.getDate());
+            		String genderType = "";
+            		if(male.isSelected())
+            			genderType = "Male";
+            		else if(female.isSelected())
+            			genderType = "Female";
         			ServerConnection.UpdateInforStudent(idText.getText(), tname.getText(), classText.getText(), emailText.getText(), genderType, dob, textPhoneNum.getText());
+        			lblNotify.setForeground(Color.GREEN);
+        			lblNotify.setText("Information saved");
         		} catch (SQLException e1) {
-					e1.printStackTrace();
+        			lblNotify.setForeground(Color.RED);
+        			lblNotify.setText("Invalid information format");
 				}
         	}
         });
-        sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
-        sub.setSize(155, 30); 
-        sub.setLocation(300, 407);
-        c.add(sub); 
 	}
 }

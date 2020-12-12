@@ -34,7 +34,7 @@ class TeacherInfo extends Container {
 	private JTextField emailText;
 	private JDateChooser dateChooser;
 	private JLabel idText;
-	public TeacherInfo(ResultSet Client, Server ServerConnection) throws SQLException {
+	public TeacherInfo(String ClientID, Server ServerConnection) throws SQLException {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Container c = this;
 		setSize(1200,650);
@@ -49,7 +49,10 @@ class TeacherInfo extends Container {
         name.setSize(100, 30);
         name.setLocation(10, 98); 
         c.add(name); 
-  
+        
+        ResultSet Client = ServerConnection.ExecuteQuery("select * from teacher where id='"+ClientID+"'");
+        Client.next();
+        
         JTextField tname = new JTextField();
         tname.setText(Client.getString("name"));
         tname.setFont(new Font("Arial", Font.PLAIN, 15)); 
@@ -83,16 +86,7 @@ class TeacherInfo extends Container {
         c.add(email);
   
         JButton sub = new JButton("Save"); 
-        sub.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		String dob = df.format(dateChooser.getDate());
-        		try {
-        			ServerConnection.UpdateInforTeacher(idText.getText(), tname.getText(), tmno.getText(), emailText.getText(), dob);
-        		} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-        	}
-        });
+
         sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
         sub.setSize(155, 30); 
         sub.setLocation(10, 290);
@@ -122,8 +116,28 @@ class TeacherInfo extends Container {
 		try {
 			date = new SimpleDateFormat("yyyy-MM-dd").parse(dd);
 			dateChooser.setDate(date);
+			
+
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 		}
+		JLabel lblNotify = new JLabel("");
+		lblNotify.setForeground(Color.GREEN);
+		lblNotify.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNotify.setBounds(10, 261, 190, 19);
+		add(lblNotify);
+        sub.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {    		
+        		try {
+        			String dob = df.format(dateChooser.getDate());
+        			ServerConnection.UpdateInforTeacher(idText.getText(), tname.getText(), tmno.getText(), emailText.getText(), dob);
+        			lblNotify.setForeground(Color.GREEN);
+        			lblNotify.setText("Information saved");
+        		} catch (SQLException e1) {
+        			lblNotify.setForeground(Color.RED);
+        			lblNotify.setText("Invalid information format");
+				}
+        	}
+        });
 	}
 }

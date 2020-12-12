@@ -30,6 +30,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.sql.*;
+
+import menu.ChangePasswordForm;
 import menu.Server;
 public class AdminMenu extends JFrame implements ActionListener{
 	JButton info;
@@ -57,7 +59,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 	public AdminMenu(ResultSet Client, Server ServerConnection) throws SQLException {
 		setUndecorated(true);
 		setResizable(false);
-		
+		String ClientID = Client.getString("id");
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		getContentPane().setLayout(null);
@@ -144,9 +146,18 @@ public class AdminMenu extends JFrame implements ActionListener{
 		info.addActionListener(this);
 		info.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "Info");
-				lblBack.setVisible(true);
+				Container InfoForm;
+				try {
+					InfoForm = new AdminInfo(ClientID, ServerConnection);
+					container.add("Info",InfoForm);
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "Info");
+					lblBack.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 			}
 		});
 		
@@ -167,9 +178,17 @@ public class AdminMenu extends JFrame implements ActionListener{
 		courseManage.setBorder(null);
 		courseManage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "Course");
-				lblBack.setVisible(true);
+				Container CourseForm;
+				try {
+					CourseForm = new CoursesManagement(ServerConnection);
+					container.add("Course", CourseForm);
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "Course");
+					lblBack.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -187,9 +206,17 @@ public class AdminMenu extends JFrame implements ActionListener{
 		humanManage.addActionListener(this);
 		humanManage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "HumanManage");
-				lblBack.setVisible(true);
+				Container HumanForm;
+				try {
+					HumanForm = new HumanResourceManagement(ServerConnection);
+					container.add("HumanManage", HumanForm);
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "HumanManage");
+					lblBack.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -206,6 +233,8 @@ public class AdminMenu extends JFrame implements ActionListener{
 		pass.setBorder(null);
 		pass.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Container changePassword = new ChangePasswordForm(ClientID, ServerConnection);
+				container.add("Pass",changePassword);
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "Pass");
 				lblBack.setVisible(true);
@@ -216,43 +245,17 @@ public class AdminMenu extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "MainMenu");
-				lblBack.setVisible(false);
-				
-			}
-			
+				lblBack.setVisible(false);						}		
 		});
 		content.add(info);
 		content.add(courseManage);
 		content.add(humanManage);
 		content.add(pass);
-		
-		Container InfoForm = new AdminInfo(Client, ServerConnection);
-		Container HumanForm = new HumanResourceManagement(ServerConnection);
-		Container CourseForm = new CoursesManagement(ServerConnection);
-		//Container changePassword = new ChangePasswordForm();
-		//container.add("Pass",changePassword);
-        container.add("Info",InfoForm);
-        container.add("HumanManage", HumanForm);
-        container.add("Course", CourseForm);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-//		if (e.getSource() == info) {
-//			CardLayout cl = (CardLayout)(container.getLayout());
-//			cl.show(container, "Info");
-//			lblBack.setVisible(true);
-//		}
-//		else if (e.getSource() == humanManage) {
-//			CardLayout cl = (CardLayout)(container.getLayout());
-//			cl.show(container, "HumanManage");
-//			lblBack.setVisible(true);
-//		}else if(e.getSource() == courseManage) {
-//			CardLayout cl = (CardLayout)(container.getLayout());
-//			cl.show(container, "Course");
-//			lblBack.setVisible(true);
-//		}
+		
 	}
-
 }

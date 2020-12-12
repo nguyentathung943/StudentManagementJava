@@ -38,8 +38,7 @@ public class FillPassForm extends JFrame {
 	private JTextField txtFdfg;
 	private JPasswordField textNewPass;
 	private final JLabel lblX = new JLabel("X");
-	private Image usr = new ImageIcon(FillPassForm.class.getResource("/icon/username.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-	private Image pass = new ImageIcon(FillPassForm.class.getResource("/icon/eye.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+	private Image pass = new ImageIcon(FillPassForm.class.getResource("/icon/eyes.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	private JTextField txtId;
 	/**
 	 * Launch the application.

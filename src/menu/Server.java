@@ -52,6 +52,7 @@ public class Server {
 	// // execute the preparedstatement
 	// preparedStmt.execute();
 	// }
+	
 	public void AddStudenttoCourse(String id, String courseID) throws SQLException {
 		String query = " insert into course_attend (courseID,StudentID,practice_point,theory_point,overall,pass_status)"
 				+ " values (?, ?, ?,?,?,?)";

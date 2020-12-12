@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import menu.ChangePasswordForm;
 import menu.LoginForm;
 import menu.Server;
 
@@ -55,7 +56,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 	public StudentMenu(ResultSet Client, Server ServerConnection) throws SQLException {
 		setUndecorated(true);
 		setResizable(false);
-		
+		String ClientID = Client.getString("id");
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		getContentPane().setLayout(null);
@@ -164,9 +165,6 @@ public class StudentMenu extends JFrame implements ActionListener{
 		contentPane.add(panel);
 		contentPane.add(container);
 		
-		
-		
-		
 		info = new JButton("Edit Information");
 		info.setFont(new Font("Sitka Text", Font.PLAIN, 15));
 		info.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/folder.png")));
@@ -178,8 +176,21 @@ public class StudentMenu extends JFrame implements ActionListener{
 		info.setBackground(new Color(191,205,219));
 		info.setFocusable(false);
 		info.setBorder(null);
-		info.addActionListener(this);
-		
+		info.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Container InfoForm;
+				try {
+					InfoForm = new StudentInfo(ClientID, ServerConnection);
+					container.add("Info",InfoForm);
+					CardLayout cl = (CardLayout)(container.getLayout());
+					cl.show(container, "Info");
+					lblBack.setVisible(true);
+				}catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+				}
+			}
+		});	
 		JButton register = new JButton("Register courses");
 		register.setFont(new Font("Sitka Text", Font.PLAIN, 15));
 		register.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/tick.png")));
@@ -193,9 +204,17 @@ public class StudentMenu extends JFrame implements ActionListener{
 		register.setBorder(null);
 		register.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "Register");
-				lblBack.setVisible(true);
+				Container RegisterUI;
+				try {
+					RegisterUI = new StudentRegisterCourse(ClientID);
+					container.add("Register",RegisterUI);
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "Register");
+					lblBack.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		
@@ -212,8 +231,16 @@ public class StudentMenu extends JFrame implements ActionListener{
 		schedule.setBorder(null);
 		schedule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "Schedule");
+				Container Schedule;
+				try {
+					Schedule = new StudentShowSchedule(ClientID, ServerConnection);
+					container.add("Schedule",Schedule);   
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "Schedule");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		pass = new JButton("Change password");
@@ -229,6 +256,8 @@ public class StudentMenu extends JFrame implements ActionListener{
 		pass.setBorder(null);
 		pass.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Container changePassword = new ChangePasswordForm(ClientID, ServerConnection);
+				container.add("Pass",changePassword);
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "Pass");
 			}
@@ -237,34 +266,20 @@ public class StudentMenu extends JFrame implements ActionListener{
 		lblBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "MainMenu");
-				
-			}
-			
+				cl1.show(container, "MainMenu");	
+			}			
 		});
 		content.add(info);
 		content.add(register);
 		content.add(schedule);
-		content.add(pass);
-		
-		String ClientID = Client.getString("id");
-		Container InfoForm = new StudentInfo(Client, ServerConnection);
-		Container RegisterUI = new StudentRegisterCourse(ClientID);
-		Container Schedule = new StudentShowSchedule(ClientID, ServerConnection);
-		//Container changePassword = new ChangePasswordForm();
-		//container.add("Pass",changePassword);
-        container.add("Info",InfoForm);
-        container.add("Register",RegisterUI);
-        container.add("Schedule",Schedule);              
+		content.add(pass);               
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == info) {
-			CardLayout cl = (CardLayout)(container.getLayout());
-			cl.show(container, "Info");
-			lblBack.setVisible(true);
-		}
+		
 	}
 }
+
+

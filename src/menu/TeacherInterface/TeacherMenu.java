@@ -30,6 +30,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import menu.ChangePasswordForm;
 import menu.LoginForm;
 import menu.Server;
 import menu.StudentInterface.StudentMenu;
@@ -64,6 +65,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 	}
 	
 	public TeacherMenu(ResultSet Client, Server ServerConnection) throws SQLException {
+		String ClientID = Client.getString("id");
 		setUndecorated(true);
 		setResizable(false);
 		contentPane = new JPanel();
@@ -198,7 +200,21 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		info.setBackground(new Color(191,205,219));
 		info.setFocusable(false);
 		info.setBorder(null);
-		info.addActionListener(this);
+		info.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {							
+				Container InfoForm;
+				try {
+					InfoForm = new TeacherInfo(ClientID,ServerConnection);
+					container.add("Info",InfoForm);
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "Info");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		
 		ShowCourses = new JButton("Courses Management");
 		ShowCourses.setFont(new Font("Sitka Text", Font.PLAIN, 15));
@@ -211,7 +227,20 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		ShowCourses.setBackground(new Color(191,205,219));
 		ShowCourses.setFocusable(false);
 		ShowCourses.setBorder(null);
-		ShowCourses.addActionListener(this);
+		ShowCourses.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {			
+				Container CoursesForm;
+				try {
+					CoursesForm = new ShowCourses(ClientID,ServerConnection);
+					container.add("Courses",CoursesForm);
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "Courses");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		schedule = new JButton("Show Teaching Schedule");
 		schedule.setFont(new Font("Sitka Text", Font.PLAIN, 15));
@@ -224,7 +253,20 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		schedule.setBackground(new Color(191,205,219));
 		schedule.setFocusable(false);
 		schedule.setBorder(null);
-		schedule.addActionListener(this);
+		schedule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {						
+				Container Schedule;
+				try {
+					Schedule = new ShowTeachingSchedule(ClientID,contentPane,ServerConnection);
+					container.add("Schedule",Schedule);
+					CardLayout cl1 = (CardLayout)(container.getLayout());
+					cl1.show(container, "Schedule");
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		pass = new JButton("Change password");
 		pass.setFont(new Font("Sitka Text", Font.PLAIN, 15));
@@ -238,11 +280,14 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		pass.setFocusable(false);
 		pass.setBorder(null);
 		pass.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {			
+				Container changePassword = new ChangePasswordForm(ClientID, ServerConnection);
+				container.add("Pass",changePassword);
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "Pass");
 			}
-		});		
+		});
+		
 		lblBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cl1 = (CardLayout)(container.getLayout());
@@ -252,32 +297,12 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		content.add(info);
 		content.add(ShowCourses);
 		content.add(schedule);
-		content.add(pass);
-		String ClientID = Client.getString("id");
-		Container InfoForm = new TeacherInfo(Client,ServerConnection);
-		Container CoursesForm = new ShowCourses(ClientID,ServerConnection);
-		Container Schedule = new ShowTeachingSchedule(ClientID,contentPane,ServerConnection);
-        container.add("Info",InfoForm);
-        container.add("Courses",CoursesForm);
-        container.add("Schedule",Schedule);
-        
+		content.add(pass);    
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == info) {
-			CardLayout cl = (CardLayout)(container.getLayout());
-			cl.show(container, "Info");
-			lblBack.setVisible(true);
-		}
-		else if(e.getSource() == ShowCourses) {
-			CardLayout cl = (CardLayout)(container.getLayout());
-			cl.show(container, "Courses");
-			lblBack.setVisible(true);
-		}else if(e.getSource()==schedule) {
-			CardLayout cl = (CardLayout)(container.getLayout());
-			cl.show(container, "Schedule");
-			lblBack.setVisible(true);
-		}
+		
 	}
 }

@@ -44,7 +44,7 @@ public class LoginForm extends JFrame {
 	private final JLabel lblX = new JLabel("X");
 	private Image background = new ImageIcon(LoginForm.class.getResource("/icon/login.png")).getImage().getScaledInstance(120, 120,Image.SCALE_SMOOTH);
 	private Image usr = new ImageIcon(LoginForm.class.getResource("/icon/username.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-	private Image pass = new ImageIcon(LoginForm.class.getResource("/icon/eyes.png")).getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
+	private Image pass = new ImageIcon(LoginForm.class.getResource("/icon/eyes.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	private Image Key = new ImageIcon(LoginForm.class.getResource("/icon/Key.png")).getImage().getScaledInstance(30, 30,Image.SCALE_SMOOTH);
 
 	/**
