@@ -250,8 +250,13 @@ class HumanResourceManagement extends Container {
     				} catch (ParseException e1) {
     					e1.printStackTrace();
     				}
-        			
-        			textPhone.setText(model.getValueAt(index, 6).toString());
+    				
+        			try {    				
+        				textPhone.setText(model.getValueAt(index, 6).toString());
+        			}catch(Exception a ) {
+        				textPhone.setText("");
+        			}
+        					
         		}else {
         			textID.setText(model.getValueAt(index, 0).toString());
             		textName.setText(model.getValueAt(index, 1).toString());

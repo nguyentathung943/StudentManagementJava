@@ -305,8 +305,8 @@ public class Server {
 			String query1 = "insert into credential (username, password, role)" + " values (?,?,?)";
 			String query2 = "insert into teacher (id, name, phoneNumber, email, dob)" + " values (?,?,?,?,?)";
 			String query3 = "update course set headTeacher=? where headTeacher= ?";
-			String query4 = "delete from teacher where id='?'";
-			String query5 = "delete from credential where username='?'";
+			String query4 = "delete from teacher where id=?";
+			String query5 = "delete from credential where username=?";
 			PreparedStatement preparedStmt;
 
 			preparedStmt = Connect.prepareStatement(query1);
@@ -324,8 +324,8 @@ public class Server {
 			preparedStmt.execute();
 
 			preparedStmt = Connect.prepareStatement(query3);
-			preparedStmt.setString(1, "'" + id + "'");
-			preparedStmt.setString(2, "'" + o_id + "'");
+			preparedStmt.setString(1,id);
+			preparedStmt.setString(2,o_id);
 			preparedStmt.execute();
 
 			preparedStmt = Connect.prepareStatement(query4);
