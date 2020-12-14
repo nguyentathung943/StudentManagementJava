@@ -1,14 +1,11 @@
 package menu.AdminInterface;
 
-import java.awt.BorderLayout;
 
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -16,23 +13,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.sql.*;
 
 import menu.ChangePasswordForm;
+import menu.LoginForm;
 import menu.Server;
+import menu.StudentInterface.StudentMenu;
 public class AdminMenu extends JFrame implements ActionListener{
 	JButton info;
 	JButton humanManage;
@@ -41,7 +34,10 @@ public class AdminMenu extends JFrame implements ActionListener{
 	JPanel contentPane;
 	JPanel container;
 	private final JLabel lblX = new JLabel("X");
-	private final JButton lblBack = new JButton("");
+	private final JButton lblBack = new JButton("HOME");
+	private final JButton logoutBtn = new JButton("LOG OUT");
+	private Image homeIcon = new ImageIcon(LoginForm.class.getResource("/icon/home.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+	private Image logoutIcon = new ImageIcon(LoginForm.class.getResource("/icon/logout.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 	  
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -67,14 +63,6 @@ public class AdminMenu extends JFrame implements ActionListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1200, 800);
 		setLocationRelativeTo(null);
-		lblBack.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/back.png")));
-		lblBack.setOpaque(false);
-		lblBack.setContentAreaFilled(false);
-		lblBack.setBorderPainted(false);
-		lblBack.setFocusable(false);
-		lblBack.setBounds(5, 0, 55, 55);
-		lblBack.setVisible(false);
-		
 		
 		lblX.setForeground(new Color(240, 248, 255));
 		lblX.setFont(new Font("Comic Sans MS", Font.BOLD, 28));
@@ -102,48 +90,111 @@ public class AdminMenu extends JFrame implements ActionListener{
 			}
 		});
 		contentPane.add(lblX);
-		contentPane.add(lblBack);
 		
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(SystemColor.activeCaption);
+		panel.setBackground(new Color(37,78,88));
 		panel.setBounds(0,0,1200,150);
-		panel.setLayout(new BorderLayout());
 		
 		container = new JPanel(new CardLayout());
-		container.setBackground(SystemColor.inactiveCaption);
+		container.setBackground(new Color(222,242,241));
 		container.setBounds(0,150,1200,800-150);
 		
 		JPanel content = new JPanel();
-		content.setLayout(new GridLayout(2,2,10,10));
-		content.setBackground(SystemColor.inactiveCaption);
+		content.setBackground(new Color(222,242,241));
 		content.setBounds(400,200,400,400);
 		
 		container.add("MainMenu", content);
 		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		logoutBtn.setBounds(624, 0, 100, 100);
+		panel.add(logoutBtn);
+		logoutBtn.setBackground(new Color(37,78,88));
+		logoutBtn.setForeground(new Color(255, 255, 255));
+		logoutBtn.setFont(new Font("Arial", Font.BOLD, 13));
+		logoutBtn.setIcon(new ImageIcon(logoutIcon));
+		logoutBtn.setHorizontalTextPosition(JLabel.CENTER);
+		logoutBtn.setVerticalTextPosition(JLabel.BOTTOM);
+		logoutBtn.setFocusable(false);
+		logoutBtn.setBorder(null);
+		lblBack.setBounds(448, 0, 100, 100);
+		panel.add(lblBack);
+		lblBack.setBackground(new Color(37,78,88));
+		lblBack.setForeground(new Color(255, 255, 255));
+		lblBack.setFont(new Font("Arial", Font.BOLD, 13));
+		lblBack.setIcon(new ImageIcon(homeIcon));
+		lblBack.setFocusable(false);
+		lblBack.setBorder(null);
+		lblBack.setHorizontalTextPosition(JLabel.CENTER);
+		lblBack.setVerticalTextPosition(JLabel.BOTTOM);
+		lblBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.show(container, "MainMenu");
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblBack.setBackground(new Color(17,45,50));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblBack.setBackground(new Color(37,78,88));
+			}
+		});
+		logoutBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "Do you want to log out?","LOG OUT",JOptionPane.YES_NO_OPTION)==0) {
+					AdminMenu.this.dispose();
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								LoginForm frame = new LoginForm();
+								frame.setVisible(true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				logoutBtn.setBackground(new Color(17,45,50));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				logoutBtn.setBackground(new Color(37,78,88));
+			}
+		});
 		contentPane.add(container);
 		
-		JLabel greeting = new JLabel("Chào, "+ Client.getString("name"));
-		panel.add(greeting);
-		greeting.setFont(new Font("Source Sans Pro Semibold", Font.PLAIN, 20));
-		greeting.setForeground(SystemColor.textHighlightText);
-		greeting.setVerticalAlignment(JLabel.BOTTOM);
-		greeting.setHorizontalAlignment(JLabel.LEFT);
-		
-		
-		
 		info = new JButton("Edit Information");
-		info.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		info.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/folder.png")));
+		info.setFont(new Font("Arial", Font.BOLD, 18));
+		info.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/folder.png")));
 		info.setHorizontalTextPosition(JLabel.CENTER);
 		info.setVerticalTextPosition(JLabel.BOTTOM);
 		info.setVerticalAlignment(JLabel.CENTER);
 		info.setHorizontalAlignment(JLabel.CENTER);
-		info.setBounds(450,100,150,100);
-		info.setBackground(new Color(191,205,219));
+		info.setBounds(345,32,185,185);
+		info.setBackground(new Color(222,242,241));
+		info.setForeground(new Color(37,78,88));
 		info.setFocusable(false);
 		info.setBorder(null);
-		info.addActionListener(this);
+		info.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				info.setBackground(new Color(17,45,50));
+				info.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				info.setBackground(new Color(222,242,241));
+				info.setForeground(new Color(37,78,88));
+			}
+		});
 		info.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Container InfoForm;
@@ -162,18 +213,15 @@ public class AdminMenu extends JFrame implements ActionListener{
 		});
 		
 		courseManage = new JButton("Courses Management");
-		courseManage.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		courseManage.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		courseManage.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/tick.png")));
+		courseManage.setFont(new Font("Arial", Font.BOLD, 18));
+		courseManage.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/tick.png")));
 		courseManage.setHorizontalTextPosition(JLabel.CENTER);
 		courseManage.setVerticalTextPosition(JLabel.BOTTOM);
 		courseManage.setVerticalAlignment(JLabel.CENTER);
 		courseManage.setHorizontalAlignment(JLabel.CENTER);
-		courseManage.setBounds(600,100,150,100);
-		courseManage.setBackground(new Color(191,205,219));
+		courseManage.setForeground(new Color(37,78,88));
+		courseManage.setBounds(660,32,185,185);
+		courseManage.setBackground(new Color(222,242,241));
 		courseManage.setFocusable(false);
 		courseManage.setBorder(null);
 		courseManage.addActionListener(new ActionListener() {
@@ -191,19 +239,31 @@ public class AdminMenu extends JFrame implements ActionListener{
 				}
 			}
 		});
+		courseManage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				courseManage.setBackground(new Color(17,45,50));
+				courseManage.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				courseManage.setBackground(new Color(222,242,241));
+				courseManage.setForeground(new Color(37,78,88));
+			}
+		});
 		
 		humanManage = new JButton("Human Resources Management");
-		humanManage.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		humanManage.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/calendar.png")));
+		humanManage.setFont(new Font("Arial", Font.BOLD, 18));
+		humanManage.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/calendar.png")));
 		humanManage.setHorizontalTextPosition(JLabel.CENTER);
 		humanManage.setVerticalTextPosition(JLabel.BOTTOM);
 		humanManage.setVerticalAlignment(JLabel.CENTER);
 		humanManage.setHorizontalAlignment(JLabel.CENTER);
-		humanManage.setBounds(450,200,150,100);
-		humanManage.setBackground(new Color(191,205,219));
+		humanManage.setBounds(345,276,185,185);
+		humanManage.setForeground(new Color(37,78,88));
+		humanManage.setBackground(new Color(222,242,241));
 		humanManage.setFocusable(false);
 		humanManage.setBorder(null);
-		humanManage.addActionListener(this);
 		humanManage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Container HumanForm;
@@ -219,16 +279,29 @@ public class AdminMenu extends JFrame implements ActionListener{
 				}
 			}
 		});
+		humanManage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				humanManage.setBackground(new Color(17,45,50));
+				humanManage.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				humanManage.setBackground(new Color(222,242,241));
+				humanManage.setForeground(new Color(37,78,88));
+			}
+		});
 		
 		pass = new JButton("Change password");
-		pass.setFont(new Font("Sitka Text", Font.PLAIN, 15));
-		pass.setIcon(new ImageIcon(AdminMenu.class.getResource("/icon/cogwheel.png")));
+		pass.setFont(new Font("Arial", Font.BOLD, 18));
+		pass.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/cogwheel.png")));
 		pass.setHorizontalTextPosition(JLabel.CENTER);
 		pass.setVerticalTextPosition(JLabel.BOTTOM);
 		pass.setVerticalAlignment(JLabel.CENTER);
 		pass.setHorizontalAlignment(JLabel.CENTER);
-		pass.setBounds(650,200,150,100);
-		pass.setBackground(new Color(191,205,219));
+		pass.setBounds(660,276,185,185);
+		pass.setBackground(new Color(222,242,241));
+		pass.setForeground(new Color(37,78,88));
 		pass.setFocusable(false);
 		pass.setBorder(null);
 		pass.addActionListener(new ActionListener() {
@@ -237,16 +310,22 @@ public class AdminMenu extends JFrame implements ActionListener{
 				container.add("Pass",changePassword);
 				CardLayout cl1 = (CardLayout)(container.getLayout());
 				cl1.show(container, "Pass");
-				lblBack.setVisible(true);
+			}
+		});
+		pass.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				pass.setBackground(new Color(17,45,50));
+				pass.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				pass.setBackground(new Color(222,242,241));
+				pass.setForeground(new Color(37,78,88));
 			}
 		});
 		
-		lblBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "MainMenu");
-				lblBack.setVisible(false);						}		
-		});
+		content.setLayout(null);
 		content.add(info);
 		content.add(courseManage);
 		content.add(humanManage);

@@ -1,13 +1,11 @@
 package menu.StudentInterface;
 
-import java.awt.BorderLayout;
 
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
@@ -28,7 +26,6 @@ import menu.LoginForm;
 import menu.Server;
 
 import java.sql.*;
-import javax.swing.UIManager;
 
 public class StudentMenu extends JFrame implements ActionListener{
 	JButton info;
@@ -109,10 +106,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 		container.add("MainMenu", content);
 		contentPane.add(panel);
 		panel.setLayout(null);
-		logoutBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
 		logoutBtn.setBounds(624, 0, 100, 100);
 		panel.add(logoutBtn);
 		logoutBtn.setBackground(new Color(37,78,88));
@@ -135,6 +129,11 @@ public class StudentMenu extends JFrame implements ActionListener{
 		lblBack.setVerticalTextPosition(JLabel.BOTTOM);
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseClicked(MouseEvent e) {
+				CardLayout cl1 = (CardLayout)(container.getLayout());
+				cl1.show(container, "MainMenu");
+			}
+			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBack.setBackground(new Color(17,45,50));
 			}
@@ -144,12 +143,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		lblBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CardLayout cl1 = (CardLayout)(container.getLayout());
-				cl1.show(container, "MainMenu");	
-			}			
-		});
+		
 		logoutBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -294,6 +288,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 				schedule.setForeground(new Color(37,78,88));
 			}
 		});
+		
 		pass = new JButton("Change password");
 		pass.setFont(new Font("Arial", Font.BOLD, 18));
 		pass.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/cogwheel.png")));
@@ -326,6 +321,7 @@ public class StudentMenu extends JFrame implements ActionListener{
 				pass.setForeground(new Color(37,78,88));
 			}
 		});
+		
 		content.setLayout(null);
 		content.add(info);
 		content.add(register);
