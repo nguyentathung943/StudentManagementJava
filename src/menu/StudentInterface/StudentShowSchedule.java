@@ -51,12 +51,12 @@ class StudentShowSchedule extends Container {
 
 	StudentShowSchedule(String ClientID, Server ServerConnection) throws SQLException {
 		JLabel lblSchedule = new JLabel("Your Schedule");
-        lblSchedule.setForeground(new Color(210, 105, 30));
+        lblSchedule.setForeground(new Color(197, 84, 84));
         lblSchedule.setHorizontalAlignment(SwingConstants.CENTER);
-        lblSchedule.setFont(new Font("Arial", Font.BOLD, 30));
+        lblSchedule.setFont(new Font("Arial", Font.BOLD, 36));
         lblSchedule.setBounds(400, 10, 400, 35);
         add(lblSchedule);
-		
+        setSize(1200,650);
 		String query = "select * from course_attend, course, teacher where StudentID ='" + ClientID + "' and course.courseID = course_attend.courseID and headTeacher = teacher.id";
 		ResultSet data = ServerConnection.ExecuteQuery(query);
 		Container c = this;
@@ -100,7 +100,7 @@ class AttendedCourseTable extends JTable{
         return false;
     	}};
     	getTableHeader().setFont(new Font("Arial",Font.BOLD,20));
-        getTableHeader().setBackground(new Color(0,153,153));
+        getTableHeader().setBackground(new Color(37,78,88));
         getTableHeader().setForeground(Color.white);
         TableCellRenderer baseRenderer = getTableHeader().getDefaultRenderer();
         getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));
@@ -232,7 +232,7 @@ class ScoreTable extends JPanel{
 	JLabel statusText;
 	ScoreTable() {
         setBounds(870, 50, 300, 350);
-        setBackground(new Color(191,205,219));
+        setBackground(new Color(222,242,241));
         setLayout(null);
         
         courseHeader = new JLabel("Course :");

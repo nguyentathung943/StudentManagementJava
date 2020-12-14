@@ -51,9 +51,11 @@ class ShowTeachingSchedule extends Container {
 		Container c = this;
 		setSize(1200,650);
 		JLabel title = new JLabel("Course Schedule"); 
-        title.setFont(new Font("Arial", Font.BOLD, 30)); 
-        title.setSize(336, 30); 
-        title.setLocation(10, 10);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 36)); 
+        title.setSize(400, 35); 
+        title.setForeground(new Color(197,84,84));
+        title.setLocation(400, 10);
         c.add(title);
         JLabel lblID = new JLabel("Course ID");
         lblID.setFont(new Font("Arial", Font.BOLD, 15));
@@ -239,7 +241,8 @@ class ShowTeachingSchedule extends Container {
         
 
 		
-        JButton ClassManagePage = new JButton("Show Class Students");       
+        JButton ClassManagePage = new JButton("Show Class Students");   
+        
         ClassManagePage.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -265,7 +268,23 @@ class ShowTeachingSchedule extends Container {
         	}
         });
         ClassManagePage.setFont(new Font("Arial", Font.BOLD, 15));
+        ClassManagePage.setBackground(new Color(37,78,88));
+        ClassManagePage.setForeground(new Color(136,189,188));
+        ClassManagePage.setBorder(null);
         ClassManagePage.setBounds(10, 441, 198, 54);
+        ClassManagePage.setFocusable(false);
+        ClassManagePage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				ClassManagePage.setBackground(new Color(17,45,50));
+				ClassManagePage.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				ClassManagePage.setBackground(new Color(37,78,88));
+				ClassManagePage.setForeground(new Color(136,189,188));
+			}
+		});
         add(ClassManagePage);
         
         JButton btnClassPending = new JButton("Show Class Pending");
@@ -295,6 +314,22 @@ class ShowTeachingSchedule extends Container {
         });
         btnClassPending.setFont(new Font("Arial", Font.BOLD, 15));
         btnClassPending.setBounds(10, 505, 198, 54);
+        btnClassPending.setBackground(new Color(37,78,88));
+        btnClassPending.setForeground(new Color(136,189,188));
+        btnClassPending.setBorder(null);
+        btnClassPending.setFocusable(false);
+        btnClassPending.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnClassPending.setBackground(new Color(17,45,50));
+				btnClassPending.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnClassPending.setBackground(new Color(37,78,88));
+				btnClassPending.setForeground(new Color(136,189,188));
+			}
+		});
         add(btnClassPending);
         
 

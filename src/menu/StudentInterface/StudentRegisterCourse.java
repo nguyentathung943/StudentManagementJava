@@ -51,17 +51,17 @@ class StudentRegisterCourse extends Container {
 	StudentRegisterCourse(String ClientID) throws SQLException {
 		setSize(1200,650);
 		JLabel lblAvailableCourses = new JLabel("Available Courses");
-        lblAvailableCourses.setForeground(new Color(210, 105, 30));
+        lblAvailableCourses.setForeground(new Color(197, 84, 84));
         lblAvailableCourses.setHorizontalAlignment(SwingConstants.CENTER);
-        lblAvailableCourses.setFont(new Font("Arial", Font.BOLD, 30));
+        lblAvailableCourses.setFont(new Font("Arial", Font.BOLD, 36));
         lblAvailableCourses.setBounds(400, 10, 400, 35);
         add(lblAvailableCourses);
         
         JLabel lblRegisteredCourses = new JLabel("Registered Courses");
         lblRegisteredCourses.setHorizontalAlignment(SwingConstants.CENTER);
-        lblRegisteredCourses.setForeground(new Color(210, 105, 30));
-        lblRegisteredCourses.setFont(new Font("Arial", Font.BOLD, 30));
-        lblRegisteredCourses.setBounds(400, 410, 400, 35);
+        lblRegisteredCourses.setForeground(new Color(197, 84, 84));
+        lblRegisteredCourses.setFont(new Font("Arial", Font.BOLD, 36));
+        lblRegisteredCourses.setBounds(400, 401, 400, 47);
         add(lblRegisteredCourses);
         
 		Server ServerConnection = new Server();
@@ -116,7 +116,7 @@ class CourseRegisterTable extends JTable{
         return false;
     	}};
     	getTableHeader().setFont(new Font("Arial",Font.BOLD,20));
-        getTableHeader().setBackground(new Color(0,153,153));
+        getTableHeader().setBackground(new Color(37,78,88));
         getTableHeader().setForeground(Color.white);
         TableCellRenderer baseRenderer = getTableHeader().getDefaultRenderer();
         getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));
@@ -239,7 +239,7 @@ class RegisteredTable extends JTable{
         return false;
     	}};
     	getTableHeader().setFont(new Font("Arial",Font.BOLD,20));
-        getTableHeader().setBackground(new Color(0,153,153));
+        getTableHeader().setBackground(new Color(37,78,88));
         getTableHeader().setForeground(Color.white);
         TableCellRenderer baseRenderer = getTableHeader().getDefaultRenderer();
         getTableHeader().setDefaultRenderer(new TableHeaderRenderer(baseRenderer));

@@ -26,7 +26,10 @@ import java.util.Date;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 
 class TeacherInfo extends Container {
@@ -39,15 +42,17 @@ class TeacherInfo extends Container {
 		Container c = this;
 		setSize(1200,650);
 		JLabel title = new JLabel("Teacher Information"); 
-        title.setFont(new Font("Arial", Font.BOLD, 30)); 
-        title.setSize(300, 30); 
-        title.setLocation(10, 10); 
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 36)); 
+        title.setSize(400, 35); 
+        title.setForeground(new Color(197, 84, 84));
+        title.setLocation(400, 10); 
         c.add(title); 
   
         JLabel name = new JLabel("Name"); 
-        name.setFont(new Font("Arial", Font.PLAIN, 20));
+        name.setFont(new Font("Arial", Font.BOLD, 24));
         name.setSize(100, 30);
-        name.setLocation(10, 98); 
+        name.setLocation(370, 100); 
         c.add(name); 
         
         ResultSet Client = ServerConnection.ExecuteQuery("select * from teacher where id='"+ClientID+"'");
@@ -55,60 +60,77 @@ class TeacherInfo extends Container {
         
         JTextField tname = new JTextField();
         tname.setText(Client.getString("name"));
-        tname.setFont(new Font("Arial", Font.PLAIN, 15)); 
+        tname.setFont(new Font("Arial", Font.PLAIN, 18)); 
         tname.setSize(190, 30); 
-        tname.setLocation(120, 100); 
+        tname.setLocation(590, 100); 
         c.add(tname); 
   
         JLabel mno = new JLabel("Mobile"); 
-        mno.setFont(new Font("Arial", Font.PLAIN, 20)); 
+        mno.setFont(new Font("Arial", Font.BOLD, 24)); 
         mno.setSize(100, 30); 
-        mno.setLocation(10, 138); 
+        mno.setLocation(370, 150); 
         c.add(mno); 
   
         JTextField tmno = new JTextField(Client.getString("phoneNumber")); 
-        tmno.setFont(new Font("Arial", Font.PLAIN, 15)); 
+        tmno.setFont(new Font("Arial", Font.PLAIN, 18)); 
         tmno.setSize(190, 30); 
-        tmno.setLocation(120, 140); 
+        tmno.setLocation(590, 150); 
         c.add(tmno);
   
 
         JLabel dob = new JLabel("DOB"); 
-        dob.setFont(new Font("Arial", Font.PLAIN, 20)); 
+        dob.setFont(new Font("Arial", Font.BOLD, 24)); 
         dob.setSize(100, 30); 
-        dob.setLocation(10, 178); 
+        dob.setLocation(370, 200); 
         c.add(dob);
   
         JLabel email = new JLabel("Email"); 
-        email.setFont(new Font("Arial", Font.PLAIN, 20)); 
+        email.setFont(new Font("Arial", Font.BOLD, 24)); 
         email.setSize(100, 30); 
-        email.setLocation(10, 218); 
+        email.setLocation(370, 250); 
         c.add(email);
   
         JButton sub = new JButton("Save"); 
-
-        sub.setFont(new Font("Arial", Font.PLAIN, 15)); 
-        sub.setSize(155, 30); 
-        sub.setLocation(10, 290);
+        sub.setBorder(null);
+        sub.setBackground(new Color(37,78,88));
+        sub.setForeground(new Color(136,189,188));
+        sub.setFont(new Font("Arial", Font.BOLD, 24)); 
+        sub.setSize(187, 39); 
+        sub.setLocation(423, 304);
+        sub.setFocusable(false);
+        sub.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				sub.setBackground(new Color(17,45,50));
+				sub.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				sub.setBackground(new Color(37,78,88));
+		        sub.setForeground(new Color(136,189,188));
+			}
+		});
         c.add(sub);
         
         emailText = new JTextField(Client.getString("email"));
-        emailText.setFont(new Font("Arial", Font.PLAIN, 15));
-        emailText.setBounds(120, 220, 190, 30);
+        emailText.setFont(new Font("Arial", Font.PLAIN, 18));
+        emailText.setBounds(590, 250, 190, 30);
         c.add(emailText);
         
         JLabel IDLabel = new JLabel("ID");
-        IDLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        IDLabel.setBounds(10, 69, 100, 30);
+        IDLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        IDLabel.setBounds(370, 50, 100, 30);
         c.add(IDLabel);
         
         idText = new JLabel((String) Client.getString("id"));
-        idText.setFont(new Font("Arial", Font.PLAIN, 15));
-        idText.setBounds(120, 71, 190, 30);
+        idText.setFont(new Font("Arial", Font.PLAIN, 18));
+        idText.setBounds(590, 50, 190, 30);
         c.add(idText);
         
         dateChooser = new JDateChooser();
-        dateChooser.setBounds(120, 180, 190, 30);
+        dateChooser.setBounds(590, 200, 190, 30);
+        Font font = new Font("Arial", Font.PLAIN,18);
+        dateChooser.setFont(font);
         add(dateChooser);
         dateChooser.setDateFormatString("yyyy-MM-dd");
         String dd = Client.getString("dob");
@@ -123,8 +145,8 @@ class TeacherInfo extends Container {
 		}
 		JLabel lblNotify = new JLabel("");
 		lblNotify.setForeground(Color.GREEN);
-		lblNotify.setFont(new Font("Arial", Font.BOLD, 14));
-		lblNotify.setBounds(10, 261, 190, 19);
+		lblNotify.setFont(new Font("Arial", Font.BOLD, 18));
+		lblNotify.setBounds(633, 304, 274, 39);
 		add(lblNotify);
         sub.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {    		
