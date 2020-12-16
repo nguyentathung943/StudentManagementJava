@@ -54,8 +54,7 @@ class ShowCourses extends Container {
 		ClientID = id;
 		Container c = this;
 		setSize(1200,650);
-		JLabel title = new JLabel("Courses Management"); 
-		title.setHorizontalAlignment(SwingConstants.CENTER);
+		JLabel title = new JLabel("Courses Management");
         title.setFont(new Font("Arial", Font.BOLD, 30)); 
         title.setSize(400, 35); 
         title.setLocation(10, 10);

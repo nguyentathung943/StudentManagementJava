@@ -116,8 +116,9 @@ class HumanResourceManagement extends Container {
 		Container c = this;
 		setSize(1200,650);
 		JLabel title = new JLabel("Human Resources Management"); 
-        title.setFont(new Font("Arial", Font.BOLD, 30)); 
-        title.setSize(336, 30); 
+        title.setFont(new Font("Arial", Font.BOLD, 36)); 
+        title.setSize(550, 35); 
+        title.setForeground(new Color(197,84,84));
         title.setLocation(10, 10);
         c.add(title);
         ScrollPane = new JScrollPane();
@@ -276,7 +277,10 @@ class HumanResourceManagement extends Container {
         	}
         });
         AddBtn = new JButton("Add Student");
-        AddBtn.setBackground(new Color(240,240,240));
+        AddBtn.setBackground(new Color(37,78,88));
+        AddBtn.setForeground(new Color(136,189,188));
+        AddBtn.setFocusable(false);
+        AddBtn.setBorder(null);
         AddBtn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -284,12 +288,14 @@ class HumanResourceManagement extends Container {
         	}
         	@Override
         	public void mouseExited(MouseEvent e) {
-        		AddBtn.setBackground(new Color(240,240,240));
-        	}
+        		AddBtn.setBackground(new Color(37,78,88));
+        		AddBtn.setForeground(new Color(136,189,188));
+			}
         	@Override
         	public void mouseEntered(MouseEvent e) {
-        		AddBtn.setBackground(new Color(204,255,229));
-        	}
+        		AddBtn.setBackground(new Color(17,45,50));
+        		AddBtn.setForeground(new Color(255, 255, 255));
+			}
         });
         AddBtn.addActionListener(new ActionListener() { //// ADD COURSE
         	public void actionPerformed(ActionEvent e) {
@@ -366,6 +372,7 @@ class HumanResourceManagement extends Container {
         add(lblRefresh);
         
         StudentTab = new JButton("Student");
+        StudentTab.setFocusable(false);
         StudentTab.addMouseListener(new MouseAdapter() {
         	public void mouseClicked(MouseEvent e) {
         		StudentTab.setBackground(new Color(0,129,129));
@@ -397,6 +404,7 @@ class HumanResourceManagement extends Container {
         add(StudentTab);
         
         TeacherTab = new JButton("Teacher");
+        TeacherTab.setFocusable(false);
         TeacherTab.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		isStudent = false;
@@ -434,11 +442,13 @@ class HumanResourceManagement extends Container {
         rdbtnMale = new JRadioButton("Male");
         rdbtnMale.setFont(new Font("Tahoma", Font.PLAIN, 14));
         rdbtnMale.setBounds(166, 440, 105, 40);
+        rdbtnMale.setBackground(new Color(222,242,241));
         add(rdbtnMale);
         
         rdbtnFemale = new JRadioButton("Female");
         rdbtnFemale.setFont(new Font("Tahoma", Font.PLAIN, 14));
         rdbtnFemale.setBounds(272, 440, 105, 40);
+        rdbtnFemale.setBackground(new Color(222,242,241));
         add(rdbtnFemale);
         gender = new ButtonGroup();
         gender.add(rdbtnMale);
@@ -448,7 +458,10 @@ class HumanResourceManagement extends Container {
         lblDob.setBounds(10, 337, 84, 40);
         add(lblDob);
         UpdateBtn = new JButton("Update Student");
-        UpdateBtn.setBackground(new Color(240,240,240));
+        UpdateBtn.setBackground(new Color(37,78,88));
+        UpdateBtn.setForeground(new Color(136,189,188));
+        UpdateBtn.setFocusable(false);
+        UpdateBtn.setBorder(null);
         UpdateBtn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -456,12 +469,14 @@ class HumanResourceManagement extends Container {
         	}
         	@Override
         	public void mouseExited(MouseEvent e) {
-        		UpdateBtn.setBackground(new Color(240,240,240));
-        	}
+        		UpdateBtn.setBackground(new Color(37,78,88));
+		        UpdateBtn.setForeground(new Color(136,189,188));
+			}
         	@Override
         	public void mouseEntered(MouseEvent e) {
-        		UpdateBtn.setBackground(new Color(204,255,229));
-        	}
+        		UpdateBtn.setBackground(new Color(17,45,50));
+				UpdateBtn.setForeground(new Color(255, 255, 255));
+			}
         });
         UpdateBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -533,7 +548,10 @@ class HumanResourceManagement extends Container {
         add(UpdateBtn);
         
         DeleteBtn = new JButton("Delete Student");
-        DeleteBtn.setBackground(new Color(240,240,240));
+        DeleteBtn.setBackground(new Color(37,78,88));
+        DeleteBtn.setForeground(new Color(136,189,188));
+        DeleteBtn.setFocusable(false);
+        DeleteBtn.setBorder(null);
         DeleteBtn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -541,12 +559,14 @@ class HumanResourceManagement extends Container {
         	}
         	@Override
         	public void mouseExited(MouseEvent e) {
-        		DeleteBtn.setBackground(new Color(240,240,240));
-        	}
+        		DeleteBtn.setBackground(new Color(37,78,88));
+		        DeleteBtn.setForeground(new Color(136,189,188));
+			}
         	@Override
         	public void mouseEntered(MouseEvent e) {
-        		DeleteBtn.setBackground(new Color(204,255,229));
-        	}
+        		DeleteBtn.setBackground(new Color(17,45,50));
+				DeleteBtn.setForeground(new Color(255, 255, 255));
+			}
         });
         DeleteBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -582,20 +602,25 @@ class HumanResourceManagement extends Container {
         add(DeleteBtn);
         
         JButton ClearBtn = new JButton("Clear");
-        ClearBtn.setBackground(new Color(240,240,240));
+        ClearBtn.setBackground(new Color(37,78,88));
+        ClearBtn.setForeground(new Color(136,189,188));
+        ClearBtn.setFocusable(false);
+        ClearBtn.setBorder(null);
         ClearBtn.addMouseListener(new MouseAdapter() {
-           	@Override
+        	@Override
         	public void mouseClicked(MouseEvent e) {
-           		ClearBtn.setBackground(new Color(128,128,128));
+        		ClearBtn.setBackground(new Color(128,128,128));
         	}
         	@Override
         	public void mouseExited(MouseEvent e) {
-        		ClearBtn.setBackground(new Color(240,240,240));
-        	}
+        		ClearBtn.setBackground(new Color(37,78,88));
+		        ClearBtn.setForeground(new Color(136,189,188));
+			}
         	@Override
         	public void mouseEntered(MouseEvent e) {
-        		ClearBtn.setBackground(new Color(204,255,229));
-        	}
+        		ClearBtn.setBackground(new Color(17,45,50));
+				ClearBtn.setForeground(new Color(255, 255, 255));
+			}
         });
         ClearBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {

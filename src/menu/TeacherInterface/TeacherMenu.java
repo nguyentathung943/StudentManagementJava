@@ -78,6 +78,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		mainUI = new Container();
 		mainUI.setLayout(null);
 		contentPane.add("MainUI", mainUI);
+		contentPane.setBackground(new Color(222,242,241));
 		
 		lblBack.setBackground(new Color(37,78,88));
 		lblBack.setForeground(new Color(255, 255, 255));

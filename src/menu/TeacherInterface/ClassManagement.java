@@ -3,6 +3,7 @@ package menu.TeacherInterface;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -12,6 +13,7 @@ import java.awt.MultipleGradientPaint.ColorSpaceType;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import menu.Server;
 
@@ -35,11 +38,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 
 class ClassManagement extends Container {
 
@@ -86,6 +90,7 @@ class ClassManagement extends Container {
         title.setFont(new Font("Arial", Font.BOLD, 30)); 
         title.setSize(336, 30); 
         title.setLocation(10, 93);
+        title.setForeground(new Color(197,84,84));
         c.add(title);
         JLabel lblID = new JLabel("Student ID");
         lblID.setFont(new Font("Arial", Font.BOLD, 15));
@@ -334,6 +339,7 @@ class ClassManagement extends Container {
         lblClassName.setFont(new Font("Arial", Font.BOLD, 30));
         lblClassName.setBounds(657, 10, 533, 46);
         lblClassName.setText("Class: "+ ClassID+" - "+ClassName);
+        lblClassName.setForeground(new Color(197,84,84));
         add(lblClassName);
      
         JLabel lblPass = new JLabel("Status");
@@ -342,6 +348,10 @@ class ClassManagement extends Container {
         add(lblPass);
         
         JButton btnUpdate = new JButton("Update");
+        btnUpdate.setBorder(null);
+        btnUpdate.setBackground(new Color(37,78,88));
+        btnUpdate.setForeground(new Color(136,189,188));
+        btnUpdate.setFocusable(false);
         btnUpdate.addMouseListener(new MouseAdapter() {
 
         	@Override
@@ -438,6 +448,16 @@ class ClassManagement extends Container {
         		TextOverall.setText("");
         		TextPass.setText("");
         		}
+        	@Override
+			public void mouseEntered(MouseEvent e) {
+        		btnUpdate.setBackground(new Color(17,45,50));
+        		btnUpdate.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnUpdate.setBackground(new Color(37,78,88));
+				btnUpdate.setForeground(new Color(136,189,188));
+			}
 	        	
         });
         btnUpdate.setFont(new Font("Arial", Font.BOLD, 15));
@@ -445,6 +465,10 @@ class ClassManagement extends Container {
         add(btnUpdate);
         
         JButton btnDelete = new JButton("Delete");
+        btnDelete.setBorder(null);
+        btnDelete.setBackground(new Color(37,78,88));
+        btnDelete.setForeground(new Color(136,189,188));
+        btnDelete.setFocusable(false);
         btnDelete.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -491,12 +515,26 @@ class ClassManagement extends Container {
     				}
            		}	        	
         	}
+        	@Override
+			public void mouseEntered(MouseEvent e) {
+        		btnDelete.setBackground(new Color(17,45,50));
+        		btnDelete.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnDelete.setBackground(new Color(37,78,88));
+				btnDelete.setForeground(new Color(136,189,188));
+			}
         });
         btnDelete.setFont(new Font("Arial", Font.BOLD, 15));
         btnDelete.setBounds(10, 556, 165, 47);
         add(btnDelete);
         
         JButton btnClear = new JButton("Clear");
+        btnClear.setBorder(null);
+        btnClear.setBackground(new Color(37,78,88));
+        btnClear.setForeground(new Color(136,189,188));
+        btnClear.setFocusable(false);
         btnClear.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -511,6 +549,16 @@ class ClassManagement extends Container {
         		TextPass.setText("");
         		textIDSearch.setText("");      		
         	}
+        	@Override
+			public void mouseEntered(MouseEvent e) {
+        		btnClear.setBackground(new Color(17,45,50));
+        		btnClear.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnClear.setBackground(new Color(37,78,88));
+				btnClear.setForeground(new Color(136,189,188));
+			}
         });
         btnClear.setFont(new Font("Arial", Font.BOLD, 15));
         btnClear.setBounds(10, 623, 165, 47);
@@ -543,4 +591,20 @@ class ClassManagement extends Container {
 			}
 		});
 	}
+}
+class TableHeaderRenderer implements TableCellRenderer {
+
+    private final TableCellRenderer baseRenderer;
+
+    public TableHeaderRenderer(TableCellRenderer baseRenderer) {
+        this.baseRenderer = baseRenderer;
+        
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        JComponent c = (JComponent)baseRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        c.setBorder(new EmptyBorder(2,2,2,2));
+        return c;
+    }
 }

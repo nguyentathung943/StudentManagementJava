@@ -67,11 +67,13 @@ class ShowPending extends Container {
 		this.ClientID = ClientID;
 		this.ClassName = ClassName;
 		setSize(1200,800);
+		this.setBackground(new Color(222,242,241));
 				
 		JLabel title = new JLabel("Class Registration Pending"); 
-        title.setFont(new Font("Arial", Font.BOLD, 30)); 
-        title.setSize(406, 38); 
+        title.setFont(new Font("Arial", Font.BOLD, 36)); 
+        title.setSize(466, 38); 
         title.setLocation(55, 18);
+        title.setForeground(new Color(197,84,84));
         c.add(title);
         JLabel lblID = new JLabel("Student ID");
         lblID.setFont(new Font("Arial", Font.BOLD, 15));
@@ -236,9 +238,14 @@ class ShowPending extends Container {
         lblClassName.setFont(new Font("Arial", Font.BOLD, 30));
         lblClassName.setBounds(657, 10, 533, 46);
         lblClassName.setText("Class: "+ ClassID+" - "+ClassName);
+        lblClassName.setForeground(new Color(197,84,84));
         add(lblClassName);
         
         JButton btnApprove = new JButton("Approve");
+        btnApprove.setBorder(null);
+        btnApprove.setBackground(new Color(37,78,88));
+        btnApprove.setForeground(new Color(136,189,188));
+        btnApprove.setFocusable(false);
         btnApprove.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -276,13 +283,27 @@ class ShowPending extends Container {
 						e1.printStackTrace();
 					}    			
             	}
-        	}  	
+        	} 
+        	@Override
+			public void mouseEntered(MouseEvent e) {
+        		btnApprove.setBackground(new Color(17,45,50));
+        		btnApprove.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnApprove.setBackground(new Color(37,78,88));
+				btnApprove.setForeground(new Color(136,189,188));
+			}
         });
         btnApprove.setFont(new Font("Arial", Font.BOLD, 15));
         btnApprove.setBounds(10, 340, 165, 47);
         add(btnApprove);
         
         JButton btnDelete = new JButton("Remove");
+        btnDelete.setBorder(null);
+        btnDelete.setBackground(new Color(37,78,88));
+        btnDelete.setForeground(new Color(136,189,188));
+        btnDelete.setFocusable(false);
         btnDelete.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -319,12 +340,26 @@ class ShowPending extends Container {
 					}    
         		}
         	}
+        	@Override
+			public void mouseEntered(MouseEvent e) {
+        		btnDelete.setBackground(new Color(17,45,50));
+        		btnDelete.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnDelete.setBackground(new Color(37,78,88));
+				btnDelete.setForeground(new Color(136,189,188));
+			}
         });
         btnDelete.setFont(new Font("Arial", Font.BOLD, 15));
         btnDelete.setBounds(10, 397, 165, 47);
         add(btnDelete);
         
         JButton btnClear = new JButton("Clear");
+        btnClear.setBorder(null);
+        btnClear.setBackground(new Color(37,78,88));
+        btnClear.setForeground(new Color(136,189,188));
+        btnClear.setFocusable(false);
         btnClear.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -336,6 +371,16 @@ class ShowPending extends Container {
         		TextMainClass.setText("");
         		textIDSearch.setText("");      		
         	}
+        	@Override
+			public void mouseEntered(MouseEvent e) {
+        		btnClear.setBackground(new Color(17,45,50));
+        		btnClear.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnClear.setBackground(new Color(37,78,88));
+				btnClear.setForeground(new Color(136,189,188));
+			}
         });
         btnClear.setFont(new Font("Arial", Font.BOLD, 15));
         btnClear.setBounds(10, 454, 165, 47);

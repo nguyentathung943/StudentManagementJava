@@ -98,9 +98,10 @@ class CoursesManagement extends Container {
 		Container c = this;
 		setSize(1200,650);
 		JLabel title = new JLabel("Courses Management"); 
-        title.setFont(new Font("Arial", Font.BOLD, 30)); 
-        title.setSize(336, 30); 
+        title.setFont(new Font("Arial", Font.BOLD, 36)); 
+        title.setSize(400, 35); 
         title.setLocation(10, 10);
+        title.setForeground(new Color(197, 84, 84));
         c.add(title);
         ScrollPane = new JScrollPane();
         ScrollPane.setSize(817, 524);
@@ -218,20 +219,25 @@ class CoursesManagement extends Container {
         	}
         });
         AddBtn = new JButton("Add Course");
-        AddBtn.setBackground(new Color(240,240,240));
+        AddBtn.setBackground(new Color(37,78,88));
+        AddBtn.setForeground(new Color(136,189,188));
+        AddBtn.setBorder(null);
+        AddBtn.setFocusable(false);
         AddBtn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		AddBtn.setBackground(new Color(128,128,128));
         	}
         	@Override
-        	public void mouseExited(MouseEvent e) {
-        		AddBtn.setBackground(new Color(240,240,240));
-        	}
-        	@Override
-        	public void mouseEntered(MouseEvent e) {
-        		AddBtn.setBackground(new Color(204,255,229));
-        	}
+			public void mouseEntered(MouseEvent e) {
+        		AddBtn.setBackground(new Color(17,45,50));
+        		AddBtn.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				AddBtn.setBackground(new Color(37,78,88));
+				AddBtn.setForeground(new Color(136,189,188));
+			}
         });
         AddBtn.addActionListener(new ActionListener() { 
         	public void actionPerformed(ActionEvent e) {
@@ -289,20 +295,25 @@ class CoursesManagement extends Container {
         lblStart.setBounds(10, 337, 121, 40);
         add(lblStart);
         UpdateBtn = new JButton("Update Course");
-        UpdateBtn.setBackground(new Color(240,240,240));
+        UpdateBtn.setBackground(new Color(37,78,88));
+        UpdateBtn.setForeground(new Color(136,189,188));
+        UpdateBtn.setBorder(null);
+        UpdateBtn.setFocusable(false);
         UpdateBtn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		UpdateBtn.setBackground(new Color(128,128,128));
         	}
         	@Override
-        	public void mouseExited(MouseEvent e) {
-        		UpdateBtn.setBackground(new Color(240,240,240));
-        	}
-        	@Override
-        	public void mouseEntered(MouseEvent e) {
-        		UpdateBtn.setBackground(new Color(204,255,229));
-        	}
+			public void mouseEntered(MouseEvent e) {
+				UpdateBtn.setBackground(new Color(17,45,50));
+				UpdateBtn.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				UpdateBtn.setBackground(new Color(37,78,88));
+				UpdateBtn.setForeground(new Color(136,189,188));
+			}
         });
         UpdateBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -348,20 +359,25 @@ class CoursesManagement extends Container {
         add(UpdateBtn);
         
         DeleteBtn = new JButton("Delete Course");
-        DeleteBtn.setBackground(new Color(240,240,240));
+        DeleteBtn.setBackground(new Color(37,78,88));
+        DeleteBtn.setForeground(new Color(136,189,188));
+        DeleteBtn.setBorder(null);
+        DeleteBtn.setFocusable(false);
         DeleteBtn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		DeleteBtn.setBackground(new Color(128,128,128));
         	}
         	@Override
-        	public void mouseExited(MouseEvent e) {
-        		DeleteBtn.setBackground(new Color(240,240,240));
-        	}
-        	@Override
-        	public void mouseEntered(MouseEvent e) {
-        		DeleteBtn.setBackground(new Color(204,255,229));
-        	}
+			public void mouseEntered(MouseEvent e) {
+        		DeleteBtn.setBackground(new Color(17,45,50));
+        		DeleteBtn.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				DeleteBtn.setBackground(new Color(37,78,88));
+				DeleteBtn.setForeground(new Color(136,189,188));
+			}
         });
         DeleteBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -386,20 +402,25 @@ class CoursesManagement extends Container {
         add(DeleteBtn);
         
         JButton ClearBtn = new JButton("Clear");
-        ClearBtn.setBackground(new Color(240,240,240));
+        ClearBtn.setBackground(new Color(37,78,88));
+        ClearBtn.setForeground(new Color(136,189,188));
+        ClearBtn.setBorder(null);
+        ClearBtn.setFocusable(false);
         ClearBtn.addMouseListener(new MouseAdapter() {
-           	@Override
+        	@Override
         	public void mouseClicked(MouseEvent e) {
-           		ClearBtn.setBackground(new Color(128,128,128));
+        		ClearBtn.setBackground(new Color(128,128,128));
         	}
         	@Override
-        	public void mouseExited(MouseEvent e) {
-        		ClearBtn.setBackground(new Color(240,240,240));
-        	}
-        	@Override
-        	public void mouseEntered(MouseEvent e) {
-        		ClearBtn.setBackground(new Color(204,255,229));
-        	}
+			public void mouseEntered(MouseEvent e) {
+        		ClearBtn.setBackground(new Color(17,45,50));
+        		ClearBtn.setForeground(new Color(255, 255, 255));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				ClearBtn.setBackground(new Color(37,78,88));
+				ClearBtn.setForeground(new Color(136,189,188));
+			}
         });
         ClearBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
