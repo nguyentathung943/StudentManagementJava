@@ -186,12 +186,7 @@ class CoursesManagement extends Container {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				lblNotification.setText("");
-        		table.clearSelection();
-        		textID.setText("");
-        		textName.setText("");
-        		textTeacherID.setText("");
-        		textSchedule.setText("");
+				ClearData();
 			}
 		});
         table.addMouseListener(new MouseAdapter() {
@@ -258,7 +253,7 @@ class CoursesManagement extends Container {
 						GetTableData(ServerConnection);
 		        		ClearData();
         			} catch (SQLException e1) {
-						e1.printStackTrace();
+        				lblNotification.setText("Course ID already existed");
 					}
         		}	
         	}

@@ -54,7 +54,7 @@ class StudentShowSchedule extends Container {
         lblSchedule.setForeground(new Color(197, 84, 84));
         lblSchedule.setHorizontalAlignment(SwingConstants.CENTER);
         lblSchedule.setFont(new Font("Arial", Font.BOLD, 36));
-        lblSchedule.setBounds(400, 10, 400, 35);
+        lblSchedule.setBounds(308, 10, 279, 35);
         add(lblSchedule);
         setSize(1200,650);
 		String query = "select * from course_attend, course, teacher where StudentID ='" + ClientID + "' and course.courseID = course_attend.courseID and headTeacher = teacher.id";
@@ -75,6 +75,18 @@ class StudentShowSchedule extends Container {
         ScoreTable scoreTable = new ScoreTable();
         c.add(scoreTable);
         table.setScoreTable(scoreTable);
+        
+        JLabel lblchooseRowThat = new JLabel("*Choose row that contains course to show your result on result board");
+        lblchooseRowThat.setFont(new Font("Arial", Font.PLAIN, 13));
+        lblchooseRowThat.setBounds(50, 410, 492, 30);
+        add(lblchooseRowThat);
+        
+        JLabel lblResultBoard = new JLabel("Result Board");
+        lblResultBoard.setHorizontalAlignment(SwingConstants.CENTER);
+        lblResultBoard.setForeground(new Color(197, 84, 84));
+        lblResultBoard.setFont(new Font("Arial", Font.BOLD, 36));
+        lblResultBoard.setBounds(846, 10, 279, 35);
+        add(lblResultBoard);
         addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -301,8 +313,14 @@ class ScoreTable extends JPanel{
 			overallText.setText(oText);
 		else overallText.setText("Not yet");
 		
-		if (sText!= null)
+		if(sText.equals("Pass")) {
+			statusText.setForeground(Color.green);
 			statusText.setText(sText);
+		}
+		else if(sText.equals("Fail")) {
+			statusText.setForeground(Color.red);
+			statusText.setText(sText);
+		}
 		else statusText.setText("Not yet");
 		
 		setVisible(true);

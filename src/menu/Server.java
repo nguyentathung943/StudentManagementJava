@@ -19,39 +19,6 @@ public class Server {
 		ResultSet Result = statement.executeQuery(query);
 		return Result;
 	}
-
-	// public void InsertCourse(String id, String name, String head,Date SDate, Date
-	// EDate,String time)throws SQLException {
-	// String query = " insert into course (courseID, name,
-	// headTeacher,startDate,endDate,time)"
-	// + " values (?, ?, ?,?,?,?)";
-	// // create the mysql insert preparedstatement
-	// PreparedStatement preparedStmt = Connect.prepareStatement(query);
-	// preparedStmt.setString (1, id);
-	// preparedStmt.setString (2, name);
-	// preparedStmt.setString (3, head);
-	// preparedStmt.setDate (4, SDate);
-	// preparedStmt.setDate (5, EDate);
-	// preparedStmt.setString (6, time);
-	// // execute the preparedstatement
-	// preparedStmt.execute();
-	// }
-	// public void InsertCourse(String id, String name, String head,Date SDate, Date
-	// EDate,String time)throws SQLException {
-	// String query = " insert into course (courseID, name,
-	// headTeacher,startDate,endDate,time)"
-	// + " values (?, ?, ?,?,?,?)";
-	// // create the mysql insert preparedstatement
-	// PreparedStatement preparedStmt = Connect.prepareStatement(query);
-	// preparedStmt.setString (1, id);
-	// preparedStmt.setString (2, name);
-	// preparedStmt.setString (3, head);
-	// preparedStmt.setDate (4, SDate);
-	// preparedStmt.setDate (5, EDate);
-	// preparedStmt.setString (6, time);
-	// // execute the preparedstatement
-	// preparedStmt.execute();
-	// }
 	
 	public void AddStudenttoCourse(String id, String courseID) throws SQLException {
 		String query = " insert into course_attend (courseID,StudentID,practice_point,theory_point,overall,pass_status)"

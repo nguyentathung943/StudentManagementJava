@@ -214,13 +214,7 @@ class HumanResourceManagement extends Container {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				lblNotification.setText("");
-        		table.clearSelection();
-        		textID.setText("");
-        		textName.setText("");
-        		textEmail.setText("");
-        		textMainClass.setText("");
-        		textPhone.setText("");
+				ClearData();
 			}
 		});
         table.addMouseListener(new MouseAdapter() {
@@ -299,50 +293,57 @@ class HumanResourceManagement extends Container {
         });
         AddBtn.addActionListener(new ActionListener() { //// ADD COURSE
         	public void actionPerformed(ActionEvent e) {
-        		if(isStudent) {
-        			String StudentName = textName.getText();
-            		String StudentID = textID.getText().toUpperCase();
-            		String MainClass = textMainClass.getText();
-            		String Email = textEmail.getText();
-            		String Phone = textPhone.getText();
-            		String DOB = df.format(dateChooser.getDate());
-            		String Gender = "";
-            		if(rdbtnMale.isSelected())
-            			Gender = "Male";
-            		else if(rdbtnFemale.isSelected())
-            			Gender = "Female";
-            		if (StudentName.equals("") || StudentID.equals("") ||MainClass.equals("") ||Email.equals("") ||DOB.equals("") || Gender.equals("")) {
-            			lblNotification.setText("All fields must be filled");
-            		}
-            		else {
-            			lblNotification.setText("");
-            			try {
-    						ServerConnection.InsertStudent(StudentID, StudentName, MainClass, Email, Gender, DOB, Phone);
-    						GetTableData(ServerConnection, isStudent);
-    		        		ClearData();
-            			} catch (SQLException e1) {
-    						e1.printStackTrace();
-    					}
-            		}
-        		}else {
-        			String TeacherName = textName.getText();
-            		String TeacherID = textID.getText().toUpperCase();
-            		String Email = textEmail.getText();
-            		String Phone = textPhone.getText();
-            		String DOB = df.format(dateChooser.getDate());
-            		if (TeacherName.equals("") || TeacherID.equals("") ||Email.equals("") ||DOB.equals("")) {
-            			lblNotification.setText("All fields must be filled");
-            		}
-            		else {
-            			lblNotification.setText("");
-            			try {
-            				ServerConnection.InsertTeacher(TeacherID, TeacherName, Phone, Email, DOB);
-    						GetTableData(ServerConnection, isStudent);
-    		        		ClearData();
-            			} catch (SQLException e1) {
-    						e1.printStackTrace();
-    					}
-            		}
+        		try {
+            		if(isStudent) {
+            			String StudentName = textName.getText();
+                		String StudentID = textID.getText().toUpperCase();
+                		String MainClass = textMainClass.getText();
+                		String Email = textEmail.getText();
+                		String Phone = textPhone.getText();
+                		String DOB = df.format(dateChooser.getDate());
+                		String Gender = "";
+                		if(rdbtnMale.isSelected())
+                			Gender = "Male";
+                		else if(rdbtnFemale.isSelected())
+                			Gender = "Female";
+                		if (StudentName.equals("") || StudentID.equals("") ||MainClass.equals("") ||Email.equals("") ||DOB.equals("") || Gender.equals("")) {
+                			lblNotification.setText("All fields must be filled");
+                		}
+                		else {
+                			lblNotification.setText("");
+                			try {
+        						ServerConnection.InsertStudent(StudentID, StudentName, MainClass, Email, Gender, DOB, Phone);
+        						GetTableData(ServerConnection, isStudent);
+        		        		ClearData();
+                			} catch (SQLException e1) {
+                				lblNotification.setText("Invalid data format");
+                				ClearData();
+        					}
+                		}
+            		}else {
+            			String TeacherName = textName.getText();
+                		String TeacherID = textID.getText().toUpperCase();
+                		String Email = textEmail.getText();
+                		String Phone = textPhone.getText();
+                		String DOB = df.format(dateChooser.getDate());
+                		if (TeacherName.equals("") || TeacherID.equals("") ||Email.equals("") ||DOB.equals("")) {
+                			lblNotification.setText("All fields must be filled");
+                		}
+                		else {
+                			lblNotification.setText("");
+                			try {
+                				ServerConnection.InsertTeacher(TeacherID, TeacherName, Phone, Email, DOB);
+        						GetTableData(ServerConnection, isStudent);
+        		        		ClearData();
+                			} catch (SQLException e1) {
+                				lblNotification.setText("Invalid data format");	
+                				ClearData();
+        					}
+                		}
+        		}
+
+        		}catch(Exception exc) {
+    				ClearData();
         		}
         		
         	}
@@ -536,7 +537,6 @@ class HumanResourceManagement extends Container {
                     		GetTableData(ServerConnection, isStudent);
                 			 					
                 		} catch (SQLException e1) {
-                			e1.printStackTrace();
                 			lblNotification.setText("Invalid data format");	
     					}
             		}
@@ -642,6 +642,12 @@ class HumanResourceManagement extends Container {
         textField.setBounds(588, 41, 198, 47);
         add(textField);
         
+        lblNotifiSearch = new JLabel("");
+        lblNotifiSearch.setForeground(Color.RED);
+        lblNotifiSearch.setFont(new Font("Arial", Font.BOLD, 15));
+        lblNotifiSearch.setBounds(588, 0, 226, 32);
+        add(lblNotifiSearch);
+        
         JLabel SearchIcon = new JLabel("");
         SearchIcon.addMouseListener(new MouseAdapter() {
         	@Override
@@ -686,11 +692,7 @@ class HumanResourceManagement extends Container {
         SearchIcon.setBounds(783, 44, 56, 47);
         add(SearchIcon);
         
-        lblNotifiSearch = new JLabel("");
-        lblNotifiSearch.setForeground(Color.RED);
-        lblNotifiSearch.setFont(new Font("Arial", Font.BOLD, 15));
-        lblNotifiSearch.setBounds(588, 0, 226, 32);
-        add(lblNotifiSearch);
+
         
         dateChooser = new JDateChooser();
         dateChooser.setBounds(166, 337, 207, 40);

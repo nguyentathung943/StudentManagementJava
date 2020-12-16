@@ -206,43 +206,47 @@ class ShowCourses extends Container {
         });
         AddBtn.addActionListener(new ActionListener() { //// ADD COURSE
         	public void actionPerformed(ActionEvent e) {
-        		String CourseName = textCourseName.getText();
-        		String CourseID = textCourseID.getText().toUpperCase();
-        		String StartDate = df.format(startDate.getDate());
-        		String EndDate = df.format(endDate.getDate());
-        		String Time = textTime.getText();
-        		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
-        			lblNotification.setText("All fields must be filled");
-        		}
-        		else {
-        			lblNotification.setText("");
-        			try {
-						ResultSet temp1 = ServerConnection.ExecuteQuery("select * from course where courseID='"+CourseID+"'");
-						if(temp1.next()) {
-							lblNotification.setText("Course ID is already existed");					
-						}
-						else {
-							lblNotification.setText("");
-							try {
-								ServerConnection.InsertCourse(CourseID, CourseName,ClientID,StartDate,EndDate,Time);
-								model.setRowCount(0);
-								ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
-								while(data.next()) {
-							        model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
-							    }
-					        		textCourseID.setText("");
-					        		textCourseName.setText("");
-					        		endDate.setCalendar(null);
-					        		startDate.setCalendar(null);
-					        		textTime.setText("");
-							}
-							catch(Exception e1) {
-								lblNotification.setText("Invalid data format");								
-							}
-						}
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					}
+        		try {
+            		String CourseName = textCourseName.getText();
+            		String CourseID = textCourseID.getText().toUpperCase();
+            		String StartDate = df.format(startDate.getDate());
+            		String EndDate = df.format(endDate.getDate());
+            		String Time = textTime.getText();
+            		if (CourseName.equals("") || CourseID.equals("") ||StartDate.equals("") ||EndDate.equals("") ||Time.equals("")) {
+            			lblNotification.setText("All fields must be filled");
+            		}
+            		else {
+            			lblNotification.setText("");
+            			try {
+    						ResultSet temp1 = ServerConnection.ExecuteQuery("select * from course where courseID='"+CourseID+"'");
+    						if(temp1.next()) {
+    							lblNotification.setText("Course ID is already existed");					
+    						}
+    						else {
+    							lblNotification.setText("");
+    							try {
+    								ServerConnection.InsertCourse(CourseID, CourseName,ClientID,StartDate,EndDate,Time);
+    								model.setRowCount(0);
+    								ResultSet data = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+ClientID+"'");
+    								while(data.next()) {
+    							        model.addRow(new Object[] {data.getString("courseID"),data.getString("name"),data.getString("startDate"),data.getString("endDate"),data.getString("time")});
+    							    }
+    					        		textCourseID.setText("");
+    					        		textCourseName.setText("");
+    					        		endDate.setCalendar(null);
+    					        		startDate.setCalendar(null);
+    					        		textTime.setText("");
+    							}
+    							catch(Exception e1) {
+    								lblNotification.setText("Invalid data format");								
+    							}
+    						}
+    					} catch (SQLException e1) {
+    						e1.printStackTrace();
+    					}
+            		}
+        		}catch(Exception exc) {
+        			lblNotification.setText("Invalid data format");	
         		}
         	}
         });
