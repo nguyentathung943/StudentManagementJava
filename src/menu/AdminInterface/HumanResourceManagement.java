@@ -297,10 +297,22 @@ class HumanResourceManagement extends Container {
             		if(isStudent) {
             			String StudentName = textName.getText();
                 		String StudentID = textID.getText().toUpperCase();
+        				ResultSet temp1 = ServerConnection.ExecuteQuery("select * from student where id='"+StudentID+"'");
+						if(temp1.next()) {
+							lblNotification.setText("Student ID is already existed");
+							return;
+						}
                 		String MainClass = textMainClass.getText();
                 		String Email = textEmail.getText();
                 		String Phone = textPhone.getText();
-                		String DOB = df.format(dateChooser.getDate());
+                		
+                		String DOB = null;
+                		try {
+                			DOB = df.format(dateChooser.getDate());
+                		}catch(Exception e1) {
+                			lblNotification.setText("Invalid data format");
+                			return;
+                		}               				
                 		String Gender = "";
                 		if(rdbtnMale.isSelected())
                 			Gender = "Male";
@@ -323,9 +335,20 @@ class HumanResourceManagement extends Container {
             		}else {
             			String TeacherName = textName.getText();
                 		String TeacherID = textID.getText().toUpperCase();
+        				ResultSet temp1 = ServerConnection.ExecuteQuery("select * from teacher where id='"+TeacherID+"'");
+						if(temp1.next()) {
+							lblNotification.setText("Teacher ID is already existed");
+							return;
+						}
                 		String Email = textEmail.getText();
                 		String Phone = textPhone.getText();
-                		String DOB = df.format(dateChooser.getDate());
+                		String DOB = null;
+                		try {
+                			DOB = df.format(dateChooser.getDate());
+                		}catch(Exception e1) {
+                			lblNotification.setText("Invalid data format");
+                			return;
+                		}    
                 		if (TeacherName.equals("") || TeacherID.equals("") ||Email.equals("") ||DOB.equals("")) {
                 			lblNotification.setText("All fields must be filled");
                 		}
@@ -487,23 +510,29 @@ class HumanResourceManagement extends Container {
         		}
         		else {
         			if(isStudent) {
+        			try {
         				String o_id = model.getValueAt(index, 0).toString();
             			String StudentName = textName.getText();
                 		String StudentID = textID.getText().toUpperCase();
                 		String MainClass = textMainClass.getText();
                 		String Email = textEmail.getText();
                 		String Phone = textPhone.getText();
-                		String dob = df.format(dateChooser.getDate());
+                		String dob = null;
+                		try {
+                			 dob = df.format(dateChooser.getDate());
+                		}catch(Exception e1) {
+                			lblNotification.setText("Invalid date format");
+                		}          		
                 		String Gender = "";
                 		if(rdbtnMale.isSelected())
                 			Gender = "Male";
                 		else if(rdbtnFemale.isSelected())
                 			Gender = "Female";
                 		
-                		try {
+                		
                 			if(!o_id.equals(StudentID))
                 			{
-                				ResultSet temp1 = ServerConnection.ExecuteQuery("select * from student where id="+StudentID);
+                				ResultSet temp1 = ServerConnection.ExecuteQuery("select * from student where id='"+StudentID+"'");
         						if(temp1.next()) {
         							lblNotification.setText("Student ID is already existed");
         							return;
@@ -517,13 +546,18 @@ class HumanResourceManagement extends Container {
                 			lblNotification.setText("Invalid data format");	
     					}
             		}else {
+            			try {
             			String o_id = model.getValueAt(index, 0).toString();
             			String TeacherName = textName.getText();
                 		String TeacherID = textID.getText().toUpperCase();
                 		String Email = textEmail.getText();
-                		String Phone = textPhone.getText();
-                		String dob = df.format(dateChooser.getDate());
-                		try {
+                		String Phone = textPhone.getText();    
+                		String dob=null;
+                  		try {
+                  			dob = df.format(dateChooser.getDate());
+                		}catch(Exception e1) {
+                			lblNotification.setText("Invalid date format");
+                		}   
                 			if(!o_id.equals(TeacherID))
                 			{
                 				ResultSet temp1 = ServerConnection.ExecuteQuery("select * from teacher where id='"+ TeacherID + "'");
@@ -586,12 +620,25 @@ class HumanResourceManagement extends Container {
         				}
         			}else {
         				String TeacherId = textID.getText();
+
         				try {
-        					ServerConnection.DeleteTeacher(TeacherId);
-        					GetTableData(ServerConnection, isStudent);
-        		        		
+        					ResultSet teacher = ServerConnection.ExecuteQuery("select * from course where headTeacher='"+TeacherId+"'");
+        					if(!teacher.next()) {
+            					ServerConnection.DeleteTeacherWithoutClass(TeacherId);       					     					
+            					GetTableData(ServerConnection, isStudent);     
+        					}
+        					else {
+        						ServerConnection.DeleteCourse(teacher.getString("courseID"), TeacherId);        						
+            					while(teacher.next()) {
+            						ServerConnection.DeleteCourse(teacher.getString("courseID"), TeacherId);						   
+            					}
+            					ServerConnection.DeleteTeacherWithoutClass(TeacherId);
+            					GetTableData(ServerConnection, isStudent);  
+        					}
+        					ClearData();
         				}catch(SQLException e1) {
         					lblNotification.setText("Teacher you are trying to delete not exist!");
+        					ClearData();
         				}
         			}
         		}

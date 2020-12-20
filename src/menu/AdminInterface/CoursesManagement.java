@@ -236,26 +236,39 @@ class CoursesManagement extends Container {
         });
         AddBtn.addActionListener(new ActionListener() { 
         	public void actionPerformed(ActionEvent e) {
-        		String courseID = textID.getText().toUpperCase();
-        		String name = textName.getText();
-        		String headTeacher = textTeacherID.getText();
-        		String startDate = df.format(dateChooserStart.getDate());
-        		String endDate = df.format(dateChooserEnd.getDate());
-        		String time = textSchedule.getText();
+        		try {
+            		String courseID = textID.getText().toUpperCase();
+            		String name = textName.getText();
+            		String headTeacher = textTeacherID.getText();
+            		String startDate = null;
+            		String endDate = null;
+            		try {
+            			startDate = df.format(dateChooserStart.getDate());
+            			endDate = df.format(dateChooserEnd.getDate());
+            		}
+            		catch(Exception exc) {
+            			lblNotification.setText("Invalid date format");
+            		}
 
-        		if (courseID.equals("") || name.equals("") ||headTeacher.equals("") ||startDate.equals("") || endDate.equals("") || time.equals("")) {
-        			lblNotification.setText("All fields must be filled");
+            		String time = textSchedule.getText();
+
+            		if (courseID.equals("") || name.equals("") ||headTeacher.equals("") ||startDate.equals("") || endDate.equals("") || time.equals("")) {
+            			lblNotification.setText("All fields must be filled");
+            		}
+            		else {
+            			lblNotification.setText("");
+            			try {
+            				ServerConnection.InsertCourse(courseID, name, headTeacher,startDate,endDate,time);
+    						GetTableData(ServerConnection);
+    		        		ClearData();
+            			} catch (SQLException e1) {
+            				lblNotification.setText("Course ID already existed");
+    					}
+            		}
+        		}catch(Exception ec) {
+        			lblNotification.setText("Invalid data format");
         		}
-        		else {
-        			lblNotification.setText("");
-        			try {
-        				ServerConnection.InsertCourse(courseID, name, headTeacher,startDate,endDate,time);
-						GetTableData(ServerConnection);
-		        		ClearData();
-        			} catch (SQLException e1) {
-        				lblNotification.setText("Course ID already existed");
-					}
-        		}	
+	
         	}
         });
         AddBtn.setFont(new Font("Arial", Font.BOLD, 15));
@@ -317,18 +330,26 @@ class CoursesManagement extends Container {
         			lblNotification.setText("Please choose one course to be updated");
         		}
         		else {
+        			try {
         			String o_id = model.getValueAt(index, 0).toString();
     				String courseID = textID.getText().toUpperCase();
             		String name = textName.getText();
             		String headTeacher = textTeacherID.getText();
-            		String startDate = df.format(dateChooserStart.getDate());
-            		String endDate = df.format(dateChooserEnd.getDate());
+            		String startDate = null;
+            		String endDate = null;
+            		try {
+            			startDate = df.format(dateChooserStart.getDate());
+            			endDate = df.format(dateChooserEnd.getDate());
+            		}
+            		catch(Exception exc) {
+            			lblNotification.setText("Invalid date format");
+            		}
             		String time = textSchedule.getText();
 
             		if (courseID.equals("") || name.equals("") ||headTeacher.equals("") ||startDate.equals("") || endDate.equals("") || time.equals("")) {
             			lblNotification.setText("All fields must be filled");
             		}
-            		try {
+            		
             			if(!o_id.equals(courseID))
             			{
             				ResultSet temp1 = ServerConnection.ExecuteQuery("select * from student where id='"+ courseID + "'");
@@ -342,8 +363,7 @@ class CoursesManagement extends Container {
                 		ClearData();
                 		GetTableData(ServerConnection);
             			 					
-            		} catch (SQLException e1) {
-            			e1.printStackTrace();
+            		} catch (Exception e1) {
             			lblNotification.setText("Invalid data format");	
 					}
         		}

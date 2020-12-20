@@ -314,21 +314,16 @@ public class Server {
 		}
 
 	}
-
-	public void DeleteTeacher(String id) throws SQLException {
-		String query1 = "delete from course where headTeacher=?";
-		String query2 = "delete from teacher where id= ?";
-		String query3 = "delete from credential where username=?";
+	public void DeleteTeacherWithoutClass(String id) throws SQLException {
+		System.out.print(id);
+		String query1 = "delete from teacher where id=?";
+		String query2 = "delete from credential where username=?";
 
 		PreparedStatement preparedStmt = Connect.prepareStatement(query1);
 		preparedStmt.setString(1, id);
 		preparedStmt.execute();
 
 		preparedStmt = Connect.prepareStatement(query2);
-		preparedStmt.setString(1, id);
-		preparedStmt.execute();
-
-		preparedStmt = Connect.prepareStatement(query3);
 		preparedStmt.setString(1, id);
 		preparedStmt.execute();
 	}
@@ -396,11 +391,16 @@ public class Server {
 	}
 
 	public void DeleteCourse(String id) throws SQLException {
+		String query4 = "delete from registered_course where courseID=?";
 		String query1 = "delete from course_attend where courseID=?";
 		String query2 = "delete from registered_course where courseID=?";
 		String query3 = "delete from course where courseID=?";
 
-		PreparedStatement preparedStmt = Connect.prepareStatement(query1);
+		PreparedStatement preparedStmt = Connect.prepareStatement(query4);
+		preparedStmt.setString(1, id);
+		preparedStmt.execute();
+		
+		preparedStmt = Connect.prepareStatement(query1);
 		preparedStmt.setString(1, id);
 		preparedStmt.execute();
 

@@ -319,7 +319,7 @@ class ScoreTable extends JPanel{
 		else overallText.setText("Not yet");
 		
 		if (sText!= null) {
-			if(sText.equals("Passed")) {
+			if(sText.equals("Pass")) {
 				statusText.setForeground(Color.green);
 				statusText.setText(sText);
 			}

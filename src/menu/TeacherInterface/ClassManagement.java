@@ -144,6 +144,7 @@ class ClassManagement extends Container {
         add(TextPass);
         
         JLabel lblNotifi = new JLabel("");
+        lblNotifi.setHorizontalAlignment(SwingConstants.LEFT);
         lblNotifi.setForeground(Color.RED);
         lblNotifi.setFont(new Font("Arial", Font.BOLD, 15));
         lblNotifi.setBounds(10, 450, 235, 30);
