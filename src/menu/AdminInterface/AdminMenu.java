@@ -212,7 +212,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		courseManage = new JButton("Courses Management");
+		courseManage = new JButton("Manage Courses");
 		courseManage.setFont(new Font("Arial", Font.BOLD, 18));
 		courseManage.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/tick.png")));
 		courseManage.setHorizontalTextPosition(JLabel.CENTER);
@@ -252,7 +252,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		humanManage = new JButton("Human Resources Management");
+		humanManage = new JButton("Human Resources ");
 		humanManage.setFont(new Font("Arial", Font.BOLD, 18));
 		humanManage.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/calendar.png")));
 		humanManage.setHorizontalTextPosition(JLabel.CENTER);

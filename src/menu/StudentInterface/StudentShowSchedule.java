@@ -275,26 +275,31 @@ class ScoreTable extends JPanel{
         courseText = new JLabel("None");
         courseText.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
         courseText.setBounds(80, 0, 290, 30);
+        courseText.setForeground(Color.black);
         add(courseText);
         
         practiceText = new JLabel("Not yet");
         practiceText.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
         practiceText.setBounds(150, 60, 170, 30);
+        practiceText.setForeground(Color.black);
         add(practiceText);
         
         theoryText = new JLabel("Not yet");
         theoryText.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
         theoryText.setBounds(150, 120, 170, 30);
+        theoryText.setForeground(Color.black);
         add(theoryText);
         
         overallText = new JLabel("Not yet");
         overallText.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
         overallText.setBounds(150, 180, 170, 30);
+        overallText.setForeground(Color.black);
         add(overallText);
         
         statusText = new JLabel("Not yet");
         statusText.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
         statusText.setBounds(150, 240, 170, 30);
+        statusText.setForeground(Color.black);
         add(statusText);
         
         setVisible(false);
@@ -313,15 +318,20 @@ class ScoreTable extends JPanel{
 			overallText.setText(oText);
 		else overallText.setText("Not yet");
 		
-		if(sText.equals("Pass")) {
-			statusText.setForeground(Color.green);
-			statusText.setText(sText);
+		if (sText!= null) {
+			if(sText.equals("Passed")) {
+				statusText.setForeground(Color.green);
+				statusText.setText(sText);
+			}
+			else if(sText.equals("Fail")) {
+				statusText.setForeground(Color.red);
+				statusText.setText(sText);
+			}
 		}
-		else if(sText.equals("Fail")) {
-			statusText.setForeground(Color.red);
-			statusText.setText(sText);
+		else {
+			statusText.setForeground(Color.black);
+			statusText.setText("Not yet");
 		}
-		else statusText.setText("Not yet");
 		
 		setVisible(true);
 	}
