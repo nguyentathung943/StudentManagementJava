@@ -154,7 +154,6 @@ class ShowPending extends Container {
         lblRefresh.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		model.setRowCount(0);
 				ResultSet data1;
 				try {
 					data1 = ServerConnection.ExecuteQuery("select * from student,registered_course where student.id=registered_course.studentID");
