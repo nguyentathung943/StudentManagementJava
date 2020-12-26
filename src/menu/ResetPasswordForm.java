@@ -160,10 +160,10 @@ public class ResetPasswordForm extends JFrame {
 		contentPane.add(btnLogin);
 		btnLogin.setVisible(false);
 
-		JLabel lblNewLabel = new JLabel("FINISH AND CONTINUE TO SIGN IN PAGE");
+		JLabel lblNewLabel = new JLabel("Continue");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 14));
-		lblNewLabel.setBounds(57, 0, 284, 53);
+		lblNewLabel.setBounds(147, 0, 83, 53);
 		btnLogin.add(lblNewLabel);
 		lblX.addMouseListener(new MouseAdapter() {
 			@Override

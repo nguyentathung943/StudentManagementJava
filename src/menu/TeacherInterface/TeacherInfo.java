@@ -95,8 +95,8 @@ class TeacherInfo extends Container {
         sub.setBackground(new Color(37,78,88));
         sub.setForeground(new Color(136,189,188));
         sub.setFont(new Font("Arial", Font.BOLD, 24)); 
-        sub.setSize(187, 39); 
-        sub.setLocation(423, 304);
+        sub.setSize(190, 39); 
+        sub.setLocation(590, 315);
         sub.setFocusable(false);
         sub.addMouseListener(new MouseAdapter() {
 			@Override
@@ -146,12 +146,17 @@ class TeacherInfo extends Container {
 		JLabel lblNotify = new JLabel("");
 		lblNotify.setForeground(Color.GREEN);
 		lblNotify.setFont(new Font("Arial", Font.BOLD, 18));
-		lblNotify.setBounds(633, 304, 274, 39);
+		lblNotify.setBounds(590, 282, 274, 23);
 		add(lblNotify);
         sub.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {    		
         		try {
-        			String dob = df.format(dateChooser.getDate());
+        			String dob = null;
+        			try {
+        				dob = df.format(dateChooser.getDate());
+        			}catch(Exception exc) {
+        				
+        			}	
         			ServerConnection.UpdateInforTeacher(idText.getText(), tname.getText(), tmno.getText(), emailText.getText(), dob);
         			lblNotify.setForeground(Color.GREEN);
         			lblNotify.setText("Information saved");

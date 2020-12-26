@@ -392,7 +392,7 @@ class HumanResourceManagement extends Container {
         	}
         });
         lblRefresh.setIcon(new ImageIcon(HumanResourceManagement.class.getResource("/icon/reload.png")));
-        lblRefresh.setBounds(1168, 10, 32, 32);
+        lblRefresh.setBounds(1165, 90, 32, 32);
         add(lblRefresh);
         
         StudentTab = new JButton("Student");

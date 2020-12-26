@@ -212,7 +212,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 			}
 		});
 		
-		courseManage = new JButton("Manage Courses");
+		courseManage = new JButton("Courses Management");
 		courseManage.setFont(new Font("Arial", Font.BOLD, 18));
 		courseManage.setIcon(new ImageIcon(StudentMenu.class.getResource("/icon/tick.png")));
 		courseManage.setHorizontalTextPosition(JLabel.CENTER);
@@ -220,7 +220,7 @@ public class AdminMenu extends JFrame implements ActionListener{
 		courseManage.setVerticalAlignment(JLabel.CENTER);
 		courseManage.setHorizontalAlignment(JLabel.CENTER);
 		courseManage.setForeground(new Color(37,78,88));
-		courseManage.setBounds(660,32,185,185);
+		courseManage.setBounds(660,32,195,185);
 		courseManage.setBackground(new Color(222,242,241));
 		courseManage.setFocusable(false);
 		courseManage.setBorder(null);

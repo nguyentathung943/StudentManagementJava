@@ -231,7 +231,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		ShowCourses.setVerticalTextPosition(JLabel.BOTTOM);
 		ShowCourses.setVerticalAlignment(JLabel.CENTER);
 		ShowCourses.setHorizontalAlignment(JLabel.CENTER);
-		ShowCourses.setBounds(660,32,185,185);
+		ShowCourses.setBounds(660,32,209,185);
 		ShowCourses.setBackground(new Color(222,242,241));
 		ShowCourses.setFocusable(false);
 		ShowCourses.setBorder(null);
@@ -309,7 +309,7 @@ public class TeacherMenu extends JFrame implements ActionListener{
 		pass.setVerticalTextPosition(JLabel.BOTTOM);
 		pass.setVerticalAlignment(JLabel.CENTER);
 		pass.setHorizontalAlignment(JLabel.CENTER);
-		pass.setBounds(660,276,185,185);
+		pass.setBounds(670,276,185,185);
 		pass.setBackground(new Color(222,242,241));
 		pass.setForeground(new Color(37,78,88));
 		pass.setFocusable(false);

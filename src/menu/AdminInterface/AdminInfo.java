@@ -107,9 +107,9 @@ class AdminInfo extends Container {
         sub.setBackground(new Color(37,78,88));
         sub.setForeground(new Color(136,189,188));
         sub.setFont(new Font("Arial", Font.BOLD, 24)); 
-        sub.setSize(187, 39); 
+        sub.setSize(190, 39); 
         sub.setFocusable(false);
-        sub.setLocation(423, 312);
+        sub.setLocation(590, 312);
         c.add(sub);
         
         dateChooser = new JDateChooser();
@@ -128,7 +128,7 @@ class AdminInfo extends Container {
 		JLabel lblNotify = new JLabel("");
 		lblNotify.setForeground(Color.GREEN);
 		lblNotify.setFont(new Font("Arial", Font.BOLD, 18));
-		lblNotify.setBounds(620, 312, 314, 39);
+		lblNotify.setBounds(590, 281, 277, 21);
 		add(lblNotify);
 		sub.addMouseListener(new MouseAdapter() {
 			@Override
@@ -145,7 +145,14 @@ class AdminInfo extends Container {
         sub.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {    		
         		try {
-        			String dob = df.format(dateChooser.getDate());
+        			String dob =null;
+        			try {
+        				dob = df.format(dateChooser.getDate());
+        			}
+        			catch(Exception exc) {
+            			lblNotify.setForeground(Color.RED);
+            			lblNotify.setText("Invalid date format");
+        			}
         			ServerConnection.UpdateInforAdministrator(idText.getText(), emailText.getText() , tname.getText(), dob, tmno.getText());
         			lblNotify.setForeground(Color.GREEN);
         			lblNotify.setText("Information saved");
